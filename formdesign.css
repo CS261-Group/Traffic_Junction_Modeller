@@ -1,0 +1,75 @@
+body {
+    margin-left: 20%;
+    margin-right: 20%;
+    width: 60%;
+}
+
+.directions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.north > input, .south > input, .east > input, .west > input {
+    width: 100px;
+}
+
+.north {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.south {
+    display: flex;
+    flex-direction: column;
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.east {
+    display: flex;
+    flex-direction: column;
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.west {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.lanes {
+    display: flex;
+}
+
+.lanes > * {
+    margin-right: 50px;
+}
+
+#woutlanes, #einlanes {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#winlanes, #eoutlanes {
+    display: flex;
+    flex-direction: column;
+}
+
+#soutlanes, #ninlanes {
+    display: flex;
+    flex-direction: row;
+}
+
+#noutlanes, #sinlanes {
+    display: flex;
+    flex-direction: row-reverse; 
+}
+
+.laneconf {
+    margin: 0 20px;
+}
