@@ -1,0 +1,40 @@
+# Below: https://github.com/github/gitignore/blob/master/Maven.gitignore
+junctionmodeller/target/
+junctionmodeller/pom.xml.tag
+junctionmodeller/pom.xml.releaseBackup
+junctionmodeller/pom.xml.versionsBackup
+junctionmodeller/pom.xml.next
+junctionmodeller/release.properties
+junctionmodeller/dependency-reduced-pom.xml
+junctionmodeller/buildNumber.properties
+junctionmodeller/.mvn/timing.properties
+# https://github.com/takari/maven-wrapper#usage-without-binary-jar
+junctionmodeller/.mvn/wrapper/maven-wrapper.jar
+
+# Below: https://github.com/github/gitignore/blob/master/Java.gitignore
+# Compiled class file
+junctionmodeller/*.class
+
+# Log file
+junctionmodeller/*.log
+
+# BlueJ files
+junctionmodeller/*.ctxt
+
+# Mobile Tools for Java (J2ME)
+junctionmodeller/.mtj.tmp/
+
+# Package Files #
+junctionmodeller/*.jar
+junctionmodeller/*.war
+junctionmodeller/*.nar
+junctionmodeller/*.ear
+junctionmodeller/*.zip
+junctionmodeller/*.tar.gz
+junctionmodeller/*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+junctionmodeller/hs_err_pid*
+
+# My own changes
+junctionmodeller/.idea
