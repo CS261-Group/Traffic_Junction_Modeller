@@ -1,6 +1,6 @@
 package uk.ac.warwick.dcs.junctionmodeller;
 
-import ui.MainForm;
+import uk.ac.warwick.dcs.ui.MainForm;
 
 /**
  * Hello world!

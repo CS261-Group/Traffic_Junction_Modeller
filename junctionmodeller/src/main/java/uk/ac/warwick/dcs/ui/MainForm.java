@@ -1,4 +1,4 @@
-package ui;
+package uk.ac.warwick.dcs.ui;
 
 import javax.swing.*;
 
