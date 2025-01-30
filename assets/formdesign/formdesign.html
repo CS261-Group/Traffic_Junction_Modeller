@@ -12,10 +12,10 @@
 </head>
 <body>
     <form>
-        <strong>We represent directions pictorially for simplicity. All inputs are in vehicles per hour (vph):</strong>
-
         <fieldset>
-            <legend>Northbound</legend>
+            <legend>North</legend>
+
+            <strong>We represent directions pictorially for simplicity. All inputs are in vehicles per hour (vph):</strong>
 
             <div class="directions">
                 <div class="north">
@@ -36,9 +36,6 @@
                 </div>
             </div>
 
-            <label for="npedlight">Pedestrian crossing:</label>
-            <input name="npedlight" type="checkbox">
-
             <br>
 
             <div class="lanes">
@@ -46,15 +43,10 @@
                     <label for="nnumlanesout"># of lanes <strong>outgoing:</strong></label>
                     <select id="nnumlanesout" name="nnumlanesout">
                         <option value="1">1</option>
-                        <option value="2" selected="select">2</option>
+                        <option value="2" selected>2</option>
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
                     </select>
                 </div>
 
@@ -66,15 +58,10 @@
                         <option value="3">3</option>
                         <option value="4">4</option>
                         <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
                     </select>
                 </div>
             </div>
-                    
+
             <h3>Outgoing Lane Settings</h3>
 
             <ul id="noutlanes">
@@ -87,223 +74,31 @@
 
             </ul>
 
-        </fieldset>
-        
-        <fieldset>
-            <legend>East</legend>
+            <h3>General Settings</h3>
 
-            <div class="directions">
-                <div class="north">
-                    <label for="ninc">Outgoing <em>Northbound</em>&#8593;:</label>
-                    <input name="ninc" type="number" value="35">
-                </div>
-                <div class="east">
-                    <label for="noute"><strong>Incoming</strong> <em>Eastbound</em> &#8592;</label>
-                    <input name="noute" type="number" value="100">
-                </div>
-                <div class="south">
-                    <label for="nouts">Outgoing <em>Southbound</em> &#8595;</label>
-                    <input name="nouts" type="number" value="35">
-                </div>
-                <div class="west">
-                    <label for="nouts">Outgoing <em>Westbound</em> &#8592;</label>
-                    <input name="nouts" type="number" value="30">
-                </div>
-            </div>
+            <label for="npedcrossing">Is there a pedestrian crossing? </label>
+            <input name="npedcrossing" id="npedcrossing" type="checkbox">
+
+            <button id="neditcrossing">Edit Settings</button>
 
             <br>
 
-            <div class="lanes">
-                <div>
-                    <label for="enumlanesout"># of lanes <em>outgoing: </em></label>
-                    <select id="enumlanesout" name="enumlanesout">
-                        <option value="1">1</option>
-                        <option value="2" selected="select">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="enumlanesin"># of lanes <strong>incoming: </strong></label>
-                    <select id="enumlanesin" name="enumlanesin">
-                        <option value="1">1</option>
-                        <option value="2" selected="select">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-            </div>
-
-            <h3>Outgoing Lane Settings</h3>
-
-            <ul id="eoutlanes">
-                
-            </ul>
-
-            <h3>Incoming Lane Settings</h3>
-
-            <ul id="einlanes">
-
-            </ul>
-        </fieldset>
-
-        <fieldset>
-            <legend>South</legend>
-
-            <div class="directions">
-                <div class="north">
-                    <label for="ninc">Outgoing <em>Northbound</em>&#8593;:</label>
-                    <input name="ninc" type="number" value="35">
-                </div>
-                <div class="east">
-                    <label for="noute">Outgoing <em>Eastbound</em> &#8594;</label>
-                    <input name="noute" type="number" value="35">
-                </div>
-                <div class="south">
-                    <label for="nouts"><strong>Incoming</strong> <em>Southbound</em> &#8593;</label>
-                    <input name="nouts" type="number" value="100">
-                </div>
-                <div class="west">
-                    <label for="nouts">Outgoing <em>Westbound</em> &#8592;</label>
-                    <input name="nouts" type="number" value="30">
-                </div>
-            </div>
-
-            <br>
-
-            <div class="lanes">
-                <div>
-                    <label for="snumlanesout"># of lanes <em>outgoing: </em></label>
-                    <select id="snumlanesout" name="snumlanesout">
-                        <option value="1">1</option>
-                        <option value="2" selected="select">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="snumlanesin"># of lanes <strong>incoming: </strong></label>
-                    <select id="snumlanesin" name="snumlanesin">
-                        <option value="1">1</option>
-                        <option value="2" selected="select">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-            </div>
-
-            <h3>Outgoing Lane Settings</h3>
-
-            <ul id="soutlanes">
-            </ul>
-
-            <h3>Incoming Lane Settings</h3>
-
-            <ul id="sinlanes">
-            </ul>
-
-        </fieldset>
-
-        <fieldset>
-            <legend>West</legend>
-
-            <div class="directions">
-                <div class="north">
-                    <label for="ninc">Outgoing <em>Northbound</em>&#8593;:</label>
-                    <input name="ninc" type="number" value="30">
-                </div>
-                <div class="east">
-                    <label for="noute">Outgoing <em>Eastbound</em> &#8594;</label>
-                    <input name="noute" type="number" value="35">
-                </div>
-                <div class="south">
-                    <label for="nouts">Outgoing <em>Southbound</em> &#8595;</label>
-                    <input name="nouts" type="number" value="35">
-                </div>
-                <div class="west">
-                    <label for="nouts"><strong>Incoming</strong> <em>Westbound</em> &#8594;</label>
-                    <input name="nouts" type="number" value="100">
-                </div>
-            </div>
-
-            <br>
-
-            <div class="lanes">
-                <div>
-                    <label for="wnumlanesout"># of lanes <em>outgoing: </em></label>
-                    <select id="wnumlanesout" name="wnumlanesout">
-                        <option value="1">1</option>
-                        <option value="2" selected="select">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="wnumlanesin"># of lanes <strong>incoming: </strong></label>
-                    <select id="wnumlanesin" name="wnumlanesin">
-                        <option value="1">1</option>
-                        <option value="2" selected="select">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
-                </div>
-            </div>
-
-            <h3>Outgoing Lane Settings</h3>
-
-            <ul id="woutlanes">
-            </ul>
-
-            <h3>Incoming Lane Settings</h3>
-
-            <ul id="winlanes">
-            </ul>
+            <label for="nbuscheckmark">Is there a bus/cycle lane?</label>
+            <input name="nbuscheckmark" id="nbuscheckmark" type="checkbox">
         </fieldset>
 
         <fieldset>
             <legend>Submit Configuration</legend>
 
-            <label for="usesim">Show Simulation</label>
+            <label for="usesim">Show Visualisation</label>
             <input name="usesim" type="checkbox">
+            <br>
+            <label for="ntrafficlight">What type of traffic light? </label>
+            <select name="ntrafficlight" id="ntrafficlight">
+                <option value="fixedcycle" selected>Fixed-cycle length</option>
+                <option value="detection">Detection</option>
+            </select>
+            <button id="nedittrafficlight">Edit Settings</button>
             <br><br>
             <input value="Analyse and Confirm" name="submit" type="submit">
         </fieldset>

@@ -36,11 +36,29 @@ $(() => {
 
     // force dropdown onchange event to generate list of lanes
     $("#nnumlanesin").trigger("change");
-    $("#enumlanesin").trigger("change");
-    $("#snumlanesin").trigger("change");
-    $("#wnumlanesin").trigger("change");
     $("#nnumlanesout").trigger("change");
-    $("#enumlanesout").trigger("change");
-    $("#snumlanesout").trigger("change");
-    $("#wnumlanesout").trigger("change");
+
+    $("#npedcrossing").on("change", () => {
+        const checked = $("#npedcrossing").is(":checked");
+        if (!checked) {
+            $("#neditcrossing").attr("disabled", true);
+        } else {
+            $("#neditcrossing").removeAttr("disabled");
+        }
+    });
+
+    $("#npedcrossing").trigger("change");
+
+    $("#neditcrossing").on('click', (e) => {
+        e.preventDefault();
+        // TODO: pop up
+        console.log("EDIT CROSSING POPUP");
+    });
+
+    $("#nedittrafficlight").on('click', (e) => {
+        e.preventDefault();
+        // TODO: pop up
+        console.log("EDIT TRAFFIC LIGHT POPUP");
+    });
+    
 });

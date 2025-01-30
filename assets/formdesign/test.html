@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Table</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <label for="columnSelect">Select number of columns:</label>
+    <select id="columnSelect" onchange="generateTable()">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+    
+    <table id="settingsTable"></table>
+
+    <script>
+        function generateTable() {
+            const table = document.getElementById("settingsTable");
+            const columnCount = document.getElementById("columnSelect").value;
+            
+            table.innerHTML = ""; // Clear existing table
+            
+            const headerRow = table.insertRow();
+            for (let i = 0; i < columnCount; i++) {
+                const th = document.createElement("th");
+                th.textContent = `Setting ${i + 1}`;
+                headerRow.appendChild(th);
+            }
+            
+            const dataRow = table.insertRow();
+            for (let i = 0; i < columnCount; i++) {
+                const td = document.createElement("td");
+                td.textContent = "Value";
+                dataRow.appendChild(td);
+            }
+        }
+
+        // Generate initial table on page load
+        document.addEventListener("DOMContentLoaded", generateTable);
+    </script>
+</body>
+</html>
