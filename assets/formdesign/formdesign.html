@@ -49,38 +49,17 @@
                         <option value="5">5</option>
                     </select>
                 </div>
-
-                <div>
-                    <label for="nnumlanesin"># of lanes <em>incoming:</em></label>
-                    <select id="nnumlanesin" name="nnumlanesin">
-                        <option value="1">1</option>
-                        <option value="2" selected="select">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </div>
             </div>
 
             <h3>Outgoing Lane Settings</h3>
 
-            <ul id="noutlanes">
-                
-            </ul>
-
-            <h3>Incoming Lane Settings</h3>
-
-            <ul id="ninlanes">
-
-            </ul>
+            <table id="noutlanes"></table>
 
             <h3>General Settings</h3>
 
             <label for="npedcrossing">Is there a pedestrian crossing? </label>
             <input name="npedcrossing" id="npedcrossing" type="checkbox">
-
-            <button id="neditcrossing">Edit Settings</button>
-
+            
             <br>
 
             <label for="nbuscheckmark">Is there a bus/cycle lane?</label>
@@ -93,14 +72,43 @@
             <label for="usesim">Show Visualisation</label>
             <input name="usesim" type="checkbox">
             <br>
-            <label for="ntrafficlight">What type of traffic light? </label>
-            <select name="ntrafficlight" id="ntrafficlight">
+            <label for="trafficlight">What type of traffic light? </label>
+            <select name="trafficlight" id="trafficlight">
                 <option value="fixedcycle" selected>Fixed-cycle length</option>
-                <option value="detection">Detection</option>
+                <option value="detection">Actuation</option>
             </select>
-            <button id="nedittrafficlight">Edit Settings</button>
+
+            <button id="edittrafficlight">Edit Settings</button>
+
+            <div id="trafficlightmodal" class="modal">
+                <div class="modal-content">
+                    <span id="closetrafficlightmodal" class="close">&times;</span>
+
+                    <div class="directions">
+                        <div class="north">
+                            <label for="ninc"><em>North</em>&#8595;:</label>
+                            <input name="ninc" type="number" value="100">
+                        </div>
+                        <div class="east">
+                            <label for="noute">Outgoing <em>Eastbound</em> &#8594;</label>
+                            <input name="noute" type="number" value="35">
+                        </div>
+                        <div class="south">
+                            <label for="nouts">Outgoing <em>Southbound</em> &#8595;</label>
+                            <input name="nouts" type="number" value="35">
+                        </div>
+                        <div class="west">
+                            <label for="nouts">Outgoing <em>Westbound</em> &#8592;</label>
+                            <input name="nouts" type="number" value="30">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <br><br>
-            <input value="Analyse and Confirm" name="submit" type="submit">
+            <input value="Confirm Configuration and Submit for Analysis" name="submit" type="submit">
+            <button>Load Configuration</button>
+            <button>Save Configuration</button>
         </fieldset>
     </form>
 </body>
