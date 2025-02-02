@@ -60,16 +60,36 @@ body {
     flex-direction: column;
 }
 
-#soutlanes, #ninlanes {
+#soutlanes{
     display: flex;
     flex-direction: row;
 }
 
-#noutlanes, #sinlanes {
+#ninlanes, #noutlanes, #ndirlanes {
+    display: flex;
+    flex-direction: row;
+}
+
+#sinlanes {
     display: flex;
     flex-direction: row-reverse; 
 }
 
-.laneconf {
+.inlaneconf {
     margin: 0 20px;
+    width: 40px;
+}
+
+.dirlaneconf {
+    margin: 0 20px;
+    width: 80px;
+}
+
+.outlaneconf {
+    margin: 0 20px;
+    width: 40px;
+}
+
+#small {
+    width: 60px;
 }
