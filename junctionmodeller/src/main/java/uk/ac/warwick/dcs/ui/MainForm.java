@@ -1,6 +1,9 @@
 package uk.ac.warwick.dcs.ui;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
+import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
+import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,59 +33,55 @@ public class MainForm extends JFrame {
     private void setUp() {
         setTitle("Traffic Junction Configuration");
         setSize(668, 768);
+        setResizable(false);
         setFont(labelFont);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Northbound Panel
-        JPanel northboundPanel = panelFactory.createDirectionPanel(Direction.NORTH);
-        JPanel eastboundPanel = panelFactory.createDirectionPanel(Direction.EAST);
-        JPanel southboundPanel = panelFactory.createDirectionPanel(Direction.SOUTH);
-        JPanel westboundPanel = panelFactory.createDirectionPanel(Direction.WEST);
+        DirectionPanel northboundPanel = panelFactory.createDirectionPanel(Direction.NORTH);
+        northboundPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        DirectionPanel eastboundPanel = panelFactory.createDirectionPanel(Direction.EAST);
+        eastboundPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        DirectionPanel southboundPanel = panelFactory.createDirectionPanel(Direction.SOUTH);
+        southboundPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        DirectionPanel westboundPanel = panelFactory.createDirectionPanel(Direction.WEST);
+        westboundPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Traffic Lights Section
-        JPanel trafficLightPanel = new JPanel(new GridLayout(0, 2));
-        trafficLightPanel.setBorder(BorderFactory.createTitledBorder("Traffic lights"));
+        TrafficLightPanel trafficLightPanel = new TrafficLightPanel();
 
-        trafficLightPanel.add(new JLabel("Traffic light type:"));
-        JComboBox<String> lightTypeCombo = new JComboBox<>(new String[]{"Fixed-time", "Adaptive"});
-        trafficLightPanel.add(lightTypeCombo);
+        // Submission Section
+        SubmissionPanel submissionPanel = new SubmissionPanel(headingFont, labelFont);
 
-        trafficLightPanel.add(new JLabel("Number of groups:"));
-        JComboBox<String> groupsCombo = new JComboBox<>(new String[]{"1", "2", "3"});
-        trafficLightPanel.add(groupsCombo);
+        JPanel northWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        northWrapper.add(northboundPanel);
 
-        trafficLightPanel.add(new JLabel("Lane #1 Group:"));
-        JTextField lane1Group = new JTextField("1");
-        trafficLightPanel.add(lane1Group);
+        JPanel eastWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        eastWrapper.add(eastboundPanel);
 
-        trafficLightPanel.add(new JLabel("Lane #2 Group:"));
-        JTextField lane2Group = new JTextField("2");
-        trafficLightPanel.add(lane2Group);
+        JPanel southWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        southWrapper.add(southboundPanel);
 
-        trafficLightPanel.add(new JLabel("Group 1 Timing:"));
-        JTextField group1Timing = new JTextField("30");
-        trafficLightPanel.add(group1Timing);
+        JPanel westWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        westWrapper.add(westboundPanel);
 
-        trafficLightPanel.add(new JLabel("Group 2 Timing:"));
-        JTextField group2Timing = new JTextField("40");
-        trafficLightPanel.add(group2Timing);
-
-        JCheckBox showValues = new JCheckBox("Show values on diagram");
-        JButton submitButton = new JButton("Analyse and Confirm");
-
-        mainPanel.add(northboundPanel);
-        mainPanel.add(eastboundPanel);
-        mainPanel.add(southboundPanel);
-        mainPanel.add(westboundPanel);
+        mainPanel.add(northWrapper);
+        mainPanel.add(eastWrapper);
+        mainPanel.add(southWrapper);
+        mainPanel.add(westWrapper);
         mainPanel.add(trafficLightPanel);
-        mainPanel.add(showValues);
-        mainPanel.add(submitButton);
+        mainPanel.add(submissionPanel);
 
         add(new JScrollPane(mainPanel), BorderLayout.CENTER);
         setVisible(true);
+
+        // call the onchange event for each lane combo box to generate the
+        // lane settings dynamically
+        
     }
 }
