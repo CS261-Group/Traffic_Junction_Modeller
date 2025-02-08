@@ -10,14 +10,16 @@ import java.util.LinkedList;
 public class IncomingLane extends Lane {
     private final Deque<IVehicle> queue;
     private final VehicleType vehicleType;
+    // could also store this as an array of OutgoingLanes
     private final boolean[] availableDirections;
+    private final int incomingHourlyFlowRate;
 
-
-    public IncomingLane(VehicleType vt, boolean[] directions) {
+    public IncomingLane(VehicleType vt, boolean[] directions, int flow) {
         assert directions.length == 4;
         queue = new LinkedList<>();
         vehicleType = vt;
         availableDirections = directions;
+        incomingHourlyFlowRate = flow;
     }
 
     public VehicleType getVehicleType() {
