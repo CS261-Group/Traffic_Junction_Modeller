@@ -1,5 +1,7 @@
 package uk.ac.warwick.dcs.contracts;
 
+import uk.ac.warwick.dcs.contracts.lights.TrafficLightController;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -11,9 +13,15 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
 
     private final Carriageway[] carriageways;
 
-    public JunctionConfiguration(Carriageway[] cw) {
+    // Traffic lights exists at the junction level now
+    // because they can operate across carriageways
+    // e.g. one traffic light turns green to let North and South Through
+    private final TrafficLightController trafficLights;
+
+    public JunctionConfiguration(Carriageway[] cw, TrafficLightController tl) {
         assert cw.length == NUM_CARRIAGEWAYS;
         carriageways = cw;
+        trafficLights = tl;
     }
 
     @Override

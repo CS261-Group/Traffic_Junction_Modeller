@@ -4,10 +4,10 @@ package uk.ac.warwick.dcs.contracts;
 // there may now be many incoming roads in a carriageway
 public class Carriageway {
     private final OutgoingRoad outgoingRoad;
-    private final IncomingRoad[] incomingRoad;
+    private final IncomingRoad incomingRoad;
 
-    public Carriageway(OutgoingRoad or, IncomingRoad[] irs) {
+    public Carriageway(OutgoingRoad or, IncomingRoad ir) {
         outgoingRoad = or;
-        incomingRoad = irs;
+        incomingRoad = ir;
     }
 }
