@@ -7,7 +7,7 @@ import uk.ac.warwick.dcs.contracts.exceptions.UnknownTrafficLightStateException;
 public abstract class TrafficLight {
     private final TrafficLightType trafficLightType;
     private TrafficLightState state;
-
+    private float minDuration;
 
     public TrafficLight(TrafficLightType tlt) {
         trafficLightType = tlt;

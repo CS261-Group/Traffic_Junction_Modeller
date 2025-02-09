@@ -5,7 +5,6 @@ import uk.ac.warwick.dcs.contracts.enums.Direction;
 public class CarriagewayBuilder {
     private final LaneFactory laneFactory;
 
-
     public CarriagewayBuilder() {
         laneFactory = new LaneFactory();
     }

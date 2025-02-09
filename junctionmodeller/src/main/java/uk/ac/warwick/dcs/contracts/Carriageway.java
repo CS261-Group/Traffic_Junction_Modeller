@@ -2,14 +2,14 @@ package uk.ac.warwick.dcs.contracts;
 
 import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 
+// traffic lights now belong to Incoming Roads
+// there may now be many incoming roads in a carriageway
 public class Carriageway {
     private final OutgoingRoad outgoingRoad;
-    private final IncomingRoad incomingRoad;
-    private final TrafficLight trafficLight;
+    private final IncomingRoad[] incomingRoad;
 
-    public Carriageway(OutgoingRoad ir, IncomingRoad or, TrafficLight tl) {
-        outgoingRoad = ir;
-        incomingRoad = or;
-        trafficLight = tl;
+    public Carriageway(OutgoingRoad or, IncomingRoad[] irs) {
+        outgoingRoad = or;
+        incomingRoad = irs;
     }
 }
