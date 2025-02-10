@@ -1,12 +1,16 @@
 package uk.ac.warwick.dcs.ui;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
 import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
 import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
@@ -15,6 +19,14 @@ public class MainForm extends JFrame {
     private final DirectionPanelFactory panelFactory;
     private final Font headingFont;
     private final Font labelFont;
+
+    private DirectionPanel northboundPanel;
+    private DirectionPanel eastboundPanel;
+    private DirectionPanel southboundPanel;
+    private DirectionPanel westboundPanel;
+    private TrafficLightPanel trafficLightPanel;
+    private SubmissionPanel submissionPanel;
+    private JButton submitButton;
 
     public MainForm() {
         // we need to initialise the factories before we
@@ -40,44 +52,52 @@ public class MainForm extends JFrame {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        mainPanel.setAlignmentX(LEFT_ALIGNMENT);
 
-        // Northbound Panel
-        DirectionPanel northboundPanel = panelFactory.createDirectionPanel(Direction.NORTH);
-        northboundPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        DirectionPanel eastboundPanel = panelFactory.createDirectionPanel(Direction.EAST);
-        eastboundPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        DirectionPanel southboundPanel = panelFactory.createDirectionPanel(Direction.SOUTH);
-        southboundPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        DirectionPanel westboundPanel = panelFactory.createDirectionPanel(Direction.WEST);
-        westboundPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        // panels in each direction
+        northboundPanel = panelFactory.createDirectionPanel(Direction.NORTH, getWidth());
+        eastboundPanel = panelFactory.createDirectionPanel(Direction.EAST, getWidth());
+        southboundPanel = panelFactory.createDirectionPanel(Direction.SOUTH, getWidth());
+        westboundPanel = panelFactory.createDirectionPanel(Direction.WEST, getWidth());
 
         // Traffic Lights Section
-        TrafficLightPanel trafficLightPanel = new TrafficLightPanel();
+        trafficLightPanel = new TrafficLightPanel(headingFont, labelFont);
 
         // Submission Section
-        SubmissionPanel submissionPanel = new SubmissionPanel(headingFont, labelFont);
+        submissionPanel = new SubmissionPanel(headingFont, labelFont);
 
-        JPanel northWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        northWrapper.add(northboundPanel);
-
-        JPanel eastWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        eastWrapper.add(eastboundPanel);
-
-        JPanel southWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        southWrapper.add(southboundPanel);
-
-        JPanel westWrapper = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        westWrapper.add(westboundPanel);
-
-        mainPanel.add(northWrapper);
-        mainPanel.add(eastWrapper);
-        mainPanel.add(southWrapper);
-        mainPanel.add(westWrapper);
+        mainPanel.add(northboundPanel);
+        mainPanel.add(eastboundPanel);
+        mainPanel.add(southboundPanel);
+        mainPanel.add(westboundPanel);
         mainPanel.add(trafficLightPanel);
+
+        // Submission button and add to submission panel externally
+        // we do it externally because we want to access the other panels'
+        // getValue() methods
+        submitButton = new JButton("Confirm and Analyse");
+        submitButton.addActionListener((e) -> {
+            DirectionData[] directionData = Arrays.stream(new DirectionPanel[] {
+                    northboundPanel, eastboundPanel, southboundPanel, westboundPanel
+            }).map(DirectionPanel::getValue).toArray(DirectionData[]::new);
+
+            Arrays.stream(directionData).forEach(x -> {
+                assert x.arrivalFlows().size() == x.availableDirections().size() && x.arrivalFlows().size() == x.departureFlows().size();
+            });
+
+            trafficLightPanel.getValue();
+
+            System.out.println("Data collected");
+        });
+
+        submissionPanel.add(submitButton);
+
         mainPanel.add(submissionPanel);
 
-        add(new JScrollPane(mainPanel), BorderLayout.CENTER);
+
+        JScrollPane formContainer = new JScrollPane(mainPanel);
+        formContainer.getVerticalScrollBar().setUnitIncrement(16);
+        add(formContainer, BorderLayout.CENTER);
         setVisible(true);
 
         // call the onchange event for each lane combo box to generate the

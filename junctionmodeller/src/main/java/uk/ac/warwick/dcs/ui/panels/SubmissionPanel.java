@@ -2,11 +2,12 @@ package uk.ac.warwick.dcs.ui.panels;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
-import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Font;
 
-public class SubmissionPanel extends CustomPanel {
+public class SubmissionPanel extends CustomPanel implements IReadablePanel<Boolean> {
+    private JCheckBox showVisualisationCheckbox;
+
     public SubmissionPanel(Font headingFont, Font labelFont) {
         super(headingFont, labelFont);
         setUp();
@@ -20,11 +21,12 @@ public class SubmissionPanel extends CustomPanel {
         setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
 
         // Show visualisation button
-        JCheckBox showValues = new JCheckBox("Show visualisation");
-        // Submission button
-        JButton submitButton = new JButton("Confirm and Analyse");
+        showVisualisationCheckbox = new JCheckBox("Show visualisation");
+        add(showVisualisationCheckbox);
+    }
 
-        add(showValues);
-        add(submitButton);
+    @Override
+    public Boolean getValue() {
+        return showVisualisationCheckbox.isSelected();
     }
 }

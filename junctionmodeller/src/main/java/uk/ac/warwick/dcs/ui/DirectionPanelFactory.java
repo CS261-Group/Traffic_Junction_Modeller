@@ -6,8 +6,6 @@ import uk.ac.warwick.dcs.ui.panels.*;
 import java.awt.Font;
 
 public class DirectionPanelFactory {
-    private static final int MAX_LANES = 5;
-
     private final Font headingFont;
     private final Font labelFont;
 
@@ -16,7 +14,8 @@ public class DirectionPanelFactory {
         this.labelFont = labelFont;
     }
 
-    public DirectionPanel createDirectionPanel(Direction direction) {
-        return new DirectionPanel(direction, MAX_LANES, headingFont, labelFont);
+    public DirectionPanel createDirectionPanel(Direction direction, int windowWidth) {
+        DirectionPanel directionPanel = new DirectionPanel(direction, headingFont, labelFont, windowWidth);
+        return directionPanel;
     }
 }

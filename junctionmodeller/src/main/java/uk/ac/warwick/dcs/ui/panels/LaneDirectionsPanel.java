@@ -1,14 +1,24 @@
 package uk.ac.warwick.dcs.ui.panels;
 
+import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.ILaneChangedSubscriber;
+import uk.ac.warwick.dcs.ui.Constants;
+import uk.ac.warwick.dcs.ui.formdata.AvailableDirections;
 
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
-public class LaneDirectionsPanel extends CustomPanel implements ILaneChangedSubscriber {
-    public LaneDirectionsPanel(Font headingFont, Font labelFont) {
+public class LaneDirectionsPanel extends CustomPanel implements ILaneChangedSubscriber, IReadablePanel<List<AvailableDirections>> {
+    private final List<LaneDirectionSettingsPanel> lanes;
+    private final Direction direction;
+
+    public LaneDirectionsPanel(Font headingFont, Font labelFont, Direction dir) {
         super(headingFont, labelFont);
+        lanes = new ArrayList<>(Constants.MAX_LANES);
+        direction = dir;
         setUp();
     }
 
@@ -18,14 +28,37 @@ public class LaneDirectionsPanel extends CustomPanel implements ILaneChangedSubs
 
         JLabel laneDirectionsHeading = new JLabel("Lane directions");
         laneDirectionsHeading.setFont(headingFont);
+        laneDirectionsHeading.setAlignmentX(LEFT_ALIGNMENT);
         add(laneDirectionsHeading);
 
-        // TODO: implement lanes
+        // for lanes
     }
 
     @Override
     public void notify(int oldLanes, int newLanes) {
-        // TODO: implement
-        System.out.println("Directions: " + oldLanes + " " + newLanes);
+        if (oldLanes < newLanes) {
+            while (lanes.size() != newLanes) {
+                // create lanes
+                LaneDirectionSettingsPanel setting = new LaneDirectionSettingsPanel(headingFont, labelFont, direction, lanes.size() + 1);
+                setting.setAlignmentX(LEFT_ALIGNMENT);
+
+                add(setting);
+                lanes.add(setting);
+            }
+        } else {
+            while (lanes.size() != newLanes) {
+                // create lanes
+                LaneDirectionSettingsPanel removedSetting = lanes.remove(lanes.size() - 1); // remove last value
+                remove(removedSetting);
+            }
+        }
+
+        // update the UI to incorporate
+        updateUI();
+    }
+
+    @Override
+    public List<AvailableDirections> getValue() {
+        return lanes.stream().map(LaneDirectionSettingsPanel::getValue).toList();
     }
 }

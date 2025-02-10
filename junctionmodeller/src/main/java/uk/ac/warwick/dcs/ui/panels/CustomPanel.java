@@ -1,5 +1,6 @@
 package uk.ac.warwick.dcs.ui.panels;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import java.awt.Font;
 

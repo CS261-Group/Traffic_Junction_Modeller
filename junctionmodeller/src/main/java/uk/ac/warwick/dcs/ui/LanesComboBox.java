@@ -2,23 +2,21 @@ package uk.ac.warwick.dcs.ui;
 
 import uk.ac.warwick.dcs.ui.events.LanesChangedListener;
 
-import javax.swing.*;
-import java.util.LinkedList;
+import javax.swing.JComboBox;
 import java.util.List;
 
 public class LanesComboBox extends JComboBox<Integer> {
     private static final int DEFAULT_SELECTION = 2;
-    private final List<ILaneChangedSubscriber> subscribers;
 
-    public LanesComboBox(int maxNumLanes, List<ILaneChangedSubscriber> subs) {
+    public LanesComboBox(int maxNumLanes, List<ILaneChangedSubscriber> subscribers) {
         for (int laneCount = 1; laneCount <= maxNumLanes; laneCount++) {
             addItem(laneCount);
         }
-
-        subscribers = subs;
-
-        setSelectedItem(DEFAULT_SELECTION);
         addItemListener(new LanesChangedListener(subscribers));
+
+        // we do this after adding the event listener to make sure all
+        // subscribers get notified
+        setSelectedItem(DEFAULT_SELECTION);
     }
 
 

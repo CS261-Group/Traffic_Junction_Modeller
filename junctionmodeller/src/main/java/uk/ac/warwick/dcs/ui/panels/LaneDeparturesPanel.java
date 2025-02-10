@@ -1,13 +1,20 @@
 package uk.ac.warwick.dcs.ui.panels;
 
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+
+import uk.ac.warwick.dcs.ui.Constants;
 import uk.ac.warwick.dcs.ui.ILaneChangedSubscriber;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 
-import javax.swing.*;
+public class LaneDeparturesPanel extends CustomPanel implements ILaneChangedSubscriber, IReadablePanel<List<Integer>> {
+    private final List<LaneDepartureSettingsPanel> lanes;
 
-public class LaneDeparturesPanel extends CustomPanel implements ILaneChangedSubscriber {
     public LaneDeparturesPanel(Font headingFont, Font labelFont) {
         super(headingFont, labelFont);
+        lanes = new ArrayList<>(Constants.MAX_LANES);
         setUp();
     }
 
@@ -17,14 +24,34 @@ public class LaneDeparturesPanel extends CustomPanel implements ILaneChangedSubs
 
         JLabel depFlowHeading = new JLabel("Lane departure flows");
         depFlowHeading.setFont(headingFont);
+        depFlowHeading.setAlignmentX(LEFT_ALIGNMENT);
         add(depFlowHeading);
-
-        // TODO: lanes
     }
 
     @Override
     public void notify(int oldLanes, int newLanes) {
-        // TODO: implement
-        System.out.println("Lane arrival: " + oldLanes + " " + newLanes);
+        if (oldLanes < newLanes) {
+            while (lanes.size() != newLanes) {
+                // create lanes
+                LaneDepartureSettingsPanel setting = new LaneDepartureSettingsPanel(headingFont, labelFont, lanes.size() + 1);
+                setting.setAlignmentX(LEFT_ALIGNMENT);
+                add(setting);
+                lanes.add(setting);
+            }
+        } else {
+            while (lanes.size() != newLanes) {
+                // create lanes
+                LaneDepartureSettingsPanel removedSetting = lanes.remove(lanes.size() - 1); // remove last value
+                remove(removedSetting);
+            }
+        }
+
+        // update the UI to incorporate
+        updateUI();
+    }
+
+    @Override
+    public List<Integer> getValue() {
+        return lanes.stream().map(LaneDepartureSettingsPanel::getValue).toList();
     }
 }
