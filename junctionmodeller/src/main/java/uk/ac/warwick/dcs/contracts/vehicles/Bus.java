@@ -8,3 +8,4 @@ public class Bus extends Vehicle {
         super(o, d, VehicleType.BUS);
     }
 }
+//just data storage
