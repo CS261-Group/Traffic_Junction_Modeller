@@ -11,14 +11,14 @@ public class LaneMetrics {
     // x = degreeOfSaturation
     // g = effectiveGreenTime (seconds)
     // s = saturation (veh/hour)
-    // c = capacity rate ()
-    public static double averageOverflowQueue(float x, float g, float s, float c){
+    // C = capacity rate ()
+    public static double averageOverflowQueue(double x, double g, double S, double C){
         // x1 = significant overflow queue saturation
         // positive when overflow queue is non-negligible
         // negative when overflow queue can be ignored
         // grouping together x - x0 term
         // x - maximum Saturation for negligible overflow
-        float x1 = x - (0.67f + (s * g) / 600);
+        double x1 = x - (0.67 + (S * g) / 600);
 
         // return value, returning the average overflow queue
         // at the end of a cycle
@@ -26,11 +26,27 @@ public class LaneMetrics {
 
         // T = 1
         if (x1 > 0){
-            q0 = (c/4) * ((x-1) + Math.sqrt((x-1)*(x-1) + (12*x1)/c));
+            q0 = (C/4) * ((x-1) + Math.sqrt((x-1)*(x-1) + (12*x1)/C));
         } else {
             q0 = 0;
         }
 
         return q0;
+    }
+
+    // non negative x
+    public static double averageDelay(double x, double g, double S, double c, double q, double C){
+        // d = average uniform delay
+        double d;
+
+        if (x < 1){
+            d = (c * (1-g/c)*(1-g/c)) / (2*(1-q/S));
+        } else{ //x >= 1
+            d = (c-g)/2;
+        }
+
+        d = d + (averageOverflowQueue(x,g,S,C) / C);
+
+        return d;
     }
 }
