@@ -5,7 +5,7 @@ public class CycleTimeOptimiser {
 
     // source: tfl traffic modelling guidelines
     private final int MIN_CYCLE_TIME = 32;
-    private static final int LOST_TIME = 2;
+    private final int LOST_TIME = 2;
 
     private int numTrafficLightGroups;
     private int[][] groupIncomingFlows;
