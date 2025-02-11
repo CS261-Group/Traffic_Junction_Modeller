@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.ui.formdata.LaneGroups;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
@@ -10,6 +11,7 @@ import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
+import java.util.Arrays;
 
 public class TrafficLightPanel extends CustomPanel implements IReadablePanel<TrafficLightData>, ILaneChangedSubscriber {
     private final static int MAX_NUM_GROUPS = 6;
@@ -19,7 +21,8 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
     private JComboBox<TrafficLightType> lightTypeCombo;
     private JComboBox<Integer> groupsCombo;
     private int numGroups;
-    private LaneGroupPanel[] laneGroupsPanels;
+    private final LaneGroupPanel[] laneGroupsPanels;
+    private GroupTimingsPanel groupTimingsPanel;
 
     public TrafficLightPanel(Font headingFont, Font labelFont) {
         super(headingFont, labelFont);
@@ -36,7 +39,6 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
 
         JLabel lightTypeLbl = new JLabel("Traffic light type:");
         lightTypeLbl.setFont(labelFont);
-        add(lightTypeLbl);
 
         JPanel comboBoxContainer = new JPanel(new GridLayout(0, 2));
         lightTypeCombo = new JComboBox<>();
@@ -45,20 +47,24 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
 
         JLabel numGroupsLbl = new JLabel("Number of groups:");
         numGroupsLbl.setFont(labelFont);
-        add(numGroupsLbl);
         groupsCombo = new JComboBox<>();
+
+        // so the first selection that is used to trigger updates works
+        // we select something that is not the first to ensure the event
+        // gets triggered, then we remove this extra item
+        groupsCombo.addItem(-1);
         for (int groupNum = MIN_NUM_GROUPS; groupNum <= numGroups; groupNum++) {
             groupsCombo.addItem(groupNum);
         }
         groupsCombo.addItemListener((e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
+                numGroups = (int)e.getItem();
                 for (LaneGroupPanel laneGroup : laneGroupsPanels) {
-                    laneGroup.changeLanes((int)e.getItem());
+                    laneGroup.changeLanes(numGroups);
                 }
             }
+            updateUI();
         });
-        // this should trigger the change event
-        groupsCombo.setSelectedItem(DEFAULT_GROUP_NUM);
 
         // add lane group settings for each direction
         assert laneGroupsPanels.length == 4; // sanity check: should be 4 panels
@@ -68,13 +74,24 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         laneGroupsPanels[Direction.SOUTH.ordinal()] = new LaneGroupPanel(headingFont, labelFont, Direction.SOUTH, 1, numGroups);
         laneGroupsPanels[Direction.WEST.ordinal()] = new LaneGroupPanel(headingFont, labelFont, Direction.WEST, 2, numGroups);
 
+        // add all group timings
+        groupTimingsPanel = new GroupTimingsPanel(headingFont, labelFont, numGroups);
+
         // add all created panels as required
+        comboBoxContainer.add(lightTypeLbl);
         comboBoxContainer.add(lightTypeCombo);
+        comboBoxContainer.add(numGroupsLbl);
         comboBoxContainer.add(groupsCombo);
         add(comboBoxContainer);
         for (LaneGroupPanel laneGroupPanel : laneGroupsPanels) {
             add(laneGroupPanel);
         }
+        add(groupTimingsPanel);
+
+        // this should trigger the change event
+        // and also select the default value
+        groupsCombo.setSelectedItem(DEFAULT_GROUP_NUM);
+        groupsCombo.removeItem(-1); // remove placeholder for event trigger
     }
 
     @Override
@@ -83,9 +100,12 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         assert groupsCombo.getSelectedItem() != null;
         int numGroups = (int)groupsCombo.getSelectedItem();
 
-        // TODO: update
+        LaneGroups[] directionalLaneGroups = Arrays.stream(laneGroupsPanels)
+                .map(LaneGroupPanel::getValue)
+                .toArray(LaneGroups[]::new);
+        assert directionalLaneGroups.length == 4; // sanity check: one in each direction
 
-        return new TrafficLightData(lightType, numGroups);
+        return new TrafficLightData(lightType, numGroups, directionalLaneGroups);
     }
 
     @Override

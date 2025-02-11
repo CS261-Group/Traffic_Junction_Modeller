@@ -2,14 +2,18 @@ package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.Constants;
+import uk.ac.warwick.dcs.ui.formdata.LaneGroup;
+import uk.ac.warwick.dcs.ui.formdata.LaneGroups;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-public class LaneGroupPanel extends CustomPanel implements ILaneChangedSubscriber {
+public class LaneGroupPanel extends CustomPanel implements ILaneChangedSubscriber, IReadablePanel<LaneGroups> {
     private final Direction direction;
     private final int defaultGroup;
     private int numGroups;
@@ -36,6 +40,7 @@ public class LaneGroupPanel extends CustomPanel implements ILaneChangedSubscribe
     }
 
     public void changeLanes(int newNumGroups) {
+        numGroups = newNumGroups;
         for (LaneGroupSettingsPanel settingsPanel : lanes) {
             settingsPanel.changeLanes(newNumGroups);
         }
@@ -57,5 +62,11 @@ public class LaneGroupPanel extends CustomPanel implements ILaneChangedSubscribe
             }
         }
         updateUI();
+    }
+
+    @Override
+    public LaneGroups getValue() {
+        List<LaneGroup> laneGroups = lanes.stream().map(LaneGroupSettingsPanel::getValue).toList();
+        return new LaneGroups(laneGroups, direction);
     }
 }

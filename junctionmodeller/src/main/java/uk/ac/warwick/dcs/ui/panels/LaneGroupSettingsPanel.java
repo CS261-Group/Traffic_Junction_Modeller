@@ -1,10 +1,13 @@
 package uk.ac.warwick.dcs.ui.panels;
 
+import uk.ac.warwick.dcs.ui.formdata.LaneGroup;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
+
 import javax.swing.*;
 import java.awt.Font;
 import java.awt.GridLayout;
 
-public class LaneGroupSettingsPanel extends CustomPanel {
+public class LaneGroupSettingsPanel extends CustomPanel implements IReadablePanel<LaneGroup> {
     private final int laneNum;
     private final int defaultValue;
     private int numGroups;
@@ -44,5 +47,11 @@ public class LaneGroupSettingsPanel extends CustomPanel {
             groupCombo.addItem(group);
         }
         groupCombo.setSelectedItem(defaultValue);
+    }
+
+    @Override
+    public LaneGroup getValue() {
+        assert groupCombo.getSelectedItem() != null;
+        return new LaneGroup(laneNum, (int)groupCombo.getSelectedItem());
     }
 }
