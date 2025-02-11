@@ -1,6 +1,6 @@
 package uk.ac.warwick.dcs.evaluation;
 
-// ADD MATH LIBRARY
+import java.lang.Math;
 
 public class LaneMetrics {
 
@@ -34,7 +34,8 @@ public class LaneMetrics {
         return q0;
     }
 
-    // non negative x
+    // c = cycle length
+    // q = arrival rate
     public static double averageDelay(double x, double g, double S, double c, double q, double C){
         // d = average uniform delay
         double d;
@@ -45,8 +46,14 @@ public class LaneMetrics {
             d = (c-g)/2;
         }
 
-        d = d + (averageOverflowQueue(x,g,S,C) / C);
+        d = d + (LaneMetrics.averageOverflowQueue(x,g,S,C) / C);
 
         return d;
     }
+
+    public static double degreeOfSaturation(double q, double c, double s, double g){
+        return (q * c) / (s * g);
+    }
+
+
 }
