@@ -55,5 +55,18 @@ public class LaneMetrics {
         return (q * c) / (s * g);
     }
 
+    public static int maximumQueueLength(){
+        return  0;
+    }
+
+    // based on Research Report 67
+    //https://www.eastleigh.gov.uk/media/8592/cd58.pdf
+    // input and output in seconds
+    // may vary for actuated lights
+    public static double greenTimeToEffectiveGreenTime(double tg){
+        return tg - 1.2;
+    }
+
+
 
 }
