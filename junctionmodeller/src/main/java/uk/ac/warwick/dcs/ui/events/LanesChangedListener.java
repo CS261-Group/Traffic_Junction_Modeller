@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.ui.events;
 
-import uk.ac.warwick.dcs.ui.ILaneChangedSubscriber;
+import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -8,9 +9,11 @@ import java.util.List;
 
 public class LanesChangedListener implements ItemListener {
     private final List<ILaneChangedSubscriber> subscribers;
+    private final Direction direction;
 
-    public LanesChangedListener(List<ILaneChangedSubscriber> subs) {
+    public LanesChangedListener(List<ILaneChangedSubscriber> subs, Direction dir) {
         subscribers = subs;
+        direction = dir;
     }
 
     // used to keep track of previous value, just in case it
@@ -23,7 +26,7 @@ public class LanesChangedListener implements ItemListener {
             case ItemEvent.SELECTED:
                 int newSelection = (int) e.getItem();
                 for (ILaneChangedSubscriber subscriber : subscribers) {
-                    subscriber.notify(oldSelection, newSelection);
+                    subscriber.notify(oldSelection, newSelection, direction);
                 }
                 break;
             case ItemEvent.DESELECTED:

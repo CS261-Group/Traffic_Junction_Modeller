@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.ui.Constants;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 import uk.ac.warwick.dcs.ui.util.IntegerTextField;
 
 import javax.swing.JLabel;
@@ -23,7 +24,7 @@ public class LaneArrivalFlowsSettingsPanel extends CustomPanel implements IReada
         add(laneLbl);
 
         // I'm assuming the flow will be something less than 7 digits
-        laneArrival = new IntegerTextField(Constants.MAX_INT_TEXT_FIELD_DIGITS, DEFAULT_VALUE);
+        laneArrival = new IntegerTextField(DEFAULT_VALUE);
 
         add(laneArrival);
     }

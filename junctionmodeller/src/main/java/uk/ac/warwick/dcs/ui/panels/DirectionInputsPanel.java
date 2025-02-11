@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.ui.panels;
 
-import uk.ac.warwick.dcs.ui.ILaneChangedSubscriber;
+import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.LanesComboBox;
 
 import javax.swing.*;
@@ -11,11 +12,13 @@ import java.util.List;
 public class DirectionInputsPanel extends CustomPanel {
     private final List<ILaneChangedSubscriber> subscribers;
     private final int maxLanes;
+    private final Direction direction;
 
-    public DirectionInputsPanel(int maxLanes, List<ILaneChangedSubscriber> subscribers, Font headingFont, Font labelFont) {
+    public DirectionInputsPanel(Font headingFont, Font labelFont, int maxLanes, List<ILaneChangedSubscriber> subscribers, Direction direction) {
         super(headingFont, labelFont);
         this.maxLanes = maxLanes;
         this.subscribers = subscribers;
+        this.direction = direction;
 
         setUp();
     }
@@ -30,12 +33,13 @@ public class DirectionInputsPanel extends CustomPanel {
         // changes
         JLabel numLanesLbl = new JLabel("# of lanes incoming:");
         numLanesLbl.setFont(labelFont);
-        LanesComboBox lanesComboBox = new LanesComboBox(maxLanes, subscribers);
+        LanesComboBox lanesComboBox = new LanesComboBox(maxLanes, subscribers, direction);
 
         add(numLanesLbl);
         add(lanesComboBox);
 
         JCheckBox pedestrianCrossing = new JCheckBox("Pedestrian crossing");
+        pedestrianCrossing.setFont(labelFont);
         JCheckBox busLane = new JCheckBox("Bus Lane");
         busLane.setFont(labelFont);
 

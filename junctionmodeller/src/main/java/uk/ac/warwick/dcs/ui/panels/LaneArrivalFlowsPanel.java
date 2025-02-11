@@ -1,7 +1,9 @@
 package uk.ac.warwick.dcs.ui.panels;
 
+import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.Constants;
-import uk.ac.warwick.dcs.ui.ILaneChangedSubscriber;
+import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
@@ -22,13 +24,13 @@ public class LaneArrivalFlowsPanel extends CustomPanel implements ILaneChangedSu
     protected void setUp() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel laneArrivalHeading = new JLabel("Lane arrival flows");
+        JLabel laneArrivalHeading = new JLabel("Lane arrival flows (in vehicles/hour)");
         laneArrivalHeading.setFont(headingFont);
         add(laneArrivalHeading);
     }
 
     @Override
-    public void notify(int oldLanes, int newLanes) {
+    public void notify(int oldLanes, int newLanes, Direction direction) {
         if (oldLanes < newLanes) {
             while (lanes.size() != newLanes) {
                 // create lanes

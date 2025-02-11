@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.ui.panels;
+package uk.ac.warwick.dcs.ui.interfaces;
 
 public interface IReadablePanel<T> {
     T getValue();

@@ -3,13 +3,13 @@ package uk.ac.warwick.dcs.ui.util;
 import javax.swing.JTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.NumberFormat;
 
 public class IntegerTextField extends JTextField {
     private final int defaultValue;
+    private static final int MAX_DIGIT_COLUMNS = 7;
 
-    public IntegerTextField(int columns, int defaultValue) {
-        super(columns);
+    public IntegerTextField(int defaultValue) {
+        super(MAX_DIGIT_COLUMNS);
         assert defaultValue >= 0;
 
         this.defaultValue = defaultValue;

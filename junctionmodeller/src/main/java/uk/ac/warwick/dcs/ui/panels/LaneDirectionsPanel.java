@@ -1,9 +1,10 @@
 package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
-import uk.ac.warwick.dcs.ui.ILaneChangedSubscriber;
+import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.Constants;
 import uk.ac.warwick.dcs.ui.formdata.AvailableDirections;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 
 import javax.swing.JLabel;
 import javax.swing.BoxLayout;
@@ -31,11 +32,11 @@ public class LaneDirectionsPanel extends CustomPanel implements ILaneChangedSubs
         laneDirectionsHeading.setAlignmentX(LEFT_ALIGNMENT);
         add(laneDirectionsHeading);
 
-        // for lanes
+        // lanes should be generated from initial notification method call
     }
 
     @Override
-    public void notify(int oldLanes, int newLanes) {
+    public void notify(int oldLanes, int newLanes, Direction direction) {
         if (oldLanes < newLanes) {
             while (lanes.size() != newLanes) {
                 // create lanes

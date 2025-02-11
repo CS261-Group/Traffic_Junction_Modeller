@@ -2,9 +2,9 @@ package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.Constants;
-import uk.ac.warwick.dcs.ui.ILaneChangedSubscriber;
-import uk.ac.warwick.dcs.ui.formdata.AvailableDirections;
+import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,15 +13,15 @@ import java.util.List;
 
 public class DirectionPanel extends CustomPanel implements IReadablePanel<DirectionData> {
     private final Direction direction;
-    private final int windowWidth;
     private LaneArrivalFlowsPanel laneArrivalFlows;
     private LaneDirectionsPanel laneDirections;
     private LaneDeparturesPanel laneDepartures;
+    private final List<ILaneChangedSubscriber> externalSubscribers;
 
-    public DirectionPanel(Direction direction, Font headingFont, Font labelFont, int windowWidth) {
+    public DirectionPanel(Font headingFont, Font labelFont, Direction direction,  List<ILaneChangedSubscriber> externalSubscribers) {
         super(headingFont, labelFont);
         this.direction = direction;
-        this.windowWidth = windowWidth;
+        this.externalSubscribers = externalSubscribers;
         setUp();
     }
 
@@ -29,7 +29,7 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
     protected void setUp() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(LEFT_ALIGNMENT);
-        setBorder(BorderFactory.createTitledBorder(direction.toString()));
+        setBorder(BorderFactory.createTitledBorder(Constants.DIRECTIONS[direction.ordinal()]));
 
         // custom panels required for each section
         laneArrivalFlows = new LaneArrivalFlowsPanel(headingFont, labelFont);
@@ -45,10 +45,11 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
         subscribers.add(laneArrivalFlows);
         subscribers.add(laneDirections);
         subscribers.add(laneDepartures);
+        subscribers.addAll(externalSubscribers); // make sure external subscribers are also added
 
         // first panel defines alignment for whole column, for some reason
-        JPanel directionInputs = new DirectionInputsPanel(Constants.MAX_LANES, subscribers, headingFont, labelFont);
-        directionInputs.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JPanel directionInputs = new DirectionInputsPanel(headingFont, labelFont, Constants.MAX_LANES, subscribers, direction);
+        directionInputs.setAlignmentX(LEFT_ALIGNMENT);
 
         add(directionInputs);
         add(laneArrivalFlows);

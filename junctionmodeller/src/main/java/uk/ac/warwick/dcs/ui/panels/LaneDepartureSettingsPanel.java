@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.ui.Constants;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 import uk.ac.warwick.dcs.ui.util.IntegerTextField;
 
 import javax.swing.JLabel;
@@ -23,9 +24,8 @@ public class LaneDepartureSettingsPanel extends CustomPanel implements IReadable
         laneLbl.setFont(labelFont);
         add(laneLbl);
 
-
         // I'm assuming the flow will be something less than 7 digits
-        departureFlowField = new IntegerTextField(Constants.MAX_INT_TEXT_FIELD_DIGITS, DEFAULT_VALUE);
+        departureFlowField = new IntegerTextField(DEFAULT_VALUE);
 
         add(departureFlowField);
     }

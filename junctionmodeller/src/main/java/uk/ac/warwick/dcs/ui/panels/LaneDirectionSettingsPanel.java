@@ -3,6 +3,7 @@ package uk.ac.warwick.dcs.ui.panels;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.Constants;
 import uk.ac.warwick.dcs.ui.formdata.AvailableDirections;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
@@ -24,10 +25,12 @@ public class LaneDirectionSettingsPanel extends CustomPanel implements IReadable
 
     @Override
     protected void setUp() {
-        add(new JLabel("Lane " + laneNum));
+        JLabel laneLbl = new JLabel("Lane " + laneNum);
+        laneLbl.setFont(labelFont);
+        add(laneLbl);
 
         for (int i = 0; i < 4; i++) {
-            int directionIdx = (i + direction.ordinal()) % 4;
+            int directionIdx = i;
             // since we can't go in the direction we are coming from
             // we must skip the index of the given direction
             if (directionIdx == direction.ordinal()) {
@@ -36,6 +39,7 @@ public class LaneDirectionSettingsPanel extends CustomPanel implements IReadable
 
             // create checkbox
             JCheckBox directionCheckBox = new JCheckBox(Constants.DIRECTIONS[directionIdx]);
+            directionCheckBox.setFont(labelFont);
 
             // attach event listener that updates the available directions as required
             directionCheckBox.addItemListener(e -> {
