@@ -1,83 +1,63 @@
 
 $(() => {
-    // event listener for checkboxes for directions
-    $("#noutlanes").on("click", ".directionchbox", () => {
-        if (!$(this).is(":checked")) {
-            const name = $(this).attr("name");
-            console.log(name);
-            // const num = name.substr(1, name.length - 3);
-            // console.log(num);
-        }
-    });
-
     // when the number of lanes changes, we must truncate or generate the other lanes
     // dynamically
-    for (const direction of ["n"]) {
-        const dropdownOut = `#${direction}numlanesout`;
-        $(dropdownOut).on("change", () => {
-            const numLanes = Number.parseInt($(`${dropdownOut} option:selected`).val());
+    for (const direction of ["n", "e", "s", "w"]) {
+        const dropdownIn = `#${direction}numlanesin`;
+        const listIn = `#${direction}inlanes`;
+        const listDir = `#${direction}dirlanes`;
+        const listOut = `#${direction}outlanes`;
+        $(dropdownIn).on("change", () => {
+            const numLanes = Number.parseInt($(`${dropdownIn} option:selected`).val());
+            console.log(numLanes);
     
-            // this shit below just didn't work with jquery idk why
-            const table = document.getElementById("noutlanes");
-            
-            table.innerHTML = ""; // Clear existing table
-            
-            const headerRow = table.insertRow();
+            // remove all previous
+            $(listIn).empty();
+            $(listDir).empty();
+            $(listOut).empty();
+    
+            // add new lanes
             for (let i = 0; i < numLanes; i++) {
-                const th = document.createElement("th");
-                th.textContent = `Lane ${i + 1}`;
-                headerRow.appendChild(th);
+                $(listIn).append(`<div class"inlaneconf"> <li> Lane #${i + 1}</li>
+                    <input type="number" value="100">
+                </div>`);
             }
-            
-            const dataRow = table.insertRow();
+
+            // add new lanes
             for (let i = 0; i < numLanes; i++) {
-                const td = document.createElement("td");
-                td.innerHTML = `
-                <strong>Available outbound directions:</strong>
-                <br>
-                <label for="n${i+1}toe">&larr;</label>
-                <input class="directionchbox" type="checkbox" id="n${i+1}toe" name="n${i+1}toe" checked>
-                <label for="n${i+1}toe">&darr;</label>
-                <input class="directionchbox" type="checkbox" id="n${i+1}tos" name="n${i+1}tos" checked>
-                <label for="n${i+1}toe">&rarr;</label>
-                <input class="directionchbox" type="checkbox" id="n${i+1}tow" name="n${i+1}tow" checked>
-                <br>
-                `
-                dataRow.appendChild(td);
+                $(listDir).append(`<div class"dirlaneconf"> <li> Lane #${i + 1}
+                        <div>
+                            <input type="checkbox" value="east" />
+                            <label for="east"><em>Eastbound</em> &#8594;</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" value="north" />
+                            <label for="north"><em>Northbound</em>&#8593;</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" value="west" />
+                            <label for="west"><em>Westbound</em> &#8592;</label>
+                        </div>
+                        </li>
+                </div>`);
+            }
+
+            // add new lanes
+            for (let i = 0; i < numLanes; i++) {
+                $(listOut).append(`<div class"outlaneconf"> <li> Lane #${i + 1}</li>
+                    <input type="number" value="100">
+                </div>`);
             }
         });
     }
 
     // force dropdown onchange event to generate list of lanes
     $("#nnumlanesin").trigger("change");
+    $("#enumlanesin").trigger("change");
+    $("#snumlanesin").trigger("change");
+    $("#wnumlanesin").trigger("change");
     $("#nnumlanesout").trigger("change");
-
-    $("#npedcrossing").on("change", () => {
-        const checked = $("#npedcrossing").is(":checked");
-        if (!checked) {
-            $("#neditcrossing").attr("disabled", true);
-        } else {
-            $("#neditcrossing").removeAttr("disabled");
-        }
-    });
-
-    $("#npedcrossing").trigger("change");
-
-    // modal pop-up window setups
-    const modalSetups = [
-        ["#edittrafficlight", "#closetrafficlightmodal", "#trafficlightmodal"],
-        ["#neditcrossing", "#nclosecrossingsettingsmodal", "#ncrossingsettingsmodal"]
-    ];
-
-    for (const [openBtn, closeBtn, modal] of modalSetups) {
-        $(openBtn).on('click', (e) => {
-            e.preventDefault();
-            $(modal).css({display: "block"});
-        });
-    
-        $(closeBtn).on('click', (e) => {
-            e.preventDefault();
-            $(modal).css({display: "none"});
-        }); 
-    }
+    $("#enumlanesout").trigger("change");
+    $("#snumlanesout").trigger("change");
+    $("#wnumlanesout").trigger("change");
 });
