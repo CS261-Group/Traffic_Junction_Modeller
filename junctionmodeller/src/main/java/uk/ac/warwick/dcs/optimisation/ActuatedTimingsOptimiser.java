@@ -1,6 +1,6 @@
 package uk.ac.warwick.dcs.optimisation;
 
-public class ActuatedTimingsOptimiser extends TrafficLightTimingsOptimiser{
+public class ActuatedTimingsOptimiser implements ITrafficLightTimingsOptimiser {
 
     @Override
     public int[] getMaxGroupTimings() {

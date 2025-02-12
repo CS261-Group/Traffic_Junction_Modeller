@@ -1,7 +1,10 @@
 package uk.ac.warwick.dcs.optimisation;
 
-public class Optimiser {
+import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 
+import java.util.Arrays;
+
+public class Optimiser {
     private ActuatedTimingsOptimiser actuatedTimingsOptimiser;
     private FixedTimingsOptimiser fixedTimingsOptimiser;
     private CycleTimeOptimiser cycleTimeOptimiser;
@@ -32,7 +35,6 @@ public class Optimiser {
     public double getCycleTime() {
         return cycleTimeOptimiser.getCycleTime();
     }
-
 
     public void optimiseTrafficLights() {
         TrafficLightType trafficLightType = TrafficLightType.ACTUATION;
