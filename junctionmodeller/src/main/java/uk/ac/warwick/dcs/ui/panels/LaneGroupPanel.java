@@ -10,7 +10,6 @@ import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class LaneGroupPanel extends CustomPanel implements ILaneChangedSubscriber, IReadablePanel<LaneGroups> {
@@ -35,7 +34,6 @@ public class LaneGroupPanel extends CustomPanel implements ILaneChangedSubscribe
         // add required label
         JLabel directionLbl = new JLabel(Constants.DIRECTIONS[direction.ordinal()] + "bound lanes:");
         directionLbl.setFont(labelFont);
-
         add(directionLbl);
     }
 

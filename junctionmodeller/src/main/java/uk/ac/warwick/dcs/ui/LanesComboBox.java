@@ -20,6 +20,4 @@ public class LanesComboBox extends JComboBox<Integer> {
         // subscribers get notified
         setSelectedItem(DEFAULT_SELECTION);
     }
-
-
 }

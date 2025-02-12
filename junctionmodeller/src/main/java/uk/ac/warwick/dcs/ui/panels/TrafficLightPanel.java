@@ -26,8 +26,7 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
 
     public TrafficLightPanel(Font headingFont, Font labelFont) {
         super(headingFont, labelFont);
-        numGroups = MAX_NUM_GROUPS;
-
+        numGroups = DEFAULT_GROUP_NUM;
         laneGroupsPanels = new LaneGroupPanel[4];
         setUp();
     }
@@ -49,21 +48,17 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         numGroupsLbl.setFont(labelFont);
         groupsCombo = new JComboBox<>();
 
-        // so the first selection that is used to trigger updates works
-        // we select something that is not the first to ensure the event
-        // gets triggered, then we remove this extra item
-        groupsCombo.addItem(-1);
-        for (int groupNum = MIN_NUM_GROUPS; groupNum <= numGroups; groupNum++) {
+        // add required selections
+        for (int groupNum = MIN_NUM_GROUPS; groupNum <= MAX_NUM_GROUPS; groupNum++) {
             groupsCombo.addItem(groupNum);
         }
         groupsCombo.addItemListener((e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
+                int oldNumGroups = numGroups;
                 numGroups = (int)e.getItem();
-                for (LaneGroupPanel laneGroup : laneGroupsPanels) {
-                    laneGroup.changeLanes(numGroups);
-                }
+                updateChildrenNumGroups(oldNumGroups);
+                updateUI();
             }
-            updateUI();
         });
 
         // add lane group settings for each direction
@@ -84,6 +79,7 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         comboBoxContainer.add(groupsCombo);
         add(comboBoxContainer);
         for (LaneGroupPanel laneGroupPanel : laneGroupsPanels) {
+            laneGroupPanel.setAlignmentX(LEFT_ALIGNMENT);
             add(laneGroupPanel);
         }
         add(groupTimingsPanel);
@@ -91,7 +87,6 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         // this should trigger the change event
         // and also select the default value
         groupsCombo.setSelectedItem(DEFAULT_GROUP_NUM);
-        groupsCombo.removeItem(-1); // remove placeholder for event trigger
     }
 
     @Override
@@ -122,5 +117,13 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         } else {
             assert false; // sanity check: this should never happen
         }
+    }
+
+    private void updateChildrenNumGroups(int oldNumGroups) {
+        // assumes numGroups is set appropriately
+        for (LaneGroupPanel laneGroup : laneGroupsPanels) {
+            laneGroup.changeLanes(numGroups);
+        }
+        groupTimingsPanel.changeNumGroups(oldNumGroups, numGroups);
     }
 }

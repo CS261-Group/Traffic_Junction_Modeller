@@ -47,7 +47,7 @@ public class MainForm extends JFrame {
      */
     private void setUp() {
         setTitle("Traffic Junction Configuration");
-        setSize(668, 768);
+        setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
         setResizable(false);
         setFont(labelFont);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
