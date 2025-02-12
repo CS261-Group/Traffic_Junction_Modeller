@@ -1,9 +1,18 @@
 package uk.ac.warwick.dcs.ui;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.ui.formdata.DirectionData;
+import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
+import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
+import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
+import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Font;
+import java.awt.BorderLayout;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
@@ -12,6 +21,15 @@ public class MainForm extends JFrame {
     private final DirectionPanelFactory panelFactory;
     private final Font headingFont;
     private final Font labelFont;
+
+    // fields for JPanel derivatives that we can read data
+    // from to collect the inputted data
+    private DirectionPanel northboundPanel;
+    private DirectionPanel eastboundPanel;
+    private DirectionPanel southboundPanel;
+    private DirectionPanel westboundPanel;
+    private TrafficLightPanel trafficLightPanel;
+    private SubmissionPanel submissionPanel;
 
     public MainForm() {
         // we need to initialise the factories before we
@@ -29,60 +47,59 @@ public class MainForm extends JFrame {
      */
     private void setUp() {
         setTitle("Traffic Junction Configuration");
-        setSize(668, 768);
+        setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
+        setResizable(false);
         setFont(labelFont);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-
-        // Northbound Panel
-        JPanel northboundPanel = panelFactory.createDirectionPanel(Direction.NORTH);
-        JPanel eastboundPanel = panelFactory.createDirectionPanel(Direction.EAST);
-        JPanel southboundPanel = panelFactory.createDirectionPanel(Direction.SOUTH);
-        JPanel westboundPanel = panelFactory.createDirectionPanel(Direction.WEST);
+        mainPanel.setAlignmentX(LEFT_ALIGNMENT);
 
         // Traffic Lights Section
-        JPanel trafficLightPanel = new JPanel(new GridLayout(0, 2));
-        trafficLightPanel.setBorder(BorderFactory.createTitledBorder("Traffic lights"));
+        trafficLightPanel = new TrafficLightPanel(headingFont, labelFont);
 
-        trafficLightPanel.add(new JLabel("Traffic light type:"));
-        JComboBox<String> lightTypeCombo = new JComboBox<>(new String[]{"Fixed-time", "Adaptive"});
-        trafficLightPanel.add(lightTypeCombo);
+        // panels in each direction
+        List<ILaneChangedSubscriber> externalSubscribers = new LinkedList<>();
+        externalSubscribers.add(trafficLightPanel);
+        northboundPanel = panelFactory.createDirectionPanel(Direction.NORTH, externalSubscribers);
+        eastboundPanel = panelFactory.createDirectionPanel(Direction.EAST, externalSubscribers);
+        southboundPanel = panelFactory.createDirectionPanel(Direction.SOUTH, externalSubscribers);
+        westboundPanel = panelFactory.createDirectionPanel(Direction.WEST, externalSubscribers);
 
-        trafficLightPanel.add(new JLabel("Number of groups:"));
-        JComboBox<String> groupsCombo = new JComboBox<>(new String[]{"1", "2", "3"});
-        trafficLightPanel.add(groupsCombo);
+        // Submission Section
+        submissionPanel = new SubmissionPanel(headingFont, labelFont);
+        submissionPanel.setSubmissionAction((e) -> onSubmit());
 
-        trafficLightPanel.add(new JLabel("Lane #1 Group:"));
-        JTextField lane1Group = new JTextField("1");
-        trafficLightPanel.add(lane1Group);
-
-        trafficLightPanel.add(new JLabel("Lane #2 Group:"));
-        JTextField lane2Group = new JTextField("2");
-        trafficLightPanel.add(lane2Group);
-
-        trafficLightPanel.add(new JLabel("Group 1 Timing:"));
-        JTextField group1Timing = new JTextField("30");
-        trafficLightPanel.add(group1Timing);
-
-        trafficLightPanel.add(new JLabel("Group 2 Timing:"));
-        JTextField group2Timing = new JTextField("40");
-        trafficLightPanel.add(group2Timing);
-
-        JCheckBox showValues = new JCheckBox("Show values on diagram");
-        JButton submitButton = new JButton("Analyse and Confirm");
-
+        // add panels and create window
         mainPanel.add(northboundPanel);
         mainPanel.add(eastboundPanel);
         mainPanel.add(southboundPanel);
         mainPanel.add(westboundPanel);
         mainPanel.add(trafficLightPanel);
-        mainPanel.add(showValues);
-        mainPanel.add(submitButton);
+        mainPanel.add(submissionPanel);
 
-        add(new JScrollPane(mainPanel), BorderLayout.CENTER);
+        // construct window by adding singular main panel to
+        // scrollable pane
+        JScrollPane formContainer = new JScrollPane(mainPanel);
+        formContainer.getVerticalScrollBar().setUnitIncrement(16);
+        add(formContainer, BorderLayout.CENTER);
         setVisible(true);
+
+    }
+
+    private void onSubmit() {
+        DirectionData[] directionData = Arrays.stream(new DirectionPanel[]{
+                northboundPanel, eastboundPanel, southboundPanel, westboundPanel
+        }).map(DirectionPanel::getValue).toArray(DirectionData[]::new);
+
+        Arrays.stream(directionData).forEach(x -> {
+            assert x.arrivalFlows().size() == x.availableDirections().size() && x.arrivalFlows().size() == x.departureFlows().size();
+        });
+
+        trafficLightPanel.getValue();
+
+        System.out.println("Data collected");
     }
 }
