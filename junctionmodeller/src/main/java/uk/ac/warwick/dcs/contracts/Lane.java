@@ -1,7 +1,7 @@
 package uk.ac.warwick.dcs.contracts;
 
-import uk.ac.warwick.dcs.contracts.vehicles.IVehicle;
+import uk.ac.warwick.dcs.contracts.enums.VehicleType;
 
 public abstract class Lane {
-    public abstract void addVehicle(IVehicle vehicle);
+
 }
