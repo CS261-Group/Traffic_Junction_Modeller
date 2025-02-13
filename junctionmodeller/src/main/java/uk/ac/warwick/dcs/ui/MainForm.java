@@ -1,7 +1,11 @@
 package uk.ac.warwick.dcs.ui;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.dataproc.IDataService;
+import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
+import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
+import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
 import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
@@ -31,12 +35,16 @@ public class MainForm extends JFrame {
     private TrafficLightPanel trafficLightPanel;
     private SubmissionPanel submissionPanel;
 
-    public MainForm() {
+    // data service to submit data to next layer
+    private final IDataService dataService;
+
+    public MainForm(IDataService dataService) {
         // we need to initialise the factories before we
         // set up the form
         headingFont = new Font("Roboto", Font.BOLD, HEADING_FONT_SIZE);
         labelFont = new Font("Roboto", Font.PLAIN, MINIMUM_FONT_SIZE);
         panelFactory = new DirectionPanelFactory(headingFont, labelFont);
+        this.dataService = dataService;
 
         // set up the UI elements
         setUp();
@@ -97,9 +105,12 @@ public class MainForm extends JFrame {
         Arrays.stream(directionData).forEach(x -> {
             assert x.arrivalFlows().size() == x.availableDirections().size() && x.arrivalFlows().size() == x.departureFlows().size();
         });
+        TrafficLightData trafficLightData = trafficLightPanel.getValue();
 
-        trafficLightPanel.getValue();
+        ConfigurationData configData = new ConfigurationData(directionData, trafficLightData);
 
-        System.out.println("Data collected");
+        List<String> errors = dataService.submitEnteredConfiguration(configData);
+
+        // TODO: handle errors with a scrollable modal
     }
 }

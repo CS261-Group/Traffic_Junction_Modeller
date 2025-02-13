@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
 import uk.ac.warwick.dcs.ui.formdata.LaneGroups;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
@@ -100,7 +101,10 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
                 .toArray(LaneGroups[]::new);
         assert directionalLaneGroups.length == 4; // sanity check: one in each direction
 
-        return new TrafficLightData(lightType, numGroups, directionalLaneGroups);
+        GroupTimings groupTimings = groupTimingsPanel.getValue();
+        assert numGroups == groupTimings.groupTimings().size();
+
+        return new TrafficLightData(lightType, numGroups, directionalLaneGroups, groupTimings);
     }
 
     @Override
