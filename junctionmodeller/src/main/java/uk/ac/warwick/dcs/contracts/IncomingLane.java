@@ -7,12 +7,14 @@ public class IncomingLane extends Lane {
     private final VehicleType vehicleType;
     private final int queueingSpace;
     private final Movement[] availableDirections;
+    private final Group group;
 
-    public IncomingLane(VehicleType vt, Movement[] directions, int qs) {
+    public IncomingLane(VehicleType vt, Movement[] directions, int qs, Group g) {
         assert directions.length <= 3;
         vehicleType = vt;
         queueingSpace = qs;
         availableDirections = directions;
+        group = g;
     }
 
     public VehicleType getVehicleType() {

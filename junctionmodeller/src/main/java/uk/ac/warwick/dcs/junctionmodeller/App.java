@@ -10,7 +10,7 @@ import uk.ac.warwick.dcs.ui.MainForm;
 public class App {
     public static void main(String[] args) {
         // initialise data service so main form can communicate with data processing layer
-        IDataService dataService = new DataService(null);
+        IDataService dataService = new DataService(null); // TODO: implement validator
 
         // making the frame visible
         MainForm form = new MainForm(dataService);

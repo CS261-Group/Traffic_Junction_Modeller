@@ -3,7 +3,6 @@ package uk.ac.warwick.dcs.contracts;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import uk.ac.warwick.dcs.contracts.lights.TrafficLightController;
 import uk.ac.warwick.dcs.evaluation.metrics.Metric;
 
 public class JunctionConfiguration implements Iterable<Carriageway> {
@@ -17,16 +16,18 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
     // Traffic lights exists at the junction level now
     // because they can operate across carriageways
     // e.g. one traffic light turns green to let North and South Through
-    private final TrafficLightController trafficLights;
+    private final TrafficLight trafficLights;
+    private final Groups groups;
 
     //use metric to updateAverageWaitTime, getAverageWaitTime etc...
     private final Metric metric = new Metric();
 
 
-    public JunctionConfiguration(Carriageway[] cw, TrafficLightController tl) {
+    public JunctionConfiguration(Carriageway[] cw, TrafficLight tl, Groups g) {
         assert cw.length == NUM_CARRIAGEWAYS;
         carriageways = cw;
         trafficLights = tl;
+        groups = g;
     }
 
     @Override

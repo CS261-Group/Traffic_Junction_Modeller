@@ -1,5 +1,6 @@
 package uk.ac.warwick.dcs.dataproc;
 
+import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.dataproc.loading.FormLoader;
 import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
@@ -14,9 +15,13 @@ public class DataService implements IDataService {
 
     @Override
     public List<String> submitEnteredConfiguration(ConfigurationData configData) {
-        FormLoader formLoader = new FormLoader(validator);
-        // TODO: implement
-        return null;
+        FormLoader formLoader = new FormLoader(configData);
+        JunctionConfiguration junctionConfig = formLoader.load();
+
+        List<String> errors = validator.validate(junctionConfig);
+        assert errors != null;
+
+        return errors;
     }
 
     @Override
