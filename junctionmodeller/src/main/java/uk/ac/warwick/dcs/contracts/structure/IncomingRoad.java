@@ -1,6 +1,5 @@
-package uk.ac.warwick.dcs.contracts;
+package uk.ac.warwick.dcs.contracts.structure;
 
-import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 import java.util.List;
 
 public class IncomingRoad extends Road<IncomingLane> {

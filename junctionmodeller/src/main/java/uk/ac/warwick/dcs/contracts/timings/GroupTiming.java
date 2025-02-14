@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.contracts;
+package uk.ac.warwick.dcs.contracts.timings;
 
 public class GroupTiming {
     private final Group group;

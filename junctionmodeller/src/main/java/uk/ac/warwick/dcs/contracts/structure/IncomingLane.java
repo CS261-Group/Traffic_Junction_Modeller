@@ -1,7 +1,8 @@
-package uk.ac.warwick.dcs.contracts;
+package uk.ac.warwick.dcs.contracts.structure;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
+import uk.ac.warwick.dcs.contracts.timings.Group;
 
 public class IncomingLane extends Lane {
     private final VehicleType vehicleType;

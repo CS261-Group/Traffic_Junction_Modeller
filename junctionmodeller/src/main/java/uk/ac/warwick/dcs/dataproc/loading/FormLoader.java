@@ -1,22 +1,42 @@
 package uk.ac.warwick.dcs.dataproc.loading;
 
-import uk.ac.warwick.dcs.contracts.Carriageway;
-import uk.ac.warwick.dcs.contracts.CarriagewayBuilder;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
-import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
+import uk.ac.warwick.dcs.contracts.builders.JunctionBuilder;
+import uk.ac.warwick.dcs.ui.formdata.*;
+
+import java.util.List;
 
 public class FormLoader implements ILoader {
     private final ConfigurationData configData;
-    private final CarriagewayBuilder carriagewayBuilder;
 
     public FormLoader(ConfigurationData configData) {
         this.configData = configData;
-        this.carriagewayBuilder = new CarriagewayBuilder();
     }
 
     @Override
     public JunctionConfiguration load() {
-        // TODO:
+        // the builder we will construct the junction configuration with
+        JunctionBuilder builder = new JunctionBuilder();
+
+        TrafficLightData trafficLightData = configData.trafficLightData();
+        int numGroups = trafficLightData.numGroups();
+
+        // distinct lane groups
+        LaneGroups[] laneGroups = trafficLightData.directionalLaneGroups();
+        assert laneGroups.length == numGroups;
+
+        // group timings
+        GroupTimings groupTimings = trafficLightData.groupTimings();
+        boolean optimising = groupTimings.optimise();
+        List<GroupTiming> timings = groupTimings.groupTimings();
+        assert timings.size() == numGroups;
+
+        // directional data
+        DirectionData[] directionData = configData.directionData();
+        assert directionData.length == 4;
+
+        // construction
+        // TODO: impl
         return null;
     }
 }

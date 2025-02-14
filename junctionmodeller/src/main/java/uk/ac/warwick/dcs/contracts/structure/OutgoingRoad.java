@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.contracts;
+package uk.ac.warwick.dcs.contracts.structure;
 
 import java.util.List;
 

@@ -1,6 +1,4 @@
-package uk.ac.warwick.dcs.contracts;
-
-import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
+package uk.ac.warwick.dcs.contracts.timings;
 
 import java.util.List;
 

@@ -2,8 +2,9 @@ package uk.ac.warwick.dcs.contracts;
 
 import java.util.Arrays;
 import java.util.Iterator;
-
-import uk.ac.warwick.dcs.evaluation.metrics.Metric;
+import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
+import uk.ac.warwick.dcs.contracts.structure.Carriageway;
+import uk.ac.warwick.dcs.contracts.timings.Groups;
 
 public class JunctionConfiguration implements Iterable<Carriageway> {
     // kept this in a variable because technically a junction can have
@@ -19,10 +20,6 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
     private final TrafficLight trafficLights;
     private final Groups groups;
 
-    //use metric to updateAverageWaitTime, getAverageWaitTime etc...
-    private final Metric metric = new Metric();
-
-
     public JunctionConfiguration(Carriageway[] cw, TrafficLight tl, Groups g) {
         assert cw.length == NUM_CARRIAGEWAYS;
         carriageways = cw;
@@ -34,8 +31,5 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
     public Iterator<Carriageway> iterator() {
         return Arrays.stream(carriageways).iterator();
     }
-    public double getAverageWaitTime(){
-        return metric.getAverageWaitTime();
-    }
-    
+
 }

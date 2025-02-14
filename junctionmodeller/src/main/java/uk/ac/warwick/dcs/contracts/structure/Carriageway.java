@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.contracts;
+package uk.ac.warwick.dcs.contracts.structure;
 
 // traffic lights now belong to Incoming Roads
 // there may now be many incoming roads in a carriageway

@@ -1,6 +1,6 @@
 package uk.ac.warwick.dcs.contracts.lights;
 
-import uk.ac.warwick.dcs.contracts.Movement;
+import uk.ac.warwick.dcs.contracts.structure.Movement;
 
 import java.util.Set;
 

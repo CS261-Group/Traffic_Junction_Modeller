@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.contracts;
+package uk.ac.warwick.dcs.contracts.structure;
 
 class LaneFactory {
     public OutgoingLane createOutgoingLane() {

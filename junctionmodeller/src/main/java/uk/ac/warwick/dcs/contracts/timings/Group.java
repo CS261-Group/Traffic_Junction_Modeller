@@ -1,4 +1,6 @@
-package uk.ac.warwick.dcs.contracts;
+package uk.ac.warwick.dcs.contracts.timings;
+
+import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 
 import java.util.List;
 
