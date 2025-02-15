@@ -1,11 +1,11 @@
 package uk.ac.warwick.dcs.contracts.timings;
 
 public class GroupTiming {
-    private final Group group;
+    private final int groupNum;
     private final int timing;
 
-    public GroupTiming(Group group, int timing) {
-        this.group = group;
+    public GroupTiming(int groupNum, int timing) {
+        this.groupNum = groupNum;
         this.timing = timing;
     }
 }

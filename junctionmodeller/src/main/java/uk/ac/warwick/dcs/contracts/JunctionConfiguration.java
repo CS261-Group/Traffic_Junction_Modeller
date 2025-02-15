@@ -7,11 +7,6 @@ import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
 
 public class JunctionConfiguration implements Iterable<Carriageway> {
-    // kept this in a variable because technically a junction can have
-    // not necessarily 4 carriageways going into it, but we are assuming
-    // it
-    private static final int NUM_CARRIAGEWAYS = 4;
-
     private final Carriageway[] carriageways;
 
     // Traffic lights exists at the junction level now
@@ -21,7 +16,7 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
     private final Groups groups;
 
     public JunctionConfiguration(Carriageway[] cw, TrafficLight tl, Groups g) {
-        assert cw.length == NUM_CARRIAGEWAYS;
+        assert cw.length == 4; // sanity checks: one carriageway object per direction
         carriageways = cw;
         trafficLights = tl;
         groups = g;

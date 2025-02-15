@@ -1,12 +1,16 @@
 package uk.ac.warwick.dcs.contracts.structure;
 
+import uk.ac.warwick.dcs.contracts.enums.Direction;
+
 import java.util.Iterator;
 import java.util.List;
 
 abstract class Road<TLane extends Lane> implements Iterable<TLane> {
+    private final Direction direction;
     private final List<TLane> lanes;
 
-    public Road(List<TLane> l) {
+    public Road(Direction d, List<TLane> l) {
+        direction = d;
         lanes = l;
     }
 
