@@ -4,6 +4,7 @@ import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.builders.*;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.contracts.enums.VehicleType;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 import uk.ac.warwick.dcs.contracts.structure.*;
@@ -15,8 +16,6 @@ import uk.ac.warwick.dcs.ui.formdata.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
     private final ILightBuilder lightBuilder;
@@ -36,6 +35,7 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
     }
 
     private Groups readGroups(Carriageway[] carriageways, int numGroups, GroupTimings groupTimings, LaneGroups[] laneGroups) {
+        // TODO: use group builder
         boolean optimising = groupTimings.optimise();
 
         // create array of lists and fill with empty lists
@@ -88,11 +88,29 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
         // unpack corresponding builder
         ICarriagewayBuilder builder = carriagewayBuilders[direction.ordinal()];
 
+        // pedestrian crossing and bus lane
+        builder.setBusLane(directionData.busLane());
+        builder.setPedestrianCrossing(directionData.pedestrianCrossing());
+
+        // if there is a bus lane add an EXTRA
+        // TODO: determining queuing space
+        builder.addIncomingLane(VehicleType.BUS, 15, new boolean[]{ true,true,true,true });
+
         // construct outgoing road
         // TODO: how do we determine the number of outgoing roads
         builder.addOutgoingLane();
 
         // construct incoming road
+        for (AvailableDirections directions : availableDirections) {
+            boolean[] directionBools = new boolean[4];
+            directionBools[Direction.NORTH.ordinal()] = directions.getN();
+            directionBools[Direction.EAST.ordinal()] = directions.getE();
+            directionBools[Direction.SOUTH.ordinal()] = directions.getS();
+            directionBools[Direction.WEST.ordinal()] = directions.getW();
+            // TODO: determining queuing space?
+            builder.addIncomingLane(VehicleType.CAR, 5, directionBools);
+        }
+
         // extract incoming flow and reset the corresponding value to 0
         int[] flows = flowData.flows(); // removed from record for ease of use
         int incomingFlow = flows[direction.ordinal()];
@@ -101,17 +119,10 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
 
         // add the outgoing flows in directions
         // which are not the incoming direction
-        if (direction != Direction.NORTH) {
-            builder.setOutgoingFlow(flows[Direction.NORTH.ordinal()], Direction.NORTH);
-        }
-        if (direction != Direction.EAST) {
-            builder.setOutgoingFlow(flows[Direction.EAST.ordinal()], Direction.EAST);
-        }
-        if (direction != Direction.SOUTH) {
-            builder.setOutgoingFlow(flows[Direction.SOUTH.ordinal()], Direction.SOUTH);
-        }
-        if (direction != Direction.WEST) {
-            builder.setOutgoingFlow(flows[Direction.WEST.ordinal()], Direction.WEST);
+        for (Direction dir : Direction.values()) {
+            if (direction != dir) { // can't set outgoing flow for incoming direction
+                builder.setOutgoingFlow(flows[dir.ordinal()], dir);
+            }
         }
 
         // assemble carriageway
