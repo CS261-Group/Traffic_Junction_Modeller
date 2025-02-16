@@ -1,6 +1,8 @@
 package uk.ac.warwick.dcs.ui.formdata;
 
+import uk.ac.warwick.dcs.contracts.enums.Direction;
+
 import java.util.List;
 
-public record DirectionData(List<Integer> arrivalFlows, List<AvailableDirections> availableDirections, List<Integer> departureFlows) {
+public record DirectionData(Direction direction, FlowData flowData, List<AvailableDirections> availableDirections) {
 }

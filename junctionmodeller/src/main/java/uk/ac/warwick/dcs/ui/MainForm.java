@@ -102,9 +102,9 @@ public class MainForm extends JFrame {
                 northboundPanel, eastboundPanel, southboundPanel, westboundPanel
         }).map(DirectionPanel::getValue).toArray(DirectionData[]::new);
 
-        Arrays.stream(directionData).forEach(x -> {
-            assert x.arrivalFlows().size() == x.availableDirections().size() && x.arrivalFlows().size() == x.departureFlows().size();
-        });
+//        Arrays.stream(directionData).forEach(x -> {
+//            assert x.arrivalFlows().size() == x.availableDirections().size() && x.arrivalFlows().size() == x.departureFlows().size();
+//        });
         TrafficLightData trafficLightData = trafficLightPanel.getValue();
 
         ConfigurationData configData = new ConfigurationData(directionData, trafficLightData);

@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.contracts.builders;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 import uk.ac.warwick.dcs.contracts.structure.*;
 
 import java.util.LinkedList;
@@ -15,6 +16,8 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
     private final LaneFactory laneFactory;
     private final List<OutgoingLane> outgoingLanes;
     private final List<IncomingLane> incomingLanes;
+    private boolean pedestrianCrossing;
+    private boolean busLane;
 
     //
     private int incomingFlow;
@@ -29,14 +32,30 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
         // set default values
         incomingFlow = UNASSIGNED_FLOW;
         outgoingFlows = new int[]{UNASSIGNED_FLOW, UNASSIGNED_FLOW, UNASSIGNED_FLOW, UNASSIGNED_FLOW};
+        outgoingFlows[dir.ordinal()] = 0; // originating direction should have flow = 0
     }
 
-    public ICarriagewayBuilder setIncomingFlow(int incomingFlow) {
-        this.incomingFlow = incomingFlow;
+    @Override
+    public ICarriagewayBuilder setBusLane(boolean bus) {
+        busLane = bus;
         return this;
     }
 
-    public ICarriagewayBuilder setOutgoingFlow(int outgoingFlow, Direction direction) {
+    @Override
+    public ICarriagewayBuilder setPedestrianCrossing(boolean crossing) {
+        pedestrianCrossing = crossing;
+        return this;
+    }
+
+    public ICarriagewayBuilder setIncomingFlow(int newIncomingFlow) {
+        incomingFlow = newIncomingFlow;
+        return this;
+    }
+
+    public ICarriagewayBuilder setOutgoingFlow(int outgoingFlow, Direction flowDirection) throws InvalidDirectionException {
+        if (flowDirection == direction) {
+            throw new InvalidDirectionException(flowDirection, "outgoing flow of carriageway with the same incoming direction");
+        }
         outgoingFlows[direction.ordinal()] = outgoingFlow;
         return this;
     }
@@ -49,7 +68,6 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
 
     @Override
     public ICarriagewayBuilder addIncomingLane(VehicleType type, int queuingSpace, boolean[] directions) {
-        // TODO: integrate with factory
         IncomingLane lane = laneFactory.createIncomingLane(type, queuingSpace, directions);
         incomingLanes.add(lane);
         return this;
@@ -58,6 +76,6 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
     public Carriageway buildCarriageway() {
         OutgoingRoad outgoingRoad = new OutgoingRoad(direction, outgoingLanes);
         IncomingRoad incomingRoad = new IncomingRoad(direction, incomingLanes, incomingFlow, outgoingFlows);
-        return new Carriageway(outgoingRoad, incomingRoad);
+        return new Carriageway(outgoingRoad, incomingRoad, busLane, pedestrianCrossing);
     }
 }

@@ -5,9 +5,13 @@ package uk.ac.warwick.dcs.contracts.structure;
 public class Carriageway {
     private final OutgoingRoad outgoingRoad;
     private final IncomingRoad incomingRoad;
+    private final boolean busLane;
+    private final boolean pedestrianCrossing;
 
-    public Carriageway(OutgoingRoad or, IncomingRoad ir) {
+    public Carriageway(OutgoingRoad or, IncomingRoad ir, boolean bus, boolean pedestrian) {
         outgoingRoad = or;
         incomingRoad = ir;
+        busLane = bus;
+        pedestrianCrossing = pedestrian;
     }
 }
