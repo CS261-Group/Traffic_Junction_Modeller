@@ -1,6 +1,6 @@
 package uk.ac.warwick.dcs.evaluation.metrics;
 
-public class Metric {
+public class Metric implements IMetric {
     private double averageWaitTime;
     private double maxQueueLength;
     private double maxWaitTime;
@@ -13,7 +13,7 @@ public class Metric {
     public double getAverageWaitTime(){
         return averageWaitTime;
     }
-    public void updateQueueLength(){
+    public void updateMaxQueueLength(){
         averageWaitTime = calculator.MaxQueueLength();
     }
     public double getMaxQueueLength(){

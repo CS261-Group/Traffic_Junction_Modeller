@@ -1,18 +1,23 @@
 package uk.ac.warwick.dcs.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
+import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
 import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
 import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
-
-import javax.swing.*;
-import java.awt.Font;
-import java.awt.BorderLayout;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
@@ -98,8 +103,10 @@ public class MainForm extends JFrame {
             assert x.arrivalFlows().size() == x.availableDirections().size() && x.arrivalFlows().size() == x.departureFlows().size();
         });
 
-        trafficLightPanel.getValue();
+        TrafficLightData trafficLightData = trafficLightPanel.getValue();
 
         System.out.println("Data collected");
+
     }
+    
 }
