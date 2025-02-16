@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.serialisation.FileGenerator;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
@@ -35,6 +36,7 @@ public class MainForm extends JFrame {
     private DirectionPanel westboundPanel;
     private TrafficLightPanel trafficLightPanel;
     private SubmissionPanel submissionPanel;
+    private FileGenerator fileGenerator;
 
     public MainForm() {
         // we need to initialise the factories before we
@@ -104,9 +106,9 @@ public class MainForm extends JFrame {
         });
 
         TrafficLightData trafficLightData = trafficLightPanel.getValue();
-
+        fileGenerator.GenerateFile(directionData, trafficLightData);
         System.out.println("Data collected");
-
     }
+    
     
 }
