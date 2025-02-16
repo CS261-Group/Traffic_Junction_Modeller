@@ -12,7 +12,13 @@ public class Groups {
         this.numGroups = groups.size();
         this.groups = groups;
         this.optimiseTimings = optimiseTimings;
-        this.timings = timings;
+
+        if (optimiseTimings) {
+            this.timings = null;
+        } else {
+            assert timings != null;
+            this.timings = timings;
+        }
 
         // sanity check: each group should have its own timing
         assert timings.size() == numGroups;

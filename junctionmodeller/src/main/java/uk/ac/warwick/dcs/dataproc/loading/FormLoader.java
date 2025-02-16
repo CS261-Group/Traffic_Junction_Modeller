@@ -1,7 +1,7 @@
 package uk.ac.warwick.dcs.dataproc.loading;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
-import uk.ac.warwick.dcs.contracts.builders.JunctionBuilder;
+import uk.ac.warwick.dcs.dataproc.construction.JunctionFactory;
 import uk.ac.warwick.dcs.ui.formdata.*;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class FormLoader implements ILoader {
     @Override
     public JunctionConfiguration load() {
         // the builder we will construct the junction configuration with
-        JunctionBuilder builder = new JunctionBuilder();
+        JunctionFactory builder = new JunctionFactory();
 
         TrafficLightData trafficLightData = configData.trafficLightData();
         int numGroups = trafficLightData.numGroups();
