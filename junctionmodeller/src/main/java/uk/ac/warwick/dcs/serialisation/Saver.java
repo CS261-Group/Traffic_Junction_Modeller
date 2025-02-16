@@ -12,9 +12,9 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
  *
  * @author eyhli
  */
-public class FileGenerator implements IFileGenerator{
+public class Saver implements ISaver{
     
-    public void GenerateFile(DirectionData[] directionData, TrafficLightData trafficLightData){
+    public void SaveFile(DirectionData[] directionData, TrafficLightData trafficLightData){
         DirectionData northboundData = directionData[0];
         DirectionData eastboundData = directionData[1];
         DirectionData southboundData = directionData[2];

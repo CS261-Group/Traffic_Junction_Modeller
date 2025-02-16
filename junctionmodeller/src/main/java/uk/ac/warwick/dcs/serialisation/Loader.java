@@ -9,7 +9,7 @@ import com.google.gson.Gson;
  *
  * @author eyhli
  */
-public class FileLoader implements IFileLoader{
+public class Loader implements ILoader{
     public InputConfiguration LoadFile(String jsonstr){
         Gson gson = new Gson();
         InputConfiguration inputConfiguration = gson.fromJson(jsonstr, InputConfiguration.class);

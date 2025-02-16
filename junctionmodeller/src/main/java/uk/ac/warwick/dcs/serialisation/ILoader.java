@@ -5,13 +5,10 @@
 
 package uk.ac.warwick.dcs.serialisation;
 
-import uk.ac.warwick.dcs.ui.formdata.DirectionData;
-import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
-
 /**
  *
  * @author eyhli
  */
-public interface IFileGenerator {
-    public void GenerateFile(DirectionData[] directionData, TrafficLightData trafficLightData);
+public interface ILoader {
+    public InputConfiguration LoadFile(String jsonstr);
 }
