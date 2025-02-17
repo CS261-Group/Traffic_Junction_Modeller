@@ -6,15 +6,12 @@ import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
 import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 import uk.ac.warwick.dcs.contracts.structure.*;
-import uk.ac.warwick.dcs.contracts.timings.Group;
-import uk.ac.warwick.dcs.contracts.timings.GroupTiming;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
 import uk.ac.warwick.dcs.ui.formdata.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
@@ -34,42 +31,26 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
         carriagewayBuilders[Direction.WEST.ordinal()] = new CarriagewayBuilder(Direction.WEST);
     }
 
-    private Groups readGroups(Carriageway[] carriageways, int numGroups, GroupTimings groupTimings, LaneGroups[] laneGroups) {
-        // TODO: use group builder
-        boolean optimising = groupTimings.optimise();
+    private Groups readGroups(Carriageway[] carriageways, int numGroups, GroupTimings groupTimingsObj, LaneGroups[] laneGroupsArr) throws InvalidGroupNumberException {
+        // optimise if chosen to and set the number of groups
+        groupBuilder
+                .setOptimiseTimings(groupTimingsObj.optimise())
+                .setNumGroups(numGroups);
 
-        // create array of lists and fill with empty lists
-        List<IncomingLane>[] groupArr = new List[numGroups];
-        for (int i = 0; i < numGroups; i++) {
-            groupArr[i] = new LinkedList<>();
+        assert groupTimingsObj.groupTimings().size() == numGroups; // sanity check: as many group timings as
+        for (uk.ac.warwick.dcs.ui.formdata.GroupTiming timing : groupTimingsObj.groupTimings()) {
+            groupBuilder.setGroupTiming(timing.time(), timing.groupNum());
         }
-        for (LaneGroups lGroups : laneGroups) {
-            // we can use the direction to get the group of lane objects
-            // from that direction and assign them as required
-            Direction direction = lGroups.direction();
-            for (LaneGroup laneGroup : lGroups.laneGroups()) {
-                IncomingLane incomingLane = null; // TODO: get from carriageway
-                groupArr[laneGroup.groupNum()].add(incomingLane);
+
+        for (LaneGroups laneGroups : laneGroupsArr) {
+            Carriageway carriageway = carriageways[laneGroups.direction().ordinal()];
+            IncomingRoad incomingRoad = carriageway.getIncoming();
+            for (LaneGroup laneGroup : laneGroups.laneGroups()) {
+                groupBuilder.addLaneToGroup(incomingRoad.get(laneGroup.laneNum()), laneGroup.groupNum());
             }
         }
 
-        List<Group> groupList = new ArrayList<>(numGroups);
-        for (int i = 0; i < numGroups; i++) {
-            int groupNum = i + 1;
-            groupList.add(new Group(groupNum, groupArr[i]));
-        }
-
-        List<GroupTiming> timings = null;
-        // only specify group timings when not optimising
-        if (!optimising) {
-            timings = new ArrayList<>(numGroups);
-            List<uk.ac.warwick.dcs.ui.formdata.GroupTiming> uiGroupTimings = groupTimings.groupTimings();
-            for (uk.ac.warwick.dcs.ui.formdata.GroupTiming timing : uiGroupTimings) {
-                timings.add(new GroupTiming(timing.groupNum(), timing.time()));
-            }
-        }
-
-        return new Groups(groupList, true, timings);
+        return groupBuilder.buildGroups();
     }
 
     private TrafficLight readTrafficLight(TrafficLightType type) {
@@ -78,7 +59,6 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
                 .buildTrafficLight();
     }
 
-    // TODO: what are the required parameters
     private Carriageway readCarriageway(DirectionData directionData) throws InvalidDirectionException {
         // unpack direction data
         Direction direction = directionData.direction();
@@ -94,7 +74,9 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
 
         // if there is a bus lane add an EXTRA
         // TODO: determining queuing space
-        builder.addIncomingLane(VehicleType.BUS, 15, new boolean[]{ true,true,true,true });
+        if (directionData.busLane()) {
+            builder.addIncomingLane(VehicleType.BUS, 15, new boolean[]{ true,true,true,true });
+        }
 
         // construct outgoing road
         // TODO: how do we determine the number of outgoing roads
@@ -130,14 +112,13 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
     }
 
     @Override
-    public JunctionConfiguration createJunction(ConfigurationData data) throws InvalidDirectionException {
+    public JunctionConfiguration createJunction(ConfigurationData data) throws InvalidDirectionException, InvalidGroupNumberException {
         // unpack configuration data
         TrafficLightData trafficLightData = data.trafficLightData();
         DirectionData[] directionData = data.directionData();
         assert directionData.length == 4;
 
         // read in carriageway (direction) data
-        // TODO: fix carriageway data from UI
         Carriageway[] carriageways = new Carriageway[4];
         for (int i = 0; i < directionData.length; i++) {
             carriageways[i] = readCarriageway(directionData[i]);

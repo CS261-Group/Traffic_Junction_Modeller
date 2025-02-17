@@ -72,6 +72,7 @@ public class GroupBuilder implements IGroupBuilder {
 
     @Override
     public Groups buildGroups() {
+        // TODO: error checks on unassigned values
         List<Group> groupsList = new ArrayList<>(numGroups);
         List<GroupTiming> timings = new ArrayList<>(numGroups);
         for (int i = 0; i < groupLanes.length; i++) {

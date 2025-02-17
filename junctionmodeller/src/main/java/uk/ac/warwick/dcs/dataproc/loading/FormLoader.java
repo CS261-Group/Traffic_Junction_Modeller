@@ -1,6 +1,8 @@
 package uk.ac.warwick.dcs.dataproc.loading;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
 import uk.ac.warwick.dcs.dataproc.construction.JunctionFactory;
 import uk.ac.warwick.dcs.ui.formdata.*;
 
@@ -16,27 +18,17 @@ public class FormLoader implements ILoader {
     @Override
     public JunctionConfiguration load() {
         // the builder we will construct the junction configuration with
-        JunctionFactory builder = new JunctionFactory();
+        JunctionFactory factory = new JunctionFactory();
 
-        TrafficLightData trafficLightData = configData.trafficLightData();
-        int numGroups = trafficLightData.numGroups();
+        try {
+            JunctionConfiguration junctionConfiguration = factory.createJunction(configData);
+            return junctionConfiguration;
+        } catch (InvalidDirectionException ex) {
+            // TODO: handle properly and allow returned errors
+        } catch (InvalidGroupNumberException ex) {
+            // TODO: handle properly and allow returned errors
+        }
 
-        // distinct lane groups
-        LaneGroups[] laneGroups = trafficLightData.directionalLaneGroups();
-        assert laneGroups.length == numGroups;
-
-        // group timings
-        GroupTimings groupTimings = trafficLightData.groupTimings();
-        boolean optimising = groupTimings.optimise();
-        List<GroupTiming> timings = groupTimings.groupTimings();
-        assert timings.size() == numGroups;
-
-        // directional data
-        DirectionData[] directionData = configData.directionData();
-        assert directionData.length == 4;
-
-        // construction
-        // TODO: impl
         return null;
     }
 }

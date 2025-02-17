@@ -5,6 +5,7 @@ import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
 
 public interface IGroupBuilder {
+    IGroupBuilder setNumGroups(int numGroups);
     IGroupBuilder addLaneToGroup(IncomingLane lane, int groupNum) throws InvalidGroupNumberException;
     IGroupBuilder setGroupTiming(int timing, int groupNum) throws InvalidGroupNumberException;
     IGroupBuilder setOptimiseTimings(boolean optimising);

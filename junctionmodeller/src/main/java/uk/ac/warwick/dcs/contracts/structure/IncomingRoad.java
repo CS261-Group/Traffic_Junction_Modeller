@@ -15,4 +15,8 @@ public class IncomingRoad extends Road<IncomingLane> {
         assert outgoingFlows.length == 4; // sanity check: one for each direction
         assert outgoingFlows[d.ordinal()] == 0; // sanity check: no outgoing flow to the same direction
     }
+
+    public IncomingLane get(int laneNum) {
+        return lanes.get(laneNum);
+    }
 }

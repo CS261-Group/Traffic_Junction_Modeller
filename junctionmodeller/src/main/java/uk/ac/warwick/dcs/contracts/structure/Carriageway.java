@@ -14,4 +14,12 @@ public class Carriageway {
         busLane = bus;
         pedestrianCrossing = pedestrian;
     }
+
+    public OutgoingRoad getOutgoing() {
+        return outgoingRoad;
+    }
+
+    public IncomingRoad getIncoming() {
+        return incomingRoad;
+    }
 }

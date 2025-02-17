@@ -74,6 +74,7 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
     }
 
     public Carriageway buildCarriageway() {
+        // TODO: error checks on unassigned values
         OutgoingRoad outgoingRoad = new OutgoingRoad(direction, outgoingLanes);
         IncomingRoad incomingRoad = new IncomingRoad(direction, incomingLanes, incomingFlow, outgoingFlows);
         return new Carriageway(outgoingRoad, incomingRoad, busLane, pedestrianCrossing);
