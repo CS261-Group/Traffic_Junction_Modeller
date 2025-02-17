@@ -5,7 +5,9 @@ import uk.ac.warwick.dcs.contracts.builders.*;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
+import uk.ac.warwick.dcs.contracts.exceptions.IncompleteBuildSettingsException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidFlowValueException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
 import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 import uk.ac.warwick.dcs.contracts.structure.*;
@@ -18,7 +20,6 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
     private final ILightBuilder lightBuilder;
     private final IGroupBuilder groupBuilder;
     private final ICarriagewayBuilder[] carriagewayBuilders;
-    private Groups groups;
 
     public JunctionFactory() {
         lightBuilder = new LightBuilder();
@@ -31,7 +32,7 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
         carriagewayBuilders[Direction.WEST.ordinal()] = new CarriagewayBuilder(Direction.WEST);
     }
 
-    private Groups readGroups(Carriageway[] carriageways, int numGroups, GroupTimings groupTimingsObj, LaneGroups[] laneGroupsArr) throws InvalidGroupNumberException {
+    private Groups readGroups(Carriageway[] carriageways, int numGroups, GroupTimings groupTimingsObj, LaneGroups[] laneGroupsArr) throws InvalidGroupNumberException, IncompleteBuildSettingsException {
         // optimise if chosen to and set the number of groups
         groupBuilder
                 .setOptimiseTimings(groupTimingsObj.optimise())
@@ -53,13 +54,13 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
         return groupBuilder.buildGroups();
     }
 
-    private TrafficLight readTrafficLight(TrafficLightType type) {
+    private TrafficLight readTrafficLight(TrafficLightType type) throws IncompleteBuildSettingsException {
         return lightBuilder
                 .setTrafficLightType(type)
                 .buildTrafficLight();
     }
 
-    private Carriageway readCarriageway(DirectionData directionData) throws InvalidDirectionException {
+    private Carriageway readCarriageway(DirectionData directionData) throws InvalidDirectionException, InvalidFlowValueException, IncompleteBuildSettingsException {
         // unpack direction data
         Direction direction = directionData.direction();
         FlowData flowData = directionData.flowData();
@@ -112,7 +113,7 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
     }
 
     @Override
-    public JunctionConfiguration createJunction(ConfigurationData data) throws InvalidDirectionException, InvalidGroupNumberException {
+    public JunctionConfiguration createJunction(ConfigurationData data) throws InvalidDirectionException, InvalidGroupNumberException, InvalidFlowValueException, IncompleteBuildSettingsException {
         // unpack configuration data
         TrafficLightData trafficLightData = data.trafficLightData();
         DirectionData[] directionData = data.directionData();

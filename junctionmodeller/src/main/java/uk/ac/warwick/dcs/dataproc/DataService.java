@@ -4,6 +4,8 @@ import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.dataproc.loading.FormLoader;
 import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataService implements IDataService {
@@ -18,8 +20,14 @@ public class DataService implements IDataService {
         FormLoader formLoader = new FormLoader(configData);
         JunctionConfiguration junctionConfig = formLoader.load();
 
-        List<String> errors = validator.validate(junctionConfig);
-        assert errors != null;
+        List<String> errors;
+        if (junctionConfig == null) {
+            errors = new ArrayList<>(1);
+            errors.add(formLoader.getLoadErrors());
+        } else {
+            errors = validator.validate(junctionConfig);
+            assert errors != null;
+        }
 
         return errors;
     }

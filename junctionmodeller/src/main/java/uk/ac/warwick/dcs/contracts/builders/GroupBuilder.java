@@ -1,5 +1,6 @@
 package uk.ac.warwick.dcs.contracts.builders;
 
+import uk.ac.warwick.dcs.contracts.exceptions.IncompleteBuildSettingsException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.contracts.timings.Group;
@@ -18,20 +19,17 @@ public class GroupBuilder implements IGroupBuilder {
     private LinkedList<IncomingLane>[] groupLanes;
     private int[] groupTimings;
 
-    public GroupBuilder() {
-        optimising = true; // we will assume optimising by default
-        groupLanes = new LinkedList[numGroups];
-        groupTimings = new int[numGroups];
+    // these are used to ensure that a full configuration is configured
+    // since I will not allow partial settings (we are not using defaults)
+    private boolean numGroupsAssigned, optimisingAssigned;
 
-        // set default values
-        for (int i = 0; i < numGroups; i++) {
-            groupLanes[i] = new LinkedList<>();
-            groupTimings[i] = UNASSIGNED_TIMING;
-        }
+    public GroupBuilder() {
+        numGroupsAssigned = optimisingAssigned = false;
     }
 
     public IGroupBuilder setNumGroups(int numGroups) {
         this.numGroups = numGroups;
+        numGroupsAssigned = true;
 
         // initialise fixed-size arrays to hold data
         groupLanes = new LinkedList[numGroups];
@@ -67,12 +65,34 @@ public class GroupBuilder implements IGroupBuilder {
     @Override
     public IGroupBuilder setOptimiseTimings(boolean optimising) {
         this.optimising = optimising;
+        optimisingAssigned = true;
         return this;
     }
 
     @Override
-    public Groups buildGroups() {
-        // TODO: error checks on unassigned values
+    public Groups buildGroups() throws IncompleteBuildSettingsException {
+        // error checks on unassigned values
+        if (!numGroupsAssigned) {
+            throw new IncompleteBuildSettingsException("Number of Groups", "GroupBuilder.setNumGroups");
+        }
+        if (!optimisingAssigned) {
+            throw new IncompleteBuildSettingsException("optimising", "GroupBuilder.setOptimiseTimings");
+        }
+        assert numGroups == groupTimings.length && numGroups == groupLanes.length;
+        for (int i = 0; i < numGroups; i++) {
+            int groupNum = i + 1;
+            // unassigned group timing for a certain group
+            if (groupTimings[i] == UNASSIGNED_TIMING) {
+                throw new IncompleteBuildSettingsException("Group timings for group " + groupNum, "GroupBuilder.setGroupTiming");
+            }
+
+            // no lanes assigned to a group
+            if (groupLanes[i].isEmpty()) {
+                throw new IncompleteBuildSettingsException("Empty group (no lanes) for group " + groupNum, "GroupBuilder.addLaneToGroup");
+            }
+        }
+
+        // convert collected data to required DTOs and return the assembled Groups object
         List<Group> groupsList = new ArrayList<>(numGroups);
         List<GroupTiming> timings = new ArrayList<>(numGroups);
         for (int i = 0; i < groupLanes.length; i++) {

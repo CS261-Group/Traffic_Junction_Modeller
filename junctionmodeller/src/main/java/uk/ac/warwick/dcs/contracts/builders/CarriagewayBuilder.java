@@ -2,9 +2,12 @@ package uk.ac.warwick.dcs.contracts.builders;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
+import uk.ac.warwick.dcs.contracts.exceptions.IncompleteBuildSettingsException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidFlowValueException;
 import uk.ac.warwick.dcs.contracts.structure.*;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +22,7 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
     private boolean pedestrianCrossing;
     private boolean busLane;
 
-    //
+    // flow parameters
     private int incomingFlow;
     private final int[] outgoingFlows;
 
@@ -47,14 +50,20 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
         return this;
     }
 
-    public ICarriagewayBuilder setIncomingFlow(int newIncomingFlow) {
+    public ICarriagewayBuilder setIncomingFlow(int newIncomingFlow) throws InvalidFlowValueException {
+        if (IncomingRoad.MINIMUM_INCOMING_FLOW > incomingFlow) {
+            throw new InvalidFlowValueException(newIncomingFlow, "outgoing");
+        }
         incomingFlow = newIncomingFlow;
         return this;
     }
 
-    public ICarriagewayBuilder setOutgoingFlow(int outgoingFlow, Direction flowDirection) throws InvalidDirectionException {
+    public ICarriagewayBuilder setOutgoingFlow(int outgoingFlow, Direction flowDirection) throws InvalidDirectionException, InvalidFlowValueException {
         if (flowDirection == direction) {
             throw new InvalidDirectionException(flowDirection, "outgoing flow of carriageway with the same incoming direction");
+        }
+        if (IncomingRoad.MINIMUM_OUTGOING_FLOW > outgoingFlow) {
+            throw new InvalidFlowValueException(outgoingFlow, "outgoing");
         }
         outgoingFlows[direction.ordinal()] = outgoingFlow;
         return this;
@@ -73,8 +82,16 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
         return this;
     }
 
-    public Carriageway buildCarriageway() {
-        // TODO: error checks on unassigned values
+    public Carriageway buildCarriageway() throws IncompleteBuildSettingsException {
+        if (incomingFlow == UNASSIGNED_FLOW) {
+            throw new IncompleteBuildSettingsException("Incoming Flow", "CarriagewayBuilder.setIncomingFlow");
+        }
+
+        // sum of outflows should equal sum of inflows
+        if (Arrays.stream(outgoingFlows).sum() != incomingFlow) {
+            throw new IncompleteBuildSettingsException("Outgoing Flows", "CarriagewayBuilder.setIncomingFlow");
+        }
+
         OutgoingRoad outgoingRoad = new OutgoingRoad(direction, outgoingLanes);
         IncomingRoad incomingRoad = new IncomingRoad(direction, incomingLanes, incomingFlow, outgoingFlows);
         return new Carriageway(outgoingRoad, incomingRoad, busLane, pedestrianCrossing);
