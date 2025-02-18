@@ -5,6 +5,7 @@ import uk.ac.warwick.dcs.contracts.enums.VehicleType;
 import uk.ac.warwick.dcs.contracts.exceptions.IncompleteBuildSettingsException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidFlowValueException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidPermittedDirectionsException;
 import uk.ac.warwick.dcs.contracts.structure.*;
 
 import java.util.Arrays;
@@ -76,7 +77,7 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
     }
 
     @Override
-    public ICarriagewayBuilder addIncomingLane(VehicleType type, int queuingSpace, boolean[] directions) {
+    public ICarriagewayBuilder addIncomingLane(VehicleType type, int queuingSpace, boolean[] directions) throws InvalidPermittedDirectionsException {
         IncomingLane lane = laneFactory.createIncomingLane(type, queuingSpace, directions);
         incomingLanes.add(lane);
         return this;
@@ -94,6 +95,6 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
 
         OutgoingRoad outgoingRoad = new OutgoingRoad(direction, outgoingLanes);
         IncomingRoad incomingRoad = new IncomingRoad(direction, incomingLanes, incomingFlow, outgoingFlows);
-        return new Carriageway(outgoingRoad, incomingRoad, busLane, pedestrianCrossing);
+        return new Carriageway(direction, outgoingRoad, incomingRoad, busLane, pedestrianCrossing);
     }
 }

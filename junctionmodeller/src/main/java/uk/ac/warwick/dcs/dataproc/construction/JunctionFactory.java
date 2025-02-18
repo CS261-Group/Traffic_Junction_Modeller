@@ -5,10 +5,7 @@ import uk.ac.warwick.dcs.contracts.builders.*;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
-import uk.ac.warwick.dcs.contracts.exceptions.IncompleteBuildSettingsException;
-import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
-import uk.ac.warwick.dcs.contracts.exceptions.InvalidFlowValueException;
-import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
+import uk.ac.warwick.dcs.contracts.exceptions.*;
 import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 import uk.ac.warwick.dcs.contracts.structure.*;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
@@ -45,9 +42,8 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
 
         for (LaneGroups laneGroups : laneGroupsArr) {
             Carriageway carriageway = carriageways[laneGroups.direction().ordinal()];
-            IncomingRoad incomingRoad = carriageway.getIncoming();
             for (LaneGroup laneGroup : laneGroups.laneGroups()) {
-                groupBuilder.addLaneToGroup(incomingRoad.get(laneGroup.laneNum()), laneGroup.groupNum());
+                groupBuilder.addLaneToGroup(carriageway.getIncomingLane(laneGroup.laneNum()), laneGroup.groupNum());
             }
         }
 
@@ -60,7 +56,8 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
                 .buildTrafficLight();
     }
 
-    private Carriageway readCarriageway(DirectionData directionData) throws InvalidDirectionException, InvalidFlowValueException, IncompleteBuildSettingsException {
+    private Carriageway readCarriageway(DirectionData directionData) throws InvalidDirectionException,
+            InvalidFlowValueException, IncompleteBuildSettingsException, InvalidPermittedDirectionsException {
         // unpack direction data
         Direction direction = directionData.direction();
         FlowData flowData = directionData.flowData();
@@ -113,7 +110,9 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
     }
 
     @Override
-    public JunctionConfiguration createJunction(ConfigurationData data) throws InvalidDirectionException, InvalidGroupNumberException, InvalidFlowValueException, IncompleteBuildSettingsException {
+    public JunctionConfiguration createJunction(ConfigurationData data) throws InvalidDirectionException,
+            InvalidGroupNumberException, InvalidFlowValueException, IncompleteBuildSettingsException,
+            InvalidPermittedDirectionsException {
         // unpack configuration data
         TrafficLightData trafficLightData = data.trafficLightData();
         DirectionData[] directionData = data.directionData();

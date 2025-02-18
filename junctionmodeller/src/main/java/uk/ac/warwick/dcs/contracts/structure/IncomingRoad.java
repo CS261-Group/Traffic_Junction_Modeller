@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.contracts.structure;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 
 import java.util.List;
 
@@ -20,5 +21,13 @@ public class IncomingRoad extends Road<IncomingLane> {
 
     public IncomingLane get(int laneNum) {
         return lanes.get(laneNum);
+    }
+
+    public int getIncomingFlow() { return incomingFlow; }
+    public int getOutgoingFlow(Direction direction) throws InvalidDirectionException {
+        if (direction == this.direction) {
+            throw new InvalidDirectionException(direction, "outgoing flow direction");
+        }
+        return outgoingFlows[direction.ordinal()];
     }
 }

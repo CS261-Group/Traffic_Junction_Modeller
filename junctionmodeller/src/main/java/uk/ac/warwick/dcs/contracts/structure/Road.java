@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 abstract class Road<TLane extends Lane> implements Iterable<TLane> {
-    private final Direction direction;
+    protected final Direction direction;
     protected final List<TLane> lanes;
 
     public Road(Direction d, List<TLane> l) {
@@ -16,5 +16,9 @@ abstract class Road<TLane extends Lane> implements Iterable<TLane> {
 
     public Iterator<TLane> iterator() {
         return lanes.iterator();
+    }
+
+    public int numLanes() {
+        return lanes.size();
     }
 }

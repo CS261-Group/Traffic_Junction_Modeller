@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataService implements IDataService {
-    private final IValidator validator;
+    private final IValidator<JunctionConfiguration> validator;
 
-    public DataService(IValidator validator) {
+    public DataService(IValidator<JunctionConfiguration> validator) {
         this.validator = validator;
     }
 

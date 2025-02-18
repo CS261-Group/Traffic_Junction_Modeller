@@ -1,10 +1,7 @@
 package uk.ac.warwick.dcs.dataproc.loading;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
-import uk.ac.warwick.dcs.contracts.exceptions.IncompleteBuildSettingsException;
-import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
-import uk.ac.warwick.dcs.contracts.exceptions.InvalidFlowValueException;
-import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
+import uk.ac.warwick.dcs.contracts.exceptions.*;
 import uk.ac.warwick.dcs.dataproc.construction.JunctionFactory;
 import uk.ac.warwick.dcs.ui.formdata.*;
 
@@ -33,6 +30,8 @@ public class FormLoader implements ILoader {
         } catch (InvalidFlowValueException ex) {
             error = ex.getMessage();
         } catch (IncompleteBuildSettingsException ex) {
+            error = ex.getMessage();
+        } catch (InvalidPermittedDirectionsException ex) {
             error = ex.getMessage();
         }
         // NOTE: despite the equivalent handling, I still

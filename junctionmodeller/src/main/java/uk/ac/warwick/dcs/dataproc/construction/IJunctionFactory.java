@@ -1,11 +1,8 @@
 package uk.ac.warwick.dcs.dataproc.construction;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
-import uk.ac.warwick.dcs.contracts.exceptions.IncompleteBuildSettingsException;
-import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
-import uk.ac.warwick.dcs.contracts.exceptions.InvalidFlowValueException;
-import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
+import uk.ac.warwick.dcs.contracts.exceptions.*;
 
 public interface IJunctionFactory<T> {
-    JunctionConfiguration createJunction(T data) throws InvalidDirectionException, InvalidGroupNumberException, InvalidFlowValueException, IncompleteBuildSettingsException;
+    JunctionConfiguration createJunction(T data) throws InvalidDirectionException, InvalidGroupNumberException, InvalidFlowValueException, IncompleteBuildSettingsException, InvalidPermittedDirectionsException;
 }
