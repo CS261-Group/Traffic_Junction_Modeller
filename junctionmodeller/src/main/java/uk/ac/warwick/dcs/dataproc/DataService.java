@@ -8,7 +8,7 @@ import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataService implements IDataService {
+class DataService implements IDataService {
     private final IValidator<JunctionConfiguration> validator;
 
     public DataService(IValidator<JunctionConfiguration> validator) {
@@ -28,6 +28,8 @@ public class DataService implements IDataService {
             errors = validator.validate(junctionConfig);
             assert errors != null;
         }
+
+        // TODO: create a model instance
 
         return errors;
     }

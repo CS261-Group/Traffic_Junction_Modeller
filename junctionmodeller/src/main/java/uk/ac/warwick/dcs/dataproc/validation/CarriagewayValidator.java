@@ -7,11 +7,9 @@ import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CarriagewayValidator implements IValidator<Carriageway> {
-    private final IDiagnosticFactory diagFactory;
-
+public class CarriagewayValidator extends Validator<Carriageway> {
     public CarriagewayValidator(IDiagnosticFactory diagnosticFactory) {
-        diagFactory = diagnosticFactory;
+        super(diagnosticFactory);
     }
 
     private List<String> validateNumLanes(Carriageway carriageway) {

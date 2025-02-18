@@ -22,9 +22,12 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
         groups = g;
     }
 
+    public TrafficLight getTrafficLights() { return trafficLights; }
+
+    public Groups getGroups() { return groups; }
+
     @Override
     public Iterator<Carriageway> iterator() {
         return Arrays.stream(carriageways).iterator();
     }
-
 }

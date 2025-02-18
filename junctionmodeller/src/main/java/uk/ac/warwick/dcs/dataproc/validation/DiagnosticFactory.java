@@ -2,7 +2,7 @@ package uk.ac.warwick.dcs.dataproc.validation;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 
-class DiagnosticFactory implements IDiagnosticFactory {
+public class DiagnosticFactory implements IDiagnosticFactory {
     @Override
     public String createFieldErrorMessage(String field, String error) {
         return field + ": " + error;
