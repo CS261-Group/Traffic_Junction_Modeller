@@ -2,41 +2,79 @@ package uk.ac.warwick.dcs.optimisation;
 
 import org.ejml.simple.SimpleMatrix;
 
-// changing from beam search to gradient descent
+/**
+ * Simple gradient descent algorithm that takes a
+ * fully partially differentiated evaluation function
+ * And moves an internal state of values down a slope
+ * of any number of dimensions.
+ *
+ * @param <F>   differentiated evaluation function
+ */
 public class GradientDescent<F extends IGradientFunction> {
 
-    private final int ITERATIONS = 10;
-    private final double STEPSIZE = 0.1;
+    /** number of iterations the algorithm makes */
+    private int ITERATIONS = 10;
 
-    // column vector containing values for variables
+    // arbitrary value chosen at the moment, will need fine-tuning
+    /** the learning rate */
+    private double STEPSIZE = 0.1;
+
+    /** Vector containing the current variable values */
     private SimpleMatrix stateVector;
+
+    /** Vector used to mask variables that are not being optimised for */
     private SimpleMatrix maskVector;
 
-    // derivative of the cost function
+    /** differentiated evaluation function */
     private F NablaF;
 
-    public GradientDescent(float[] initialState, F gradientFunction, boolean[] variableMask){
-        stateVector = new SimpleMatrix(initialState);
-        NablaF = gradientFunction;
-        maskVector = this.maskArrayToMatrix(variableMask);
-    }
-
+    /**
+     * No mask construction, uses an empty mask.
+     *
+     * @param initialState      Initial values, given in order that they appear in
+     *                          the gradientFunction's parameters
+     * @param gradientFunction  function to determine slope at the current state
+     */
     public GradientDescent(float[] initialState, F gradientFunction){
         stateVector = new SimpleMatrix(initialState);
         NablaF = gradientFunction;
-        maskVector = this.createEmptyMask(initialState.length);
+        maskVector = this.createEmptyMaskVector(initialState.length);
     }
 
-    // needs testing
+    /**
+     * @param variableMask true where a variable should be optimised and false where it should be masked,
+     *                     in the same order as the gradientFunction's parameters
+     */
+    public GradientDescent(float[] initialState, F gradientFunction, boolean[] variableMask){
+        stateVector = new SimpleMatrix(initialState);
+        NablaF = gradientFunction;
+        maskVector = this.maskArrayToVector(variableMask);
+    }
+
+    /**
+     * Returns the values in the current state
+     *
+     * @return the values
+     */
     public float[] getStateValues(){
         return stateVector.getFDRM().getData();
     }
 
+    /**
+     * Perform one iteration of the gradient descent.
+     * Uses <a href="https://en.wikipedia.org/wiki/Gradient_descent">this</a>
+     * algorithm, with the addition of a mask to prevent changes to variables
+     */
     public void nextState(){
         SimpleMatrix gradientVector = new SimpleMatrix(NablaF.evaluateAt(stateVector));
         stateVector = stateVector.minus(gradientVector.elementMult(maskVector).scale(STEPSIZE));
     }
 
+    /**
+     * Start the gradient descent
+     *
+     * @return  the final array of values
+     */
     public float[] stepThrough(){
         for (int i = 0; i < ITERATIONS; i++){
             this.nextState();
@@ -44,21 +82,31 @@ public class GradientDescent<F extends IGradientFunction> {
         return this.getStateValues();
     }
 
-    // creates a nxn mask matrix from array
-    private SimpleMatrix maskArrayToMatrix(boolean[] variableMask){
+    /**
+     * Returns a vector to use as the mask
+     *
+     * @param variableMask  list of which variables to keep (true), and which variables to mask (false)
+     * @return              vector of 1s and 0s.
+     */
+    private SimpleMatrix maskArrayToVector(boolean[] variableMask){
+        SimpleMatrix mask = createEmptyMaskVector(variableMask.length);
 
-        SimpleMatrix mask = createEmptyMask(variableMask.length);
-
-        // TODO replace 1s with 0s in line with variableMask
-
+        for (int i = 0; i < variableMask.length; i++){
+            if (!variableMask[i]){
+                //set row i in column vector to 0
+                mask.set(i,0,0);
+            }
+        }
         return mask;
     }
 
-    //no mask is just the identity matrix
-    private SimpleMatrix createEmptyMask(int length){
+    /**
+     * An empty mask vector is a vector that won't delete/mask any values
+     *
+     * @param length    Length of the mask
+     * @return          A vector of all 1s
+     */
+    private SimpleMatrix createEmptyMaskVector(int length){
         return SimpleMatrix.ones(1,length);
     }
-
-
-
 }
