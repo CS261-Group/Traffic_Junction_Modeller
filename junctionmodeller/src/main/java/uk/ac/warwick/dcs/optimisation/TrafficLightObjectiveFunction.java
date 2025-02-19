@@ -14,10 +14,9 @@ public class TrafficLightObjectiveFunction implements IGradientFunction {
     // Convert flow from vehicles per hour (vph) to vehicles per second (vps)
     // Using integer division here
     private int convertFlowToVps(int flowVph) {
-        return flowVph / 3600;  // Convert from vehicles per hour to vehicles per second (integer division)
+        return flowVph / 3600; 
     }
 
-    // Evaluate the objective function (total wait time) at the current state (timings)
     @Override
     public int evaluateAt(SimpleMatrix state) {
         int totalWaitTime = 0;  // Using int for total wait time 
