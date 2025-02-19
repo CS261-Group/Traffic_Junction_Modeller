@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package uk.ac.warwick.dcs.serialisation;
+package uk.ac.warwick.dcs.dataproc.serialisation;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
