@@ -13,10 +13,9 @@ public class CycleTimeObjectiveFunction implements IGradientFunction {
         this.groupMaxOutgoingFlow = groupMaxOutgoingFlow;
     }
 
-    // Convert flow from vehicles per hour (vph) to vehicles per second (vps)
-    // Here, we assume the calculation will work without floating-point division
+
     private int convertFlowToVps(int flowVph) {
-        return flowVph / 3600;  // Convert from vehicles per hour to vehicles per second (integer division)
+        return flowVph / 3600;  // Convert from vehicles per hour to vehicles per second 
     }
 
     // Evaluate the objective function (total waiting time) for a given set of cycle times
