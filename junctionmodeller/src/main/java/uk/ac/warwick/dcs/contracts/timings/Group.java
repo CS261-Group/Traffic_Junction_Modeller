@@ -12,4 +12,6 @@ public class Group {
         this.groupNum = groupNum;
         this.lanes = lanes;
     }
+
+    public int getGroupNum() { return groupNum; }
 }

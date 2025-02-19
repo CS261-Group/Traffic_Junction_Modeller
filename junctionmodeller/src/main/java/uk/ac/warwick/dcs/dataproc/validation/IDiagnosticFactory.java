@@ -8,4 +8,5 @@ public interface IDiagnosticFactory {
     String createInvalidPermittedDirectionsMessage(Direction direction, int laneNum);
     String createInvalidNumLanesMessage(Direction direction, String type);
     String createOutgoingFlowErrorMessage(Direction direction, boolean[] validDirections);
+    String createInvalidGroupNumMessage(int groupNum);
 }
