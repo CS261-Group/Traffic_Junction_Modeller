@@ -1,23 +1,17 @@
 package uk.ac.warwick.dcs.ui;
 
-<<<<<<< HEAD
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
-import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
 import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
 import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
 
-import javax.swing.*;
 import java.awt.Font;
-=======
->>>>>>> origin/EthanUpdate
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,16 +21,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.dataproc.serialisation.Loader;
 import uk.ac.warwick.dcs.dataproc.serialisation.Saver;
-import uk.ac.warwick.dcs.ui.formdata.DirectionData;
-import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
-import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
-import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
 import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
-import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
-import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
 
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
@@ -132,18 +119,14 @@ public class MainForm extends JFrame {
 //        });
         TrafficLightData trafficLightData = trafficLightPanel.getValue();
 
-<<<<<<< HEAD
         ConfigurationData configData = new ConfigurationData(directionData, trafficLightData);
 
         List<String> errors = dataService.submitEnteredConfiguration(configData);
 
         // TODO: handle errors with a scrollable modal
-=======
-        TrafficLightData trafficLightData = trafficLightPanel.getValue();
         saver = new Saver();
         saver.saveFile(directionData, trafficLightData);
         System.out.println("Data collected");
->>>>>>> origin/EthanUpdate
     }
 
     private void onLoad(){

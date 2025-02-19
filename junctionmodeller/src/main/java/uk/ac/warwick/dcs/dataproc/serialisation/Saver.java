@@ -65,6 +65,7 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
         fileCount = readFileCount();
      }
 
+     // TODO: this function should take in contracts (JunctionConfiguration)
      @Override
      public void saveFile(DirectionData[] directionData, TrafficLightData trafficLightData){
          DirectionData northboundData = directionData[0];
@@ -73,11 +74,12 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
          DirectionData westboundData = directionData[3];
          this.trafficLightData = trafficLightData;
 
-         InputConfiguration inputConfiguration = new InputConfiguration(northboundData.arrivalFlows(), northboundData.availableDirections(), northboundData.departureFlows(), eastboundData.arrivalFlows(), eastboundData.availableDirections(), eastboundData.departureFlows(), southboundData.arrivalFlows(), southboundData.availableDirections(),southboundData.departureFlows(), westboundData.arrivalFlows(),westboundData.availableDirections(),westboundData.departureFlows(),trafficLightData.type(),trafficLightData.numGroups(), trafficLightData.directionalLaneGroups());
-         Gson gson = new Gson();
-         String json = gson.toJson(inputConfiguration);
-         
-         convertAndUploadFile(json);
+         // TODO: change to use JunctionConfiguration
+//         InputConfiguration inputConfiguration = new InputConfiguration(northboundData.arrivalFlows(), northboundData.availableDirections(), northboundData.departureFlows(), eastboundData.arrivalFlows(), eastboundData.availableDirections(), eastboundData.departureFlows(), southboundData.arrivalFlows(), southboundData.availableDirections(),southboundData.departureFlows(), westboundData.arrivalFlows(),westboundData.availableDirections(),westboundData.departureFlows(),trafficLightData.type(),trafficLightData.numGroups(), trafficLightData.directionalLaneGroups());
+//         Gson gson = new Gson();
+//         String json = gson.toJson(inputConfiguration);
+//
+//         convertAndUploadFile(json);
            
          
      }

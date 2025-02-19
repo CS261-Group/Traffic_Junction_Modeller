@@ -6,6 +6,7 @@ import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 class DataService implements IDataService {
@@ -29,9 +30,17 @@ class DataService implements IDataService {
             assert errors != null;
         }
 
+        // if errors are found, return them before advancing
+        if (!errors.isEmpty()) {
+            return errors;
+        }
+
+        // TODO: save to a file containing JunctionConfiguration
+
         // TODO: create a model instance
 
-        return errors;
+        // if no errors, return empty list
+        return List.of();
     }
 
     @Override
