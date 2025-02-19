@@ -20,42 +20,42 @@ public class CycleTimeObjectiveFunction implements IGradientFunction {
 
     // Evaluate the objective function (total waiting time) for a given set of cycle times
     @Override
-    public double evaluateAt(SimpleMatrix state) {
-        int totalWaitTime = 0; 
-
-        // Iterate over each traffic light group to compute waiting time
-        for (int i = 0; i < state.numElements(); i++) {
-            int cycleTime = (int) state.get(i);  // Cycle time allocated to group i (in seconds)
-            int[] incomingFlow = groupIncomingFlows[i];  // Incoming flow for this group
-            int[] maxOutgoingFlow = groupMaxOutgoingFlow[i];  // Max outgoing flow (saturation) for this group
-
-            // Calculate the total incoming flow (converted to vehicles per second)
-            int totalIncomingFlow = 0;
-            for (int j = 0; j < incomingFlow.length; j++) {
-                totalIncomingFlow += convertFlowToVps(incomingFlow[j]);
-            }
-
-            // Calculate the total outgoing flow (converted to vehicles per second)
-            int totalOutgoingFlow = 0;
-            for (int j = 0; j < maxOutgoingFlow.length; j++) {
-                totalOutgoingFlow += convertFlowToVps(maxOutgoingFlow[j]);
-            }
-
-            // Compute waiting time for vehicles in this group (simplified)
-            int waitTime = (totalIncomingFlow - totalOutgoingFlow) * cycleTime;  // Ensure no overflow
-            totalWaitTime += waitTime;
-        }
-
-        return totalWaitTime;  // Return the total waiting time for all groups
+    public SimpleMatrix evaluateAt(SimpleMatrix state) {
+//        int totalWaitTime = 0;
+//
+//        // Iterate over each traffic light group to compute waiting time
+//        for (int i = 0; i < state.getNumElements(); i++) {
+//            int cycleTime = (int) state.get(i);  // Cycle time allocated to group i (in seconds)
+//            int[] incomingFlow = groupIncomingFlows[i];  // Incoming flow for this group
+//            int[] maxOutgoingFlow = groupMaxOutgoingFlow[i];  // Max outgoing flow (saturation) for this group
+//
+//            // Calculate the total incoming flow (converted to vehicles per second)
+//            int totalIncomingFlow = 0;
+//            for (int j = 0; j < incomingFlow.length; j++) {
+//                totalIncomingFlow += convertFlowToVps(incomingFlow[j]);
+//            }
+//
+//            // Calculate the total outgoing flow (converted to vehicles per second)
+//            int totalOutgoingFlow = 0;
+//            for (int j = 0; j < maxOutgoingFlow.length; j++) {
+//                totalOutgoingFlow += convertFlowToVps(maxOutgoingFlow[j]);
+//            }
+//
+//            // Compute waiting time for vehicles in this group (simplified)
+//            int waitTime = (totalIncomingFlow - totalOutgoingFlow) * cycleTime;  // Ensure no overflow
+//            totalWaitTime += waitTime;
+//        }
+//
+//        return totalWaitTime;  // Return the total waiting time for all groups
+        return SimpleMatrix.identity(2); // TODO: removed
     }
 
     // Compute the gradient (partial derivatives) with respect to each cycle time
-    @Override
     public SimpleMatrix evaluateGradientAt(SimpleMatrix state) {
-        SimpleMatrix gradient = new SimpleMatrix(1, state.numElements());
+        SimpleMatrix gradient = new SimpleMatrix(1, state.getNumElements());
 
         // Iterate over each group to compute the gradient
-        for (int i = 0; i < state.numElements(); i++) {
+        for (int i = 0; i < state.getNumElements(); i++) {
             int cycleTime = (int) state.get(i);  // Cycle time for this group
             int[] incomingFlow = groupIncomingFlows[i];
             int[] maxOutgoingFlow = groupMaxOutgoingFlow[i];

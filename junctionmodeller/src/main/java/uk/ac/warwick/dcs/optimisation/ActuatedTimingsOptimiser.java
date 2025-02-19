@@ -11,7 +11,6 @@ public class ActuatedTimingsOptimiser implements ITrafficLightTimingsOptimiser {
         return new int[] {};  //max duration for each direction
     }
 
-    @Override
     public int[] getMinGroupTimings() {
         // Assume min timings for actuated traffic light groups
         return new int[] {};  //min duration for each direction

@@ -33,7 +33,8 @@ public class Optimiser {
     }
 
     public double getCycleTime() {
-        return cycleTimeOptimiser.getCycleTime();
+//        return cycleTimeOptimiser.getCycleTime();
+        return 0.0D;
     }
 
     public void optimiseTrafficLights() {

@@ -16,32 +16,32 @@ public class ActuatedTrafficLightObjectiveFunction implements IGradientFunction 
     }
 
     @Override
-    public int evaluateAt(SimpleMatrix state) {
-        int totalWaitTime = 0;
-
-        // Iterate over each direction's traffic light to compute the waiting time
-        for (int i = 0; i < state.numElements(); i++) {
-            int greenTime = (int) state.get(i);  // Green light duration for light i (in seconds)
-            int flowVps = convertFlowToVps(carFlowVph[i]);  // Convert flow to vehicles per second
-            int vehiclesArriving = flowVps * greenTime;  // Vehicles arriving during green light duration
-
-            // Compute the waiting time per vehicle during the green light (simplified)
-            int waitTimePerVehicle = greenTime / flowVps;
-
-            // Accumulate the total waiting time for all vehicles at this light
-            totalWaitTime += vehiclesArriving * waitTimePerVehicle;
-        }
-
-        return totalWaitTime;  // Return total waiting time for all vehicles
+    public SimpleMatrix evaluateAt(SimpleMatrix state) {
+//        int totalWaitTime = 0;
+//
+//        // Iterate over each direction's traffic light to compute the waiting time
+//        for (int i = 0; i < state.getNumElements(); i++) {
+//            int greenTime = (int) state.get(i);  // Green light duration for light i (in seconds)
+//            int flowVps = convertFlowToVps(carFlowVph[i]);  // Convert flow to vehicles per second
+//            int vehiclesArriving = flowVps * greenTime;  // Vehicles arriving during green light duration
+//
+//            // Compute the waiting time per vehicle during the green light (simplified)
+//            int waitTimePerVehicle = greenTime / flowVps;
+//
+//            // Accumulate the total waiting time for all vehicles at this light
+//            totalWaitTime += vehiclesArriving * waitTimePerVehicle;
+//        }
+//
+//        return totalWaitTime;  // Return total waiting time for all vehicles
+        return SimpleMatrix.identity(2); // TODO: remove
     }
 
     // Compute the gradient of the objective function (partial derivatives)
-    @Override
     public SimpleMatrix evaluateGradientAt(SimpleMatrix state) {
-        SimpleMatrix gradient = new SimpleMatrix(1, state.numElements());
+        SimpleMatrix gradient = new SimpleMatrix(1, state.getNumElements());
 
         // Iterate over each direction
-        for (int i = 0; i < state.numElements(); i++) {
+        for (int i = 0; i < state.getNumElements(); i++) {
             int greenTime = (int) state.get(i);  // Green light duration for this direction
             int flowVps = convertFlowToVps(carFlowVph[i]);  // Convert to vehicles per second
             int vehiclesArriving = flowVps * greenTime;
