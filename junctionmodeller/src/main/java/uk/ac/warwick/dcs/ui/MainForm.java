@@ -1,5 +1,6 @@
 package uk.ac.warwick.dcs.ui;
 
+<<<<<<< HEAD
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
@@ -13,10 +14,29 @@ import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
 
 import javax.swing.*;
 import java.awt.Font;
+=======
+>>>>>>> origin/EthanUpdate
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.dataproc.serialisation.Loader;
+import uk.ac.warwick.dcs.dataproc.serialisation.Saver;
+import uk.ac.warwick.dcs.ui.formdata.DirectionData;
+import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
+import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
+import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
+import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
+import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
+import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
 
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
@@ -34,6 +54,9 @@ public class MainForm extends JFrame {
     private DirectionPanel westboundPanel;
     private TrafficLightPanel trafficLightPanel;
     private SubmissionPanel submissionPanel;
+    private LoadingPanel loadingPanel;
+    private Saver saver;
+    private Loader loader;
 
     // data service to submit data to next layer
     private final IDataService dataService;
@@ -56,7 +79,7 @@ public class MainForm extends JFrame {
     private void setUp() {
         setTitle("Traffic Junction Configuration");
         setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        setResizable(false);
+        setResizable(true);
         setFont(labelFont);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -80,6 +103,8 @@ public class MainForm extends JFrame {
         submissionPanel = new SubmissionPanel(headingFont, labelFont);
         submissionPanel.setSubmissionAction((e) -> onSubmit());
 
+        loadingPanel = new LoadingPanel(headingFont,labelFont);
+        loadingPanel.setSubmissionAction((e) -> onLoad());
         // add panels and create window
         mainPanel.add(northboundPanel);
         mainPanel.add(eastboundPanel);
@@ -87,14 +112,14 @@ public class MainForm extends JFrame {
         mainPanel.add(westboundPanel);
         mainPanel.add(trafficLightPanel);
         mainPanel.add(submissionPanel);
-
+        mainPanel.add(loadingPanel);
         // construct window by adding singular main panel to
         // scrollable pane
         JScrollPane formContainer = new JScrollPane(mainPanel);
         formContainer.getVerticalScrollBar().setUnitIncrement(16);
         add(formContainer, BorderLayout.CENTER);
         setVisible(true);
-
+        
     }
 
     private void onSubmit() {
@@ -107,10 +132,25 @@ public class MainForm extends JFrame {
 //        });
         TrafficLightData trafficLightData = trafficLightPanel.getValue();
 
+<<<<<<< HEAD
         ConfigurationData configData = new ConfigurationData(directionData, trafficLightData);
 
         List<String> errors = dataService.submitEnteredConfiguration(configData);
 
         // TODO: handle errors with a scrollable modal
+=======
+        TrafficLightData trafficLightData = trafficLightPanel.getValue();
+        saver = new Saver();
+        saver.saveFile(directionData, trafficLightData);
+        System.out.println("Data collected");
+>>>>>>> origin/EthanUpdate
     }
+
+    private void onLoad(){
+        String path = loadingPanel.getValue();
+        loader = new Loader();
+        loader.LoadFile(path);
+    }
+    
+    
 }

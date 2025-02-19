@@ -44,4 +44,9 @@ public class DiagnosticFactory implements IDiagnosticFactory {
 
         return "No lane permits direction(s) {" + directions + "} from direction: " + direction.toString();
     }
+
+    @Override
+    public String createInvalidGroupNumMessage(int groupNum) {
+        return "Invalid group number: " + groupNum;
+    }
 }
