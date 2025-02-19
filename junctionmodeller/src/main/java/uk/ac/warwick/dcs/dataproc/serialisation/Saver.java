@@ -15,17 +15,19 @@ import com.google.gson.Gson;
 
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
- /**
+ 
+/**
   *
   * @author eyhli
   */
  public class Saver implements ISaver{
      //so we don't get overalapping file names
      int fileCount;
+     TrafficLightData trafficLightData;
 
      public void updateFileCount(){
         //because a new saver is instantiated at each run, I need a file to store the number of files made since each instance of saver gets erased when program is closed
-        String filePath = "src/main/java/uk/ac/warwick/dcs/serialisation/fileCount.bin";
+        String filePath = "src/main/java/uk/ac/warwick/dcs/dataproc/serialisation/fileCount.bin";
         File file = new File(filePath);
         
         try (DataOutputStream countFile = new DataOutputStream(new FileOutputStream(file))){
@@ -37,7 +39,7 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
         
      }
      public int readFileCount(){
-        String filePath = "src/main/java/uk/ac/warwick/dcs/serialisation/fileCount.bin";
+        String filePath = "src/main/java/uk/ac/warwick/dcs/dataproc/serialisation/fileCount.bin";
         File file = new File(filePath);
         if (!file.exists()) {
             //create file to store fileCount
@@ -69,7 +71,9 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
          DirectionData eastboundData = directionData[1];
          DirectionData southboundData = directionData[2];
          DirectionData westboundData = directionData[3];
-         InputConfiguration inputConfiguration = new InputConfiguration(northboundData.arrivalFlows(), northboundData.availableDirections(), northboundData.departureFlows(), eastboundData.arrivalFlows(), eastboundData.availableDirections(), eastboundData.departureFlows(), southboundData.arrivalFlows(), southboundData.availableDirections(),southboundData.departureFlows(), westboundData.arrivalFlows(),westboundData.availableDirections(),westboundData.departureFlows());
+         this.trafficLightData = trafficLightData;
+
+         InputConfiguration inputConfiguration = new InputConfiguration(northboundData.arrivalFlows(), northboundData.availableDirections(), northboundData.departureFlows(), eastboundData.arrivalFlows(), eastboundData.availableDirections(), eastboundData.departureFlows(), southboundData.arrivalFlows(), southboundData.availableDirections(),southboundData.departureFlows(), westboundData.arrivalFlows(),westboundData.availableDirections(),westboundData.departureFlows(),trafficLightData.type(),trafficLightData.numGroups(), trafficLightData.directionalLaneGroups());
          Gson gson = new Gson();
          String json = gson.toJson(inputConfiguration);
          

@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 
-package uk.ac.warwick.dcs.serialisation;
+package uk.ac.warwick.dcs.dataproc.serialisation;
 
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;

@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 
-package uk.ac.warwick.dcs.serialisation;
+package uk.ac.warwick.dcs.dataproc.serialisation;
 
 /**
  *
@@ -11,4 +11,5 @@ package uk.ac.warwick.dcs.serialisation;
  */
 public interface ILoader {
     public InputConfiguration LoadFile(String jsonstr);
+    public String getLoadErrors();
 }
