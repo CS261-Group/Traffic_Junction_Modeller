@@ -8,6 +8,8 @@ import org.ejml.simple.SimpleMatrix;
  * And moves an internal state of values down a slope
  * of any number of dimensions.
  *
+ * All vectors are row vectors
+ *
  * @param <F>   differentiated evaluation function
  */
 public class GradientDescent<F extends IGradientFunction> {
@@ -26,7 +28,7 @@ public class GradientDescent<F extends IGradientFunction> {
     private SimpleMatrix maskVector;
 
     /** differentiated evaluation function */
-    private F NablaF;
+    private F delF;
 
     /**
      * No mask construction, uses an empty mask.
@@ -37,7 +39,7 @@ public class GradientDescent<F extends IGradientFunction> {
      */
     public GradientDescent(float[] initialState, F gradientFunction){
         stateVector = new SimpleMatrix(initialState);
-        NablaF = gradientFunction;
+        delF = gradientFunction;
         maskVector = this.createEmptyMaskVector(initialState.length);
     }
 
@@ -47,7 +49,7 @@ public class GradientDescent<F extends IGradientFunction> {
      */
     public GradientDescent(float[] initialState, F gradientFunction, boolean[] variableMask){
         stateVector = new SimpleMatrix(initialState);
-        NablaF = gradientFunction;
+        delF = gradientFunction;
         maskVector = this.maskArrayToVector(variableMask);
     }
 
@@ -66,7 +68,7 @@ public class GradientDescent<F extends IGradientFunction> {
      * algorithm, with the addition of a mask to prevent changes to variables
      */
     public void nextState(){
-        SimpleMatrix gradientVector = new SimpleMatrix(NablaF.evaluateAt(stateVector));
+        SimpleMatrix gradientVector = delF.evaluateAt(stateVector);
         stateVector = stateVector.minus(gradientVector.elementMult(maskVector).scale(STEPSIZE));
     }
 
@@ -93,8 +95,8 @@ public class GradientDescent<F extends IGradientFunction> {
 
         for (int i = 0; i < variableMask.length; i++){
             if (!variableMask[i]){
-                //set row i in column vector to 0
-                mask.set(i,0,0);
+                //set column i in row vector to 0
+                mask.set(0,i,0);
             }
         }
         return mask;
@@ -109,4 +111,5 @@ public class GradientDescent<F extends IGradientFunction> {
     private SimpleMatrix createEmptyMaskVector(int length){
         return SimpleMatrix.ones(1,length);
     }
+
 }
