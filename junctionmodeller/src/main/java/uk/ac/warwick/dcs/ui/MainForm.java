@@ -12,11 +12,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.serialisation.Loader;
 import uk.ac.warwick.dcs.serialisation.Saver;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
+import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
 import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
 import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
 
@@ -36,7 +38,9 @@ public class MainForm extends JFrame {
     private DirectionPanel westboundPanel;
     private TrafficLightPanel trafficLightPanel;
     private SubmissionPanel submissionPanel;
+    private LoadingPanel loadingPanel;
     private Saver saver;
+    private Loader loader;
 
     public MainForm() {
         // we need to initialise the factories before we
@@ -55,7 +59,7 @@ public class MainForm extends JFrame {
     private void setUp() {
         setTitle("Traffic Junction Configuration");
         setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        setResizable(false);
+        setResizable(true);
         setFont(labelFont);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -79,6 +83,8 @@ public class MainForm extends JFrame {
         submissionPanel = new SubmissionPanel(headingFont, labelFont);
         submissionPanel.setSubmissionAction((e) -> onSubmit());
 
+        loadingPanel = new LoadingPanel(headingFont,labelFont);
+        loadingPanel.setSubmissionAction((e) -> onLoad());
         // add panels and create window
         mainPanel.add(northboundPanel);
         mainPanel.add(eastboundPanel);
@@ -86,14 +92,14 @@ public class MainForm extends JFrame {
         mainPanel.add(westboundPanel);
         mainPanel.add(trafficLightPanel);
         mainPanel.add(submissionPanel);
-
+        mainPanel.add(loadingPanel);
         // construct window by adding singular main panel to
         // scrollable pane
         JScrollPane formContainer = new JScrollPane(mainPanel);
         formContainer.getVerticalScrollBar().setUnitIncrement(16);
         add(formContainer, BorderLayout.CENTER);
         setVisible(true);
-
+        
     }
 
     private void onSubmit() {
@@ -106,8 +112,15 @@ public class MainForm extends JFrame {
         });
 
         TrafficLightData trafficLightData = trafficLightPanel.getValue();
-        saver.SaveFile(directionData, trafficLightData);
+        saver = new Saver();
+        saver.saveFile(directionData, trafficLightData);
         System.out.println("Data collected");
+    }
+
+    private void onLoad(){
+        String path = loadingPanel.getValue();
+        loader = new Loader();
+        loader.LoadFile(path);
     }
     
     

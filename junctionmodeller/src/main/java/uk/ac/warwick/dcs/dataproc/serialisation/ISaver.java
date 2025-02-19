@@ -13,5 +13,5 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
  * @author eyhli
  */
 public interface ISaver {
-    public void SaveFile(DirectionData[] directionData, TrafficLightData trafficLightData);
+    public void saveFile(DirectionData[] directionData, TrafficLightData trafficLightData);
 }
