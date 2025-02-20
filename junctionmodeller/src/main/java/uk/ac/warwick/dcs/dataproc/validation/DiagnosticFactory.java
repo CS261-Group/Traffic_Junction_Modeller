@@ -49,4 +49,9 @@ public class DiagnosticFactory implements IDiagnosticFactory {
     public String createInvalidGroupNumMessage(int groupNum) {
         return "Invalid group number: " + groupNum;
     }
+
+    @Override
+    public String createInvalidLaneAssignmentMessage() {
+        return "Not all of the junction's incoming lanes are assigned to a group.";
+    }
 }

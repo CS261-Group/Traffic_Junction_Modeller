@@ -14,4 +14,8 @@ public class Group {
     }
 
     public int getGroupNum() { return groupNum; }
+
+    public boolean containsLane(IncomingLane lane) {
+        return lanes.contains(lane);
+    }
 }

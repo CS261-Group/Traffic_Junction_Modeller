@@ -12,12 +12,14 @@ public class JunctionValidator extends Validator<JunctionConfiguration> {
     private final IValidator<Carriageway> carriagewayValidator;
     private final IValidator<TrafficLight> trafficLightValidator;
     private final IValidator<Groups> groupsValidator;
+    private final IValidator<JunctionConfiguration> laneAssignmentValidator;
 
     public JunctionValidator(IDiagnosticFactory diagnosticFactory) {
         super(diagnosticFactory);
         carriagewayValidator = new CarriagewayValidator(diagnosticFactory);
         trafficLightValidator = new TrafficLightValidator(diagnosticFactory);
         groupsValidator = new GroupsValidator(diagnosticFactory);
+        laneAssignmentValidator = new LaneAssignmentValidator(diagnosticFactory);
     }
 
     @Override
@@ -36,6 +38,9 @@ public class JunctionValidator extends Validator<JunctionConfiguration> {
 
         // validate groups
         errors.addAll(groupsValidator.validate(config.getGroups()));
+
+        // validate lane assignments
+        errors.addAll(laneAssignmentValidator.validate(config));
 
         return errors;
     }
