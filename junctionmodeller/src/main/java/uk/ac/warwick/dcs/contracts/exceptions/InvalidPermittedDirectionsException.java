@@ -2,6 +2,10 @@ package uk.ac.warwick.dcs.contracts.exceptions;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 
+/**
+ * Thrown if the available directions set for an incoming lane are not
+ * in a valid format.
+ */
 public class InvalidPermittedDirectionsException extends Exception {
     public InvalidPermittedDirectionsException(Direction direction, boolean[] directions) {
         super("Invalid configuration of directions " +

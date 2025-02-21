@@ -6,6 +6,14 @@ import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
 
+/**
+ * Object storing all aspects of configurations and settings taken from the user
+ * or input file about a junction that is to be modeled/analysed. This object
+ * contains references to its constituent:
+ * - carriageways
+ * - traffic lights
+ * - traffic groups
+ */
 public class JunctionConfiguration implements Iterable<Carriageway> {
     private final Carriageway[] carriageways;
 
@@ -22,8 +30,16 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
         groups = g;
     }
 
+    /**
+     * Getter for contained <code>TrafficLights</code> object.
+     * @return The contained <code>TrafficLights</code> object.
+     */
     public TrafficLight getTrafficLights() { return trafficLights; }
 
+    /**
+     * Getter for <code>Groups</code> object.
+     * @return The contained <code>Groups</code> object.
+     */
     public Groups getGroups() { return groups; }
 
     @Override

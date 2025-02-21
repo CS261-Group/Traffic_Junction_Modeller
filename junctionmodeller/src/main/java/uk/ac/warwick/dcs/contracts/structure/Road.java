@@ -18,6 +18,10 @@ abstract class Road<TLane extends Lane> implements Iterable<TLane> {
         return lanes.iterator();
     }
 
+    /**
+     *
+     * @return The number of lanes of this road.
+     */
     public int numLanes() {
         return lanes.size();
     }

@@ -3,10 +3,28 @@ package uk.ac.warwick.dcs.contracts.timings;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Object used to store lanes that are part of each traffic
+ * group (i.e., the set of lanes that turn green together).
+ * This is our solution for filters.
+ */
 public class Groups implements Iterable<Group> {
     // global constants for UI and validation
+    /**
+     * Largest possible group number.
+     */
     public static final int MAX_GROUP_NUM = 6;
+
+    /**
+     * Smallest possible group number.
+     */
     public static final int MIN_GROUP_NUM = 1;
+
+    /**
+     * Smallest number of groups possible.
+     * TODO: test for this when building groups
+     */
+    public static final int MIN_NUM_GROUPS = 2;
 
     private final int numGroups;
     private final List<Group> groups;
@@ -30,6 +48,10 @@ public class Groups implements Iterable<Group> {
         }
     }
 
+    /**
+     *
+     * @return The number of traffic light groups in the configuration.
+     */
     public int getNumGroups() { return numGroups; }
 
     @Override
