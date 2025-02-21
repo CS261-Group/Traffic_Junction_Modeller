@@ -13,17 +13,28 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CarriagewayBuilder implements ICarriagewayBuilder {
+    /**
+     * Value used for unassigned flow values, used to check for compulsory
+     * flow settings.
+     */
     private static final int UNASSIGNED_FLOW = -1;
 
+    /**
+     * The incoming direction of the carriageway. (e.g., Direction.NORTH for the
+     * northbound carriageway).
+     */
     private final Direction direction;
 
+    /**
+     * Factory used to generate lanes easily.
+     */
     private final LaneFactory laneFactory;
+
+    // settings
     private final List<OutgoingLane> outgoingLanes;
     private final List<IncomingLane> incomingLanes;
     private boolean pedestrianCrossing;
     private boolean busLane;
-
-    // flow parameters
     private int incomingFlow;
     private final int[] outgoingFlows;
 

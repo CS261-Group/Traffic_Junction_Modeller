@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.contracts.builders;
 
 import uk.ac.warwick.dcs.contracts.exceptions.IncompleteBuildSettingsException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupTimingException;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.contracts.timings.Group;
 import uk.ac.warwick.dcs.contracts.timings.GroupTiming;
@@ -12,8 +13,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GroupBuilder implements IGroupBuilder {
+    /**
+     * Value used to identify unassigned timing values.
+     */
     private final static int UNASSIGNED_TIMING = -1;
 
+    // settings
     private int numGroups;
     private boolean optimising;
     private LinkedList<IncomingLane>[] groupLanes;
@@ -45,7 +50,10 @@ public class GroupBuilder implements IGroupBuilder {
     }
 
     @Override
-    public IGroupBuilder addLaneToGroup(IncomingLane lane, int groupNum) throws InvalidGroupNumberException {
+    public IGroupBuilder addLaneToGroup(IncomingLane lane, int groupNum) throws InvalidGroupNumberException, IncompleteBuildSettingsException {
+        if (!numGroupsAssigned) {
+            throw new IncompleteBuildSettingsException("number of groups", "setNumGroups");
+        }
         if (0 >= groupNum || groupNum >= numGroups) {
             throw new InvalidGroupNumberException(groupNum, numGroups);
         }
@@ -54,9 +62,16 @@ public class GroupBuilder implements IGroupBuilder {
     }
 
     @Override
-    public IGroupBuilder setGroupTiming(int timing, int groupNum) throws InvalidGroupNumberException {
+    public IGroupBuilder setGroupTiming(int timing, int groupNum) throws InvalidGroupNumberException, InvalidGroupTimingException, IncompleteBuildSettingsException {
+        if (!numGroupsAssigned) {
+            throw new IncompleteBuildSettingsException("number of groups", "setNumGroups");
+        }
+
         if (0 >= groupNum || groupNum >= numGroups) {
             throw new InvalidGroupNumberException(groupNum, numGroups);
+        }
+        if (timing < GroupTiming.MIN_GROUP_TIMING || timing > GroupTiming.MAX_GROUP_TIMING) {
+            throw new InvalidGroupTimingException(groupNum, timing);
         }
         groupTimings[groupNum - 1] = timing;
         return this;

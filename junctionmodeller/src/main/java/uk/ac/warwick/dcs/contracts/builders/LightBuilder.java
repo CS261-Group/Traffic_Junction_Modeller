@@ -7,8 +7,9 @@ import uk.ac.warwick.dcs.contracts.lights.FixedCycleTrafficLight;
 import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 
 public class LightBuilder implements ILightBuilder {
+    // settings
     private TrafficLightType lightType;
-    private boolean lightTypeAssigned = false;
+    private boolean lightTypeAssigned = false; // used to check compulsory assignment
 
     @Override
     public ILightBuilder setTrafficLightType(TrafficLightType type) {

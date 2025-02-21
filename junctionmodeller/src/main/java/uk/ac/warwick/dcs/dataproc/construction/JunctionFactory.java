@@ -29,7 +29,7 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
         carriagewayBuilders[Direction.WEST.ordinal()] = new CarriagewayBuilder(Direction.WEST);
     }
 
-    private Groups readGroups(Carriageway[] carriageways, int numGroups, GroupTimings groupTimingsObj, LaneGroups[] laneGroupsArr) throws InvalidGroupNumberException, IncompleteBuildSettingsException {
+    private Groups readGroups(Carriageway[] carriageways, int numGroups, GroupTimings groupTimingsObj, LaneGroups[] laneGroupsArr) throws InvalidGroupNumberException, IncompleteBuildSettingsException, InvalidGroupTimingException {
         // optimise if chosen to and set the number of groups
         groupBuilder
                 .setOptimiseTimings(groupTimingsObj.optimise())
@@ -112,7 +112,7 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
     @Override
     public JunctionConfiguration createJunction(ConfigurationData data) throws InvalidDirectionException,
             InvalidGroupNumberException, InvalidFlowValueException, IncompleteBuildSettingsException,
-            InvalidPermittedDirectionsException {
+            InvalidPermittedDirectionsException, InvalidGroupTimingException {
         // unpack configuration data
         TrafficLightData trafficLightData = data.trafficLightData();
         DirectionData[] directionData = data.directionData();

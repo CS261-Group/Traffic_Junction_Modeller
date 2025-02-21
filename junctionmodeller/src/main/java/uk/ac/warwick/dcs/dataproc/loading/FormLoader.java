@@ -27,6 +27,8 @@ public class FormLoader implements ILoader {
             error = ex.getMessage();
         } catch (InvalidGroupNumberException ex) {
             error = ex.getMessage();
+        } catch (InvalidGroupTimingException ex) {
+            error = ex.getMessage();
         } catch (InvalidFlowValueException ex) {
             error = ex.getMessage();
         } catch (IncompleteBuildSettingsException ex) {
