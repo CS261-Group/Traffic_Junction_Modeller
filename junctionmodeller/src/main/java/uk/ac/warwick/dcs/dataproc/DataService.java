@@ -2,18 +2,21 @@ package uk.ac.warwick.dcs.dataproc;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.dataproc.loading.FormLoader;
+import uk.ac.warwick.dcs.dataproc.serialisation.Saver;
 import uk.ac.warwick.dcs.dataproc.validation.IValidator;
+import uk.ac.warwick.dcs.model.IModelContainer;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 class DataService implements IDataService {
     private final IValidator<JunctionConfiguration> validator;
+    private final IModelContainer modelContainer;
 
-    public DataService(IValidator<JunctionConfiguration> validator) {
+    public DataService(IValidator<JunctionConfiguration> validator, IModelContainer modelContainer) {
         this.validator = validator;
+        this.modelContainer = modelContainer;
     }
 
     @Override
@@ -36,8 +39,10 @@ class DataService implements IDataService {
         }
 
         // TODO: save to a file containing JunctionConfiguration
+        Saver saver = new Saver();
 
-        // TODO: create a model instance
+        // TODO: create a model instance asynchronously
+        modelContainer.addModel(junctionConfig);
 
         // if no errors, return empty list
         return List.of();

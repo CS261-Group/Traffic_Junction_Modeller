@@ -25,6 +25,9 @@ import uk.ac.warwick.dcs.dataproc.serialisation.Loader;
 import uk.ac.warwick.dcs.dataproc.serialisation.Saver;
 import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
 
+/**
+ * Main entrypoint object for program. Contains all the form data.
+ */
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
     private static final int MINIMUM_FONT_SIZE = 14;
@@ -60,9 +63,6 @@ public class MainForm extends JFrame {
         setUp();
     }
 
-    /**
-     * Set up UI elements for the form.
-     */
     private void setUp() {
         setTitle("Traffic Junction Configuration");
         setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
@@ -109,6 +109,11 @@ public class MainForm extends JFrame {
         
     }
 
+    /**
+     * Action method for clicking the 'submit' button.
+     * Effectively fetches the data stored across the
+     * form and invokes the data service.
+     */
     private void onSubmit() {
         DirectionData[] directionData = Arrays.stream(new DirectionPanel[]{
                 northboundPanel, eastboundPanel, southboundPanel, westboundPanel
@@ -122,11 +127,12 @@ public class MainForm extends JFrame {
         ConfigurationData configData = new ConfigurationData(directionData, trafficLightData);
 
         List<String> errors = dataService.submitEnteredConfiguration(configData);
+        assert errors != null;
 
-        // TODO: handle errors with a scrollable modal
-        saver = new Saver();
-        saver.saveFile(directionData, trafficLightData);
-        System.out.println("Data collected");
+        // TODO: handle errors in UI, show to user
+        for (String error : errors) {
+            System.out.println(error);
+        }
     }
 
     private void onLoad(){

@@ -63,21 +63,22 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
     }
 
     public ICarriagewayBuilder setIncomingFlow(int newIncomingFlow) throws InvalidFlowValueException {
-        if (IncomingRoad.MINIMUM_INCOMING_FLOW > incomingFlow) {
-            throw new InvalidFlowValueException(newIncomingFlow, "outgoing");
+        if (IncomingRoad.MINIMUM_INCOMING_FLOW > newIncomingFlow) {
+            throw new InvalidFlowValueException(direction, newIncomingFlow, "incoming");
         }
         incomingFlow = newIncomingFlow;
         return this;
     }
 
-    public ICarriagewayBuilder setOutgoingFlow(int outgoingFlow, Direction flowDirection) throws InvalidDirectionException, InvalidFlowValueException {
+    public ICarriagewayBuilder setOutgoingFlow(int newOutgoingFlow, Direction flowDirection)
+            throws InvalidDirectionException, InvalidFlowValueException {
         if (flowDirection == direction) {
-            throw new InvalidDirectionException(flowDirection, "outgoing flow of carriageway with the same incoming direction");
+            throw new InvalidDirectionException(direction, "outgoing flow of carriageway with the same incoming direction");
         }
-        if (IncomingRoad.MINIMUM_OUTGOING_FLOW > outgoingFlow) {
-            throw new InvalidFlowValueException(outgoingFlow, "outgoing");
+        if (IncomingRoad.MINIMUM_OUTGOING_FLOW > newOutgoingFlow) {
+            throw new InvalidFlowValueException(direction, newOutgoingFlow, "outgoing");
         }
-        outgoingFlows[direction.ordinal()] = outgoingFlow;
+        outgoingFlows[flowDirection.ordinal()] = newOutgoingFlow;
         return this;
     }
 
@@ -101,7 +102,7 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
 
         // sum of outflows should equal sum of inflows
         if (Arrays.stream(outgoingFlows).sum() != incomingFlow) {
-            throw new IncompleteBuildSettingsException("Outgoing Flows", "CarriagewayBuilder.setIncomingFlow");
+            throw new IncompleteBuildSettingsException("Outgoing Flows", "CarriagewayBuilder.setOutgoingFlow");
         }
 
         OutgoingRoad outgoingRoad = new OutgoingRoad(direction, outgoingLanes);

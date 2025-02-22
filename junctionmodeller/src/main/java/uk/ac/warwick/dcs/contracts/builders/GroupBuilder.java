@@ -54,7 +54,7 @@ public class GroupBuilder implements IGroupBuilder {
         if (!numGroupsAssigned) {
             throw new IncompleteBuildSettingsException("number of groups", "setNumGroups");
         }
-        if (0 >= groupNum || groupNum >= numGroups) {
+        if (0 >= groupNum || groupNum > numGroups) {
             throw new InvalidGroupNumberException(groupNum, numGroups);
         }
         groupLanes[groupNum - 1].add(lane);
@@ -67,7 +67,7 @@ public class GroupBuilder implements IGroupBuilder {
             throw new IncompleteBuildSettingsException("number of groups", "setNumGroups");
         }
 
-        if (0 >= groupNum || groupNum >= numGroups) {
+        if (0 >= groupNum || groupNum > numGroups) {
             throw new InvalidGroupNumberException(groupNum, numGroups);
         }
         if (timing < GroupTiming.MIN_GROUP_TIMING || timing > GroupTiming.MAX_GROUP_TIMING) {
