@@ -115,17 +115,16 @@ public class MainForm extends JFrame {
      * form and invokes the data service.
      */
     private void onSubmit() {
+        // assemble required data
         DirectionData[] directionData = Arrays.stream(new DirectionPanel[]{
                 northboundPanel, eastboundPanel, southboundPanel, westboundPanel
         }).map(DirectionPanel::getValue).toArray(DirectionData[]::new);
 
-//        Arrays.stream(directionData).forEach(x -> {
-//            assert x.arrivalFlows().size() == x.availableDirections().size() && x.arrivalFlows().size() == x.departureFlows().size();
-//        });
         TrafficLightData trafficLightData = trafficLightPanel.getValue();
 
         ConfigurationData configData = new ConfigurationData(directionData, trafficLightData);
 
+        // submit configuration collected from form through data service
         List<String> errors = dataService.submitEnteredConfiguration(configData);
         assert errors != null;
 

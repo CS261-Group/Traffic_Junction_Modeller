@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.ui;
+package uk.ac.warwick.dcs.ui.util;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.events.LanesChangedListener;
@@ -7,6 +7,9 @@ import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import javax.swing.JComboBox;
 import java.util.List;
 
+/**
+ * Combo box specialised to alert a list of subscribers upon changing.
+ */
 public class LanesComboBox extends JComboBox<Integer> {
     private static final int DEFAULT_SELECTION = 2;
 

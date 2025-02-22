@@ -1,10 +1,10 @@
 package uk.ac.warwick.dcs.evaluation.metrics;
 
 public interface IMetric {
-    public double getAverageWaitTime();
-    public void updateAverageWaitTime();
-    public double getMaxQueueLength();
-    public void updateMaxQueueLength();
-    public double getMaxWaitTime();
-    public void updateMaxWaitTime();
+    double getAverageWaitTime();
+    void updateAverageWaitTime();
+    double getMaxQueueLength();
+    void updateMaxQueueLength();
+    double getMaxWaitTime();
+    void updateMaxWaitTime();
 }

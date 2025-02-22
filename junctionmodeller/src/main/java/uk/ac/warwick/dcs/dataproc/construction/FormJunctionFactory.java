@@ -13,12 +13,16 @@ import uk.ac.warwick.dcs.ui.formdata.*;
 
 import java.util.List;
 
-public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
+/**
+ * Concrete implementation of <code>IJunctionFactory</code> for taking
+ * form inputs from <code>ui</code> package.
+ */
+public class FormJunctionFactory implements IJunctionFactory<ConfigurationData> {
     private final ILightBuilder lightBuilder;
     private final IGroupBuilder groupBuilder;
     private final ICarriagewayBuilder[] carriagewayBuilders;
 
-    public JunctionFactory() {
+    public FormJunctionFactory() {
         lightBuilder = new LightBuilder();
         groupBuilder = new GroupBuilder();
         carriagewayBuilders = new CarriagewayBuilder[4];
@@ -29,13 +33,23 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
         carriagewayBuilders[Direction.WEST.ordinal()] = new CarriagewayBuilder(Direction.WEST);
     }
 
+    /**
+     * We through
+     * @param carriageways Array of all <code>Carriageway</code> objects used to
+     *                     access all the incoming lanes in the junction.
+     * @param numGroups The number of groups to configure.
+     * @param groupTimingsObj Relevant <code>GroupTimings</code> object.
+     * @param laneGroupsArr Array of <code>LaneGroups</code> object.
+     * @return The <code>Groups</code> object.
+     */
     private Groups readGroups(Carriageway[] carriageways, int numGroups, GroupTimings groupTimingsObj, LaneGroups[] laneGroupsArr) throws InvalidGroupNumberException, IncompleteBuildSettingsException, InvalidGroupTimingException {
         // optimise if chosen to and set the number of groups
         groupBuilder
                 .setOptimiseTimings(groupTimingsObj.optimise())
                 .setNumGroups(numGroups);
 
-        assert groupTimingsObj.groupTimings().size() == numGroups; // sanity check: as many group timings as
+        // sanity check: as many group timings as number of groups
+        assert groupTimingsObj.groupTimings().size() == numGroups;
         for (uk.ac.warwick.dcs.ui.formdata.GroupTiming timing : groupTimingsObj.groupTimings()) {
             groupBuilder.setGroupTiming(timing.time(), timing.groupNum());
         }
@@ -50,12 +64,30 @@ public class JunctionFactory implements IJunctionFactory<ConfigurationData> {
         return groupBuilder.buildGroups();
     }
 
-    private TrafficLight readTrafficLight(TrafficLightType type) throws IncompleteBuildSettingsException {
-        return lightBuilder
-                .setTrafficLightType(type)
-                .buildTrafficLight();
+    /**
+     *
+     * @param type Type of traffic light this junction uses.
+     * @return The instance of the built traffic light object.
+     */
+    private TrafficLight readTrafficLight(TrafficLightType type) {
+        try {
+            return lightBuilder
+                    .setTrafficLightType(type)
+                    .buildTrafficLight();
+        } catch (IncompleteBuildSettingsException ex) {
+            // sanity check: this must never happen since the only compulsory
+            // setting is passed in as a parameter
+            assert false;
+        }
+        return null;
     }
 
+    /**
+     *
+     * @param directionData The data of the lanes and flows in the direction
+     *                      of the carriageway we are building.
+     * @return The carriageway object built.
+     */
     private Carriageway readCarriageway(DirectionData directionData) throws InvalidDirectionException,
             InvalidFlowValueException, IncompleteBuildSettingsException, InvalidPermittedDirectionsException {
         // unpack direction data

@@ -3,7 +3,7 @@ package uk.ac.warwick.dcs.ui.panels;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.formdata.DirectionInputData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
-import uk.ac.warwick.dcs.ui.LanesComboBox;
+import uk.ac.warwick.dcs.ui.util.LanesComboBox;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 
 import javax.swing.*;

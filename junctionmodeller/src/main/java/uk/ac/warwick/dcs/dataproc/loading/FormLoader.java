@@ -2,11 +2,14 @@ package uk.ac.warwick.dcs.dataproc.loading;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.exceptions.*;
-import uk.ac.warwick.dcs.dataproc.construction.JunctionFactory;
+import uk.ac.warwick.dcs.dataproc.construction.FormJunctionFactory;
 import uk.ac.warwick.dcs.ui.formdata.*;
 
-import java.util.List;
-
+/**
+ * Implementation for <code>ILoader</code> interface used to
+ * load <code>JunctionConfiguration</code> from the UI main
+ * form.
+ */
 public class FormLoader implements ILoader {
     private final ConfigurationData configData;
     private String error;
@@ -19,7 +22,7 @@ public class FormLoader implements ILoader {
     @Override
     public JunctionConfiguration load() {
         // the builder we will construct the junction configuration with
-        JunctionFactory factory = new JunctionFactory();
+        FormJunctionFactory factory = new FormJunctionFactory();
 
         try {
             return factory.createJunction(configData);

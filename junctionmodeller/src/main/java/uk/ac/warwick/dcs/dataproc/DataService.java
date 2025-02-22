@@ -10,6 +10,9 @@ import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Concrete implementation of <code>IDataService</code> interface.
+ */
 class DataService implements IDataService {
     private final IValidator<JunctionConfiguration> validator;
     private final IModelContainer modelContainer;
