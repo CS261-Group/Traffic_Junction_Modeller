@@ -12,6 +12,10 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Panel used to get all relevant carriageway (structural) data from
+ * a single direction.
+ */
 public class DirectionPanel extends CustomPanel implements IReadablePanel<DirectionData> {
     private final Direction direction;
 //    private LaneArrivalFlowsPanel laneArrivalFlows;
@@ -37,7 +41,7 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
         // custom panels required for each section
         flowsPanel = new FlowsPanel(headingFont, labelFont, direction);
         flowsPanel.setAlignmentX(LEFT_ALIGNMENT);
-        laneDirections = new LaneDirectionsPanel(headingFont, labelFont, direction);
+        laneDirections = new LaneDirectionsPanel(headingFont, labelFont);
         laneDirections.setAlignmentX(LEFT_ALIGNMENT);
 
         // although this is first, it needs to be instantiated last so all the other

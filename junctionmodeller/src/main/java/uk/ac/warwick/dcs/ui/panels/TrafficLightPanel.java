@@ -15,6 +15,10 @@ import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.util.Arrays;
 
+/**
+ * Panel to choose the type of traffic light and the number of groups.
+ * Also contains the settings for assigning lanes to traffic light groups.
+ */
 public class TrafficLightPanel extends CustomPanel implements IReadablePanel<TrafficLightData>, ILaneChangedSubscriber {
     private final static int MAX_NUM_GROUPS = Groups.MAX_GROUP_NUM;
     private final static int MIN_NUM_GROUPS = Groups.MIN_GROUP_NUM; // there must be at least 2 groups in any case

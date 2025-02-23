@@ -7,7 +7,6 @@ import org.ejml.simple.SimpleMatrix;
  * fully partially differentiated evaluation function
  * And moves an internal state of values down a slope
  * of any number of dimensions.
- *
  * All vectors are row vectors
  *
  * @param <F>   differentiated evaluation function
@@ -15,11 +14,11 @@ import org.ejml.simple.SimpleMatrix;
 public class GradientDescent<F extends IGradientFunction> {
 
     /** number of iterations the algorithm makes */
-    private int ITERATIONS = 10;
+    private static final int ITERATIONS = 10;
 
     // arbitrary value chosen at the moment, will need fine-tuning
     /** the learning rate */
-    private double STEPSIZE = 0.1;
+    private static final double STEPSIZE = 0.1;
 
     /** Vector containing the current variable values */
     private SimpleMatrix stateVector;

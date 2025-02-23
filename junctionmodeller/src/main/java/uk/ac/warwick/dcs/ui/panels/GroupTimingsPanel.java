@@ -9,8 +9,13 @@ import java.awt.event.ItemEvent;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Panel used to determine whether we optimise signal timings and
+ * setting signal timings if the user chooses not to optimise the
+ * settings.
+ */
 public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<GroupTimings> {
-    private final List<GroupTimingSetting> timingFields;
+    private final List<GroupTimingSettingPanel> timingFields;
     private int numGroups;
     private JCheckBox optimiseCheckbox;
 
@@ -63,20 +68,20 @@ public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<Gro
         numGroups = newNumGroups;
         if (oldNumGroups < newNumGroups) {
             while (timingFields.size() != newNumGroups) {
-                GroupTimingSetting setting = new GroupTimingSetting(headingFont, labelFont, timingFields.size() + 1);
+                GroupTimingSettingPanel setting = new GroupTimingSettingPanel(headingFont, labelFont, timingFields.size() + 1);
                 add(setting);
                 timingFields.add(setting);
             }
         } else {
             while (timingFields.size() != newNumGroups) {
-                GroupTimingSetting removedSetting = timingFields.remove(timingFields.size() - 1);
+                GroupTimingSettingPanel removedSetting = timingFields.remove(timingFields.size() - 1);
                 remove(removedSetting);
             }
         }
     }
 
     private void setTimingsVisibility(boolean visible) {
-        for (GroupTimingSetting setting : timingFields) {
+        for (GroupTimingSettingPanel setting : timingFields) {
             setting.setVisible(visible);
         }
     }
@@ -85,7 +90,7 @@ public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<Gro
     public GroupTimings getValue() {
         return new GroupTimings(
                 optimiseCheckbox.isSelected(),
-                timingFields.stream().map(GroupTimingSetting::getValue).toList()
+                timingFields.stream().map(GroupTimingSettingPanel::getValue).toList()
         );
     }
 }

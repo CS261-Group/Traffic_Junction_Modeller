@@ -10,6 +10,9 @@ import javax.swing.*;
 import java.awt.Font;
 import java.util.Arrays;
 
+/**
+ * Panel used to enter incoming and outgoing flows for a single carriageway.
+ */
 public class FlowsPanel extends CustomPanel implements IReadablePanel<FlowData> {
     private final Direction direction;
     private final IntegerTextField[] textFields;

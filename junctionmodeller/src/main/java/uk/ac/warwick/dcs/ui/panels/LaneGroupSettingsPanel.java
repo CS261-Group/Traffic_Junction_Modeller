@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+/**
+ * Panel for assigning a single incoming lane to a single group.
+ */
 public class LaneGroupSettingsPanel extends CustomPanel implements IReadablePanel<LaneGroup> {
     private final int laneNum;
     private final int defaultValue;

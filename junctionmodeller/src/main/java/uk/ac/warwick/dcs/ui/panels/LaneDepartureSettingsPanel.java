@@ -1,12 +1,14 @@
 package uk.ac.warwick.dcs.ui.panels;
 
-import uk.ac.warwick.dcs.ui.Constants;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 import uk.ac.warwick.dcs.ui.util.IntegerTextField;
 
 import javax.swing.JLabel;
 import java.awt.Font;
 
+/**
+ * Panel used to get the settings for a single lane's available directions.
+ */
 public class LaneDepartureSettingsPanel extends CustomPanel implements IReadablePanel<Integer> {
     private static final int DEFAULT_VALUE = 100;
     private final int laneNum;

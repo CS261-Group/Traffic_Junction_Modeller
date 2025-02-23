@@ -11,6 +11,10 @@ import java.awt.GridLayout;
 import java.awt.Font;
 import java.util.List;
 
+/**
+ * Panel which holds data regarding whether there is a bus lane and/or
+ * a pedestrian crossing on the carriageway being configured.
+ */
 public class DirectionInputsPanel extends CustomPanel implements IReadablePanel<DirectionInputData> {
     private final List<ILaneChangedSubscriber> subscribers;
     private final int maxLanes;

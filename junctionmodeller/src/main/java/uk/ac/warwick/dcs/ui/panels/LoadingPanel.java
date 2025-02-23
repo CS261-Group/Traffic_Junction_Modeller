@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 
 /**
- *
+ * Panel used to load a file from the system via the file path.
  * @author eyhli
  */
 public class LoadingPanel extends CustomPanel implements IReadablePanel<String>{

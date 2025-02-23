@@ -7,6 +7,10 @@ import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 
+/**
+ * Panel containing the submit button and a checkbox for whether the user
+ * wants to show the visualisation.
+ */
 public class SubmissionPanel extends CustomPanel implements IReadablePanel<Boolean> {
     private JCheckBox showVisualisationCheckbox;
     private JButton submitButton;
@@ -34,6 +38,10 @@ public class SubmissionPanel extends CustomPanel implements IReadablePanel<Boole
         add(submitButton);
     }
 
+    /**
+     * Used to set the action to occur when the submit button gets clicked.
+     * @param l The action listener for what to do when the submit button gets clicked.
+     */
     public void setSubmissionAction(ActionListener l) {
         submitButton.addActionListener(l);
     }

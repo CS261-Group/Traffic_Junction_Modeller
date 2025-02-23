@@ -7,12 +7,15 @@ import uk.ac.warwick.dcs.ui.util.IntegerTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
 
-public class GroupTimingSetting extends CustomPanel implements IReadablePanel<GroupTiming> {
+/**
+ * Panel used to enter a single group timing configuration.
+ */
+public class GroupTimingSettingPanel extends CustomPanel implements IReadablePanel<GroupTiming> {
     private static final int DEFAULT_TIMING = 30;
     private final int groupNum;
     private IntegerTextField timingField;
 
-    public GroupTimingSetting(Font headingFont, Font labelFont, int groupNum) {
+    public GroupTimingSettingPanel(Font headingFont, Font labelFont, int groupNum) {
         super(headingFont, labelFont);
         this.groupNum = groupNum;
         setUp();
