@@ -21,7 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import uk.ac.warwick.dcs.dataproc.serialisation.Loader;
+import uk.ac.warwick.dcs.dataproc.loading.FileLoader;
 import uk.ac.warwick.dcs.dataproc.serialisation.Saver;
 import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
 
@@ -46,7 +46,7 @@ public class MainForm extends JFrame {
     private SubmissionPanel submissionPanel;
     private LoadingPanel loadingPanel;
     private Saver saver;
-    private Loader loader;
+    private FileLoader loader;
 
     // data service to submit data to next layer
     private final IDataService dataService;
@@ -135,9 +135,7 @@ public class MainForm extends JFrame {
     }
 
     private void onLoad(){
-        String path = loadingPanel.getValue();
-        loader = new Loader();
-        loader.LoadFile(path);
+        // TODO: use data service
     }
     
     

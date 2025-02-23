@@ -20,7 +20,7 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
   *
   * @author eyhli
   */
- public class Saver implements ISaver{
+ public class Saver {
      //so we don't get overalapping file names
      int fileCount;
      TrafficLightData trafficLightData;
@@ -29,14 +29,14 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
         //because a new saver is instantiated at each run, I need a file to store the number of files made since each instance of saver gets erased when program is closed
         String filePath = "src/main/java/uk/ac/warwick/dcs/dataproc/serialisation/fileCount.bin";
         File file = new File(filePath);
-        
+
         try (DataOutputStream countFile = new DataOutputStream(new FileOutputStream(file))){
             countFile.writeInt(fileCount);
         } catch(IOException e) {
             e.printStackTrace();
         }
-           
-        
+
+
      }
      public int readFileCount(){
         String filePath = "src/main/java/uk/ac/warwick/dcs/dataproc/serialisation/fileCount.bin";
@@ -66,7 +66,6 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
      }
 
      // TODO: this function should take in contracts (JunctionConfiguration)
-     @Override
      public void saveFile(DirectionData[] directionData, TrafficLightData trafficLightData){
          DirectionData northboundData = directionData[0];
          DirectionData eastboundData = directionData[1];
@@ -80,15 +79,15 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 //         String json = gson.toJson(inputConfiguration);
 //
 //         convertAndUploadFile(json);
-           
-         
+
+
      }
- 
+
      private void convertAndUploadFile(String json){
         String path = System.getProperty("user.home") + "/appdata/configuration_"+String.valueOf(fileCount)+".bin";
 
         File file = new File(path);
-        
+
         try (FileOutputStream outputFile = new FileOutputStream(file)){
         outputFile.write(json.getBytes());
         ++fileCount;
@@ -97,7 +96,7 @@ import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
         } catch(IOException e) {
             e.printStackTrace();
         }
-        
+
      }
  }
  
