@@ -2,6 +2,9 @@ package uk.ac.warwick.dcs.dataproc.validation;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 
+/**
+ * Concrete implementation of <code>IDiagnosticFactory</code> interface.
+ */
 class DiagnosticFactory implements IDiagnosticFactory {
     @Override
     public String createFieldErrorMessage(String field, String error) {

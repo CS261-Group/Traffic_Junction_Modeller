@@ -7,11 +7,24 @@ import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Validator for <code>Carriageway</code> objects that checks for validity of:
+ * - incoming and outgoing flow values (must add up)
+ * - order of lane directions (e.g., can't have right-only lane
+ *   followed by left-only lane to its right)
+ * - between the incoming lanes, at least one must permit an exit direction
+ *   with a flow greater than 0
+ */
 public class CarriagewayValidator extends Validator<Carriageway> {
     public CarriagewayValidator(IDiagnosticFactory diagnosticFactory) {
         super(diagnosticFactory);
     }
 
+    /**
+     * Number of incoming and outgoing lanes must be positive (>0).
+     * @param carriageway Carriageway object to validate
+     * @return List of errors.
+     */
     private List<String> validateNumLanes(Carriageway carriageway) {
         List<String> errors = new LinkedList<>();
         if (carriageway.getNumIncomingLanes() <= 0) {
@@ -24,6 +37,11 @@ public class CarriagewayValidator extends Validator<Carriageway> {
         return errors;
     }
 
+    /**
+     * Sum of outgoing flows must add up to incoming flow.
+     * @param carriageway Carriage object to validate.
+     * @return List of errors.
+     */
     private List<String> validateFlows(Carriageway carriageway) {
         List<String> errors = new LinkedList<>();
         int flowSum = 0;
@@ -50,6 +68,15 @@ public class CarriagewayValidator extends Validator<Carriageway> {
         return errors;
     }
 
+    /**
+     * Generate a bit mask for each lane based on its permitted exit
+     * directions to make checking for the order of lanes by their
+     * permitted exit directions easier.
+     * @param carriageway The carriageway object to validate.
+     * @param laneNum The number of the lane from the left. (leftmost
+     *                lane has <code>laneNum=1</code>)
+     * @return The bit mask of the lane.
+     */
     private int getDirectionMask(Carriageway carriageway, int laneNum) {
         int mask = 0b000;
 
@@ -99,6 +126,12 @@ public class CarriagewayValidator extends Validator<Carriageway> {
         return mask;
     }
 
+    /**
+     * Ensure valid order of lane directions (e.g., can't have right-only lane
+     * followed by left-only lane to its right).
+     * @param carriageway Carriageway object to validate.
+     * @return List of errors.
+     */
     private List<String> validateDirections(Carriageway carriageway) {
         List<String> errors = new LinkedList<>();
 
@@ -127,6 +160,12 @@ public class CarriagewayValidator extends Validator<Carriageway> {
         return errors;
     }
 
+    /**
+     * Ensure some incoming lane permits an exit direction if the corresponding
+     * outgoing flow is non-zero.
+     * @param carriageway Carriageway object to validate.
+     * @return List of errors.
+     */
     private List<String> validateOutgoingFlowExitExistence(Carriageway carriageway) {
         List<String> errors = new LinkedList<>();
 

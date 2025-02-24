@@ -8,6 +8,14 @@ import uk.ac.warwick.dcs.contracts.timings.Groups;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Validator for the whole junction configuration. Composed of
+ * smaller validators:
+ * - <code>CarriagewayValidator</code>
+ * - <code>TrafficLightValidator</code>
+ * - <code>GroupsValidator</code>
+ * - <code>LaneAssignmentValidator</code>
+ */
 class JunctionValidator extends Validator<JunctionConfiguration> {
     private final IValidator<Carriageway> carriagewayValidator;
     private final IValidator<TrafficLight> trafficLightValidator;

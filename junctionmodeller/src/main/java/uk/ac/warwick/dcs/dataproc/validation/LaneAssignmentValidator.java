@@ -11,6 +11,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Validator for ensuring all incoming lanes are members of some
+ * group defined by the junction configuration.
+ */
 class LaneAssignmentValidator extends Validator<JunctionConfiguration> {
     private static final int LANE_SET_SIZE = 51; // 6x4 lanes at most, roughly double and prime
 
@@ -18,6 +22,12 @@ class LaneAssignmentValidator extends Validator<JunctionConfiguration> {
         super(diagnosticFactory);
     }
 
+    /**
+     * Ensure all incoming lanes are members of some group defined by the
+     * given <code>JunctionConfiguration</code> object.
+     * @param junctionConfiguration Junction configuration object to validate.
+     * @return List of errors.
+     */
     private List<String> validateLaneAssignments(JunctionConfiguration junctionConfiguration) {
         List<String> errors = new LinkedList<>();
 
