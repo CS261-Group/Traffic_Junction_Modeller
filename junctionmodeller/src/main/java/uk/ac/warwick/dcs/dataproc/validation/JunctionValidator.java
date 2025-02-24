@@ -8,18 +8,18 @@ import uk.ac.warwick.dcs.contracts.timings.Groups;
 import java.util.LinkedList;
 import java.util.List;
 
-public class JunctionValidator extends Validator<JunctionConfiguration> {
+class JunctionValidator extends Validator<JunctionConfiguration> {
     private final IValidator<Carriageway> carriagewayValidator;
     private final IValidator<TrafficLight> trafficLightValidator;
     private final IValidator<Groups> groupsValidator;
     private final IValidator<JunctionConfiguration> laneAssignmentValidator;
 
-    public JunctionValidator(IDiagnosticFactory diagnosticFactory) {
+    public JunctionValidator(IDiagnosticFactory diagnosticFactory, IValidator<Carriageway> carriagewayValidator, IValidator<TrafficLight> trafficLightValidator, IValidator<Groups> groupsValidator, IValidator<JunctionConfiguration> laneAssignmentValidator) {
         super(diagnosticFactory);
-        carriagewayValidator = new CarriagewayValidator(diagnosticFactory);
-        trafficLightValidator = new TrafficLightValidator(diagnosticFactory);
-        groupsValidator = new GroupsValidator(diagnosticFactory);
-        laneAssignmentValidator = new LaneAssignmentValidator(diagnosticFactory);
+        this.carriagewayValidator = carriagewayValidator;
+        this.trafficLightValidator = trafficLightValidator;
+        this.groupsValidator = groupsValidator;
+        this.laneAssignmentValidator = laneAssignmentValidator;
     }
 
     @Override

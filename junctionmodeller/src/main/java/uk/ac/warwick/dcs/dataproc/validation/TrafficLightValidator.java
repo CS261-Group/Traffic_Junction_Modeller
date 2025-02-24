@@ -4,7 +4,7 @@ import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 
 import java.util.List;
 
-public class TrafficLightValidator extends Validator<TrafficLight> {
+class TrafficLightValidator extends Validator<TrafficLight> {
     public TrafficLightValidator(IDiagnosticFactory diagnosticFactory) {
         super(diagnosticFactory);
     }

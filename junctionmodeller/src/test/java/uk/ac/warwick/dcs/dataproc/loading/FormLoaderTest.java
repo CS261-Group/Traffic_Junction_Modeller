@@ -1,12 +1,22 @@
 package uk.ac.warwick.dcs.dataproc.loading;
 
 import org.junit.jupiter.api.Test;
+import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class FormLoaderTest {
+class FormLoaderTest {
+
+    public FormLoaderTest() {
+    }
+
     @Test
     public void blankTest() {
         fail();
+    }
+
+    @Test
+    public void formLoader() {
+
     }
 }

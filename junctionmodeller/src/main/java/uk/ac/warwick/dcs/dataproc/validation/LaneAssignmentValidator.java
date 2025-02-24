@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class LaneAssignmentValidator extends Validator<JunctionConfiguration> {
+class LaneAssignmentValidator extends Validator<JunctionConfiguration> {
     private static final int LANE_SET_SIZE = 51; // 6x4 lanes at most, roughly double and prime
 
     public LaneAssignmentValidator(IDiagnosticFactory diagnosticFactory) {
@@ -39,7 +39,6 @@ public class LaneAssignmentValidator extends Validator<JunctionConfiguration> {
         int count = laneSet.size();
         for (IncomingLane lane : laneSet) {
             for (Group group : groups) {
-                // TODO: go through all lanes
                 if (group.containsLane(lane)) {
                     count--;
                 }
