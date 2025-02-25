@@ -84,4 +84,22 @@ public class Carriageway {
     public boolean getLaneAllowsDirection(int laneNum, Direction direction) {
         return incomingRoad.get(laneNum).allowsGoing(direction);
     }
+
+    /**
+     *
+     * @return True if there is a bus lane configured on this carriageway,
+     *         false otherwise.
+     */
+    public boolean isBusLane() {
+        return busLane;
+    }
+
+    /**
+     *
+     * @return True if there is a pedestrian crossing configured across
+     *         this carriageway, false otherwise.
+     */
+    public boolean isPedestrianCrossing() {
+        return pedestrianCrossing;
+    }
 }

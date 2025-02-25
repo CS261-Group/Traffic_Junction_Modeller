@@ -1,11 +1,11 @@
 package uk.ac.warwick.dcs.dataproc.validation;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.contracts.enums.VehicleType;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Validator for <code>Carriageway</code> objects that checks for validity of:
@@ -88,9 +88,9 @@ public class CarriagewayValidator extends Validator<Carriageway> {
         origin = left = right = forward = carriageway.getDirection();
         switch (origin) {
             case NORTH:
-                left = Direction.WEST;
+                left = Direction.EAST;
                 forward = Direction.SOUTH;
-                right = Direction.EAST;
+                right = Direction.WEST;
                 break;
             case EAST:
                 left = Direction.SOUTH;
@@ -98,9 +98,9 @@ public class CarriagewayValidator extends Validator<Carriageway> {
                 right = Direction.NORTH;
                 break;
             case SOUTH:
-                left = Direction.EAST;
+                left = Direction.WEST;
                 forward = Direction.NORTH;
-                right = Direction.WEST;
+                right = Direction.EAST;
                 break;
             case WEST:
                 left = Direction.NORTH;
@@ -129,6 +129,35 @@ public class CarriagewayValidator extends Validator<Carriageway> {
     }
 
     /**
+     * Map used to act as the permission relation for checking lane orders.
+     * Excluding 0b000 (no available turns) and 0b101 (left + right only),
+     * this is the permission Hasse diagram:
+     *         100 (Left Only)
+     *               ↓
+     *         110 (Left + Forward)
+     *               ↓
+     *         111 (All directions)
+     *               ↓
+     *         010 (Forward Only)
+     *               ↓
+     *         011 (Forward + Right)
+     *               ↓
+     *         001 (Right only)
+     * Nothing permits 0b000 (none) and nothing permits 0b101 (left-right).
+     * Moreover, 0b000 (none) and 0b101 (left-right) permit no other configurations.
+     */
+    private final static Map<Integer, Set<Integer>> permissions = new HashMap<>() {{
+        put(0b100, new HashSet<>(List.of(0b100, 0b110, 0b111, 0b010, 0b011, 0b001)));
+        put(0b110, new HashSet<>(List.of(0b110, 0b111, 0b010, 0b011, 0b001)));
+        put(0b111, new HashSet<>(List.of(0b111, 0b010, 0b011, 0b001)));
+        put(0b010, new HashSet<>(List.of(0b010, 0b011, 0b001)));
+        put(0b011, new HashSet<>(List.of(0b011, 0b001)));
+        put(0b001, new HashSet<>(List.of(0b001)));
+        put(0b101, new HashSet<>());
+        put(0b000, new HashSet<>());
+    }};
+
+    /**
      * Ensure valid order of lane directions (e.g., can't have right-only lane
      * followed by left-only lane to its right).
      * @param carriageway Carriageway object to validate.
@@ -137,21 +166,13 @@ public class CarriagewayValidator extends Validator<Carriageway> {
     private List<String> validateDirections(Carriageway carriageway) {
         List<String> errors = new LinkedList<>();
 
-        /*
-         * There is an efficient way to check for the order of lane directions.
-         * We will use a binary system where permitting left (changes depending on
-         * orientation) is 0b100, forward is 0b010, right is 0b001, and masking
-         * the directions permitted.
-         * This way, we can simply assert that as the laneNum increases (we go from
-         * leftmost lane to rightmost lane) the masks must be in a non-increasing
-         * sequence.
-         */
-        int prev = 0b111; // maximum mask
+        int prev = 0b100; // left-only is maximally permissive
         for (int laneNum = 1; laneNum <= carriageway.getNumIncomingLanes(); laneNum++) {
             int mask = getDirectionMask(carriageway, laneNum);
 
-            // no longer a non-increasing sequence
-            if (mask > prev) {
+            // if previous lane doesn't permit next, there's been an error
+            assert permissions.containsKey(mask);
+            if (!permissions.get(prev).contains(mask)) {
                 errors.add(diagFactory.createInvalidPermittedDirectionsMessage(carriageway.getDirection(), laneNum));
             }
 
@@ -176,7 +197,7 @@ public class CarriagewayValidator extends Validator<Carriageway> {
         try {
             // naturally we ignore the incoming direction and 0 flow outgoing directions
             for (Direction direction : Direction.values()) {
-                if (direction == carriageway.getDirection() || carriageway.getOutgoingFlow(direction) != 0) {
+                if (direction == carriageway.getDirection() || carriageway.getOutgoingFlow(direction) == 0) {
                     validDirections[direction.ordinal()] = true;
                 }
             }
@@ -201,12 +222,38 @@ public class CarriagewayValidator extends Validator<Carriageway> {
         return errors;
     }
 
+    /**
+     * Ensure that ifa bus lane is configured, then one of the incoming
+     * lanes must permit bus vehicle types.
+     * @param carriageway Carriageway object to validate.
+     * @return List of errors.
+     */
+    private List<String> validateBusLane(Carriageway carriageway) {
+        List<String> errors = new LinkedList<>();
+
+        if (carriageway.isBusLane()) {
+            boolean foundBusLane = false;
+            for (int laneNum = 1; laneNum <= carriageway.getNumIncomingLanes(); laneNum++) {
+                if (carriageway.getIncomingLane(laneNum).getVehicleType() == VehicleType.BUS) {
+                    foundBusLane = true;
+                    break;
+                }
+            }
+            if (!foundBusLane) {
+                errors.add(diagFactory.createNoBusLaneMessage(carriageway.getDirection()));
+            }
+        }
+
+        return errors;
+    }
+
     @Override
     public List<String> validate(Carriageway carriageway) {
         List<String> errors = validateNumLanes(carriageway);
         errors.addAll(validateFlows(carriageway));
         errors.addAll(validateDirections(carriageway));
         errors.addAll(validateOutgoingFlowExitExistence(carriageway));
+        errors.addAll(validateBusLane(carriageway));
         return errors;
     }
 }

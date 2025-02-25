@@ -116,4 +116,9 @@ class DiagnosticFactory implements IDiagnosticFactory {
     public String createInvalidLaneAssignmentMessage() {
         return "Not all of the junction's incoming lanes are assigned to a group.";
     }
+
+    @Override
+    public String createNoBusLaneMessage(Direction direction) {
+        return "No incoming bus lane found on " + direction + " carriageway, despite a bus lane being configured.";
+    }
 }

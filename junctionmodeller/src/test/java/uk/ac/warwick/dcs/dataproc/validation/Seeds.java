@@ -74,4 +74,9 @@ class Seeds {
         }
         return goodCarriageways;
     }
+
+    static boolean[] allDirectionsN = new boolean[] { false, true, true, true };
+    static boolean[] allDirectionsE = new boolean[] { true, false, true, true };
+    static boolean[] allDirectionsS = new boolean[] { true, true, false, true };
+    static boolean[] allDirectionsW = new boolean[] { true, true, true, false };
 }
