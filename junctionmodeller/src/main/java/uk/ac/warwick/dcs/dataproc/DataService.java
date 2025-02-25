@@ -2,12 +2,10 @@ package uk.ac.warwick.dcs.dataproc;
 
 import org.javatuples.Pair;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
-import uk.ac.warwick.dcs.dataproc.loading.FormLoader;
 import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 import uk.ac.warwick.dcs.model.IModelContainer;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
