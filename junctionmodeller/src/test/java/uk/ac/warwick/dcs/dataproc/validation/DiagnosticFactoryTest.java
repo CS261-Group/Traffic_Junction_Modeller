@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.contracts.timings.Groups;
 
 import java.util.stream.Stream;
 
@@ -27,7 +28,9 @@ public class DiagnosticFactoryTest {
                         "somefield: some error occurred with this field"
                 ),
                 Arguments.of(
-                        "direction", "must be one of N, E, S, W", "direction: must be one of N, E, S, W"
+                        "direction",
+                        "must be one of N, E, S, W",
+                        "direction: must be one of N, E, S, W"
                 )
         );
     }
@@ -182,6 +185,42 @@ public class DiagnosticFactoryTest {
         final String expected = "Not all of the junction's incoming lanes are assigned to a group.";
         // Act
         final String actual = df.createInvalidLaneAssignmentMessage();
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    private static Stream<Arguments> invalidNumGroupsInputsAndOutputs() {
+        return Stream.of(
+                Arguments.of(0, "Invalid number of groups: 0. Must be between " + Groups.MIN_NUM_GROUPS + " and " + Groups.MAX_GROUP_NUM + "."),
+                Arguments.of(-2, "Invalid number of groups: -2. Must be between " + Groups.MIN_NUM_GROUPS + " and " + Groups.MAX_GROUP_NUM + "."),
+                Arguments.of(10, "Invalid number of groups: 10. Must be between " + Groups.MIN_NUM_GROUPS + " and " + Groups.MAX_GROUP_NUM + ".")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidNumGroupsInputsAndOutputs")
+    public void createInvalidNumGroupsMessage_ShouldReturnCorrectString(int numGroups, String expected) {
+        // Arrange
+        // Act
+        final String actual = df.createInvalidNumGroupsMessage(numGroups);
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    private static Stream<Arguments> groupNumbersNotSeparateInputsAndOutputs() {
+        return Stream.of(
+                Arguments.of(1, "Multiple groups have group number: 1"),
+                Arguments.of(3, "Multiple groups have group number: 3"),
+                Arguments.of(7, "Multiple groups have group number: 7")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("groupNumbersNotSeparateInputsAndOutputs")
+    public void createGroupNumbersNotSeparateMessage_ShouldReturnCorrectString(int groupNum, String expected) {
+        // Arrange
+        // Act
+        final String actual = df.createGroupNumbersNotSeparateMessage(groupNum);
         // Assert
         assertEquals(expected, actual);
     }

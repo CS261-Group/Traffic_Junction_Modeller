@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.dataproc.validation;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.contracts.timings.Groups;
 
 /**
  * Concrete implementation of <code>IDiagnosticFactory</code> interface.
@@ -98,6 +99,17 @@ class DiagnosticFactory implements IDiagnosticFactory {
     @Override
     public String createInvalidGroupNumMessage(int groupNum) {
         return "Invalid group number: " + groupNum;
+    }
+
+    @Override
+    public String createInvalidNumGroupsMessage(int numGroups) {
+        return "Invalid number of groups: " + numGroups + ". Must be between " +
+                Groups.MIN_NUM_GROUPS + " and " + Groups.MAX_GROUP_NUM + ".";
+    }
+
+    @Override
+    public String createGroupNumbersNotSeparateMessage(int groupNum) {
+        return "Multiple groups have group number: " + groupNum;
     }
 
     @Override

@@ -22,6 +22,8 @@ public class CarriagewayValidator extends Validator<Carriageway> {
 
     /**
      * Number of incoming and outgoing lanes must be positive (>0).
+     * Since the <code>Carriageway</code> uses an object under-the-hood
+     * this is a somewhat unnecessary assertion to make.
      * @param carriageway Carriageway object to validate
      * @return List of errors.
      */

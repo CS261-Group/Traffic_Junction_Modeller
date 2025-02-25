@@ -13,5 +13,7 @@ public interface IDiagnosticFactory {
     String createInvalidNumLanesMessage(Direction direction, String type);
     String createOutgoingFlowErrorMessage(Direction direction, boolean[] validDirections);
     String createInvalidGroupNumMessage(int groupNum);
+    String createInvalidNumGroupsMessage(int numGroups);
+    String createGroupNumbersNotSeparateMessage(int groupNum);
     String createInvalidLaneAssignmentMessage();
 }

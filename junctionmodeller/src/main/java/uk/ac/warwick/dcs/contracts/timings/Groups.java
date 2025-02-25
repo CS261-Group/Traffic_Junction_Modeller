@@ -54,6 +54,14 @@ public class Groups implements Iterable<Group> {
      */
     public int getNumGroups() { return numGroups; }
 
+    /**
+     *
+     * @return Whether the group timings are being optimised in this configuration.
+     */
+    public boolean getOptimising() {
+        return optimiseTimings;
+    }
+
     @Override
     public Iterator<Group> iterator() {
         return groups.iterator();
