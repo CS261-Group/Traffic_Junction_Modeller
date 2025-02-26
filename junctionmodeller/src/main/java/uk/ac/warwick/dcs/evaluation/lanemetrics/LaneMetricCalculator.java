@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.evaluation;
+package uk.ac.warwick.dcs.evaluation.lanemetrics;
 
 // Sources
 // Akcelik 2000
@@ -18,9 +18,17 @@ package uk.ac.warwick.dcs.evaluation;
 // g = effective green time (seconds)
 // c = cycle time
 // r = red time
-public abstract class LaneEvaluation {
+public abstract class LaneMetricCalculator {
 
     double T = 1;
+
+    public LaneMetricCalculator() {
+
+    }
+
+    public static double greenTimeToEffectiveGreenTime(double tg){
+        return tg - 1.2;
+    }
 
     /**
      * Returns the calibration constant kB as specified in Akçelik 2000
@@ -95,6 +103,8 @@ public abstract class LaneEvaluation {
         }
     }
 
-    public double degreeOfSaturation (){return 0;}
+    public static double degreeOfSaturation(double q, double c, double s, double g){
 
+        return (q * c) / (s * g);
+    }
 }
