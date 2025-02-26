@@ -1,5 +1,18 @@
 package uk.ac.warwick.dcs.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.io.File;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
@@ -7,23 +20,9 @@ import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
+import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
 import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
 import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
-
-import java.awt.Font;
-import java.awt.BorderLayout;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import uk.ac.warwick.dcs.dataproc.loading.FileLoader;
-import uk.ac.warwick.dcs.dataproc.serialisation.Saver;
-import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
 
 /**
  * Main entrypoint object for program. Contains all the form data.
@@ -45,8 +44,6 @@ public class MainForm extends JFrame {
     private TrafficLightPanel trafficLightPanel;
     private SubmissionPanel submissionPanel;
     private LoadingPanel loadingPanel;
-    private Saver saver;
-    private FileLoader loader;
 
     // data service to submit data to next layer
     private final IDataService dataService;
@@ -124,8 +121,9 @@ public class MainForm extends JFrame {
 
         ConfigurationData configData = new ConfigurationData(directionData, trafficLightData);
 
+        String configName = submissionPanel.getConfigurationName();
         // submit configuration collected from form through data service
-        List<String> errors = dataService.submitEnteredConfiguration(configData);
+        List<String> errors = dataService.submitEnteredConfiguration(configData,configName);
         assert errors != null;
 
         // TODO: handle errors in UI, show to user
@@ -135,7 +133,18 @@ public class MainForm extends JFrame {
     }
 
     private void onLoad(){
-        // TODO: use data service
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select Configuration File");
+        int userSelection = fileChooser.showOpenDialog(this);
+        //issue, can't open appdata on GUI
+        String path = System.getProperty("user.home")+"/Documents/";
+        File pathFolder = new File(path);
+        fileChooser.setCurrentDirectory(pathFolder);
+        if(userSelection == JFileChooser.APPROVE_OPTION){
+            fileChooser.setFileHidingEnabled(false);
+            File selectedFile = fileChooser.getSelectedFile();
+            List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath());
+        }
     }
     
     
