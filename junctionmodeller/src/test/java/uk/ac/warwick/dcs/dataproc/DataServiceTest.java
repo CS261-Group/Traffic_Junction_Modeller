@@ -1,21 +1,21 @@
 package uk.ac.warwick.dcs.dataproc;
 
+import java.util.List;
+
 import org.javatuples.Pair;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 import uk.ac.warwick.dcs.model.IModelContainer;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class DataServiceTest {
     @Mock
@@ -43,7 +43,7 @@ public class DataServiceTest {
         when(formLoaderService.load(any())).thenReturn(new Pair<>(any(), null));
 
         // Act
-        final List<String> actual = dataService.submitEnteredConfiguration(configData);
+        final List<String> actual = dataService.submitEnteredConfiguration(configData,"Testfile");
 
         // Assert
         assertEquals(0, actual.size());

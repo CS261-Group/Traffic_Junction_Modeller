@@ -1,8 +1,8 @@
 package uk.ac.warwick.dcs.dataproc;
 
-import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
-
 import java.util.List;
+
+import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 
 /**
  * Interface used to separate concerns between <code>ui</code>, <code>visualisation</code>
@@ -19,7 +19,7 @@ public interface IDataService {
      * @return A list of <code>String</code>s which correspond to diagnostic errors
      *         which the format of the entered data.
      */
-    List<String> submitEnteredConfiguration(ConfigurationData configData);
+    List<String> submitEnteredConfiguration(ConfigurationData configData,String configName);
 
     /**
      *

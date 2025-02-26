@@ -1,11 +1,13 @@
 
 package uk.ac.warwick.dcs.ui.panels;
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
@@ -26,6 +28,11 @@ public class LoadingPanel extends CustomPanel implements IReadablePanel<String>{
     protected void setUp(){
         setLayout(new GridLayout(2,1));
         setBorder(BorderFactory.createEmptyBorder(10,50,10,50));
+        
+        JLabel configurationPathHeading = new JLabel("Configuration Path");
+        configurationPathHeading.setFont(headingFont);
+        add(configurationPathHeading, BorderLayout.NORTH);
+
         filePathField = new JTextField();
         filePathField.setFont(labelFont);
         filePathField.setToolTipText("Enter file path containing input configuration");

@@ -1,11 +1,16 @@
 package uk.ac.warwick.dcs.ui.panels;
 
-import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
-
-import javax.swing.*;
-import java.awt.GridLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 
 /**
  * Panel containing the submit button and a checkbox for whether the user
@@ -14,6 +19,7 @@ import java.awt.event.ActionListener;
 public class SubmissionPanel extends CustomPanel implements IReadablePanel<Boolean> {
     private JCheckBox showVisualisationCheckbox;
     private JButton submitButton;
+    private JTextField configurationName;
 
     public SubmissionPanel(Font headingFont, Font labelFont) {
         super(headingFont, labelFont);
@@ -31,10 +37,18 @@ public class SubmissionPanel extends CustomPanel implements IReadablePanel<Boole
         showVisualisationCheckbox = new JCheckBox("Show visualisation");
         showVisualisationCheckbox.setFont(labelFont);
 
+        JLabel configurationNameHeading = new JLabel("Configuration Name");
+        configurationNameHeading.setFont(headingFont);
+        add(configurationNameHeading);
+
+        configurationName = new JTextField();
+        configurationName.setFont(labelFont);
+
         submitButton = new JButton("Confirm and Analyse");
         submitButton.setFont(labelFont);
 
         add(showVisualisationCheckbox);
+        add(configurationName);
         add(submitButton);
     }
 
@@ -49,5 +63,10 @@ public class SubmissionPanel extends CustomPanel implements IReadablePanel<Boole
     @Override
     public Boolean getValue() {
         return showVisualisationCheckbox.isSelected();
+    }
+    
+    public String getConfigurationName(){
+        //will return "" if left blank
+        return configurationName.getText().trim();
     }
 }
