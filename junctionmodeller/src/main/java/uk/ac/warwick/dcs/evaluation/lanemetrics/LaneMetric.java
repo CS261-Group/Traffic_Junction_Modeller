@@ -1,26 +1,36 @@
-package uk.ac.warwick.dcs.evaluation.metrics;
+package uk.ac.warwick.dcs.evaluation.lanemetrics;
 
-public class Metric implements IMetric {
+// per lane
+public class LaneMetric implements ILaneMetric {
     private double averageWaitTime;
     private double maxQueueLength;
     private double maxWaitTime;
-    private final MetricsCalculator calculator = new MetricsCalculator();
-    //made junction modeller static so that the correct junction model is updated not an instance.
+    private final LaneMetricCalculator calculator = new FixedtimeLaneMetricCalculator(); // not really needed
 
     public void updateAverageWaitTime(){
-        averageWaitTime = calculator.AverageWaitTime();
     }
+
+    @Override
+    public double getAverageQueueLength() {
+        return 0;
+    }
+
+    @Override
+    public void updateAverageQueueLength() {
+
+    }
+
     public double getAverageWaitTime(){
         return averageWaitTime;
     }
     public void updateMaxQueueLength(){
-        averageWaitTime = calculator.MaxQueueLength();
+
     }
     public double getMaxQueueLength(){
         return maxQueueLength;
     }
     public void updateMaxWaitTime(){
-        averageWaitTime = calculator.MaxWaitTime();
+
     }
     public double getMaxWaitTime(){
         return maxWaitTime;
