@@ -1,5 +1,6 @@
 package uk.ac.warwick.dcs.evaluation.metrics;
 
+// per lane??
 public class Metric implements IMetric {
     private double averageWaitTime;
     private double maxQueueLength;

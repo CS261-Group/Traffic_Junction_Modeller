@@ -26,7 +26,7 @@ public class LaneMetrics {
 
         // T = 1
         if (x1 > 0){
-            q0 = (C/4) * ((x-1) + Math.sqrt((x-1)*(x-1) + (12*x1)/C));
+            q0 = (C/4) * ((x-1) + Math.sqrt((x-1)*(x-1) + 12*x1/C));
         } else {
             q0 = 0;
         }
@@ -43,7 +43,7 @@ public class LaneMetrics {
         if (x < 1){
             d = (c * (1-g/c)*(1-g/c)) / (2*(1-q/S));
         } else{ //x >= 1
-            d = (c-g)/2;
+            d = (c-g)/2; //0.5r
         }
 
         d = d + (LaneMetrics.averageOverflowQueue(x,g,S,C) / C);
@@ -52,6 +52,7 @@ public class LaneMetrics {
     }
 
     public static double degreeOfSaturation(double q, double c, double s, double g){
+
         return (q * c) / (s * g);
     }
 
@@ -67,6 +68,8 @@ public class LaneMetrics {
         return tg - 1.2;
     }
 
+    public static int maximumQueue(){ return 0;}
 
+    public static int averageGreenTimeStartQueue(){ return 0;}
 
 }

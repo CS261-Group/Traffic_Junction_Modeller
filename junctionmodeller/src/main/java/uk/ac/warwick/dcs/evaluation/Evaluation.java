@@ -2,16 +2,17 @@ package uk.ac.warwick.dcs.evaluation;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 
+// aggregates metrics about lanes in a junction
 public class Evaluation {
-    public float averageLaneDelay(JunctionConfiguration junction){
+    public float overallAverageDelay(JunctionConfiguration junction){
         return 0;
     }
 
-    public float maximumLaneDelay(JunctionConfiguration junction){
+    public float overallMaximumDelay(JunctionConfiguration junction){
         return 0;
     }
 
-    public int maximumQueueLength(JunctionConfiguration junction){
+    public int overallMaximumQueueLength(JunctionConfiguration junction){
         return 0;
     }
 }
