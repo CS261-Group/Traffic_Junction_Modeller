@@ -19,7 +19,7 @@ public interface IDataService {
      * @return A list of <code>String</code>s which correspond to diagnostic errors
      *         which the format of the entered data.
      */
-    List<String> submitEnteredConfiguration(ConfigurationData configData,String configName);
+    List<String> submitEnteredConfiguration(ConfigurationData configData);
 
     /**
      *

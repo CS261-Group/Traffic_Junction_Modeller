@@ -119,11 +119,14 @@ public class MainForm extends JFrame {
 
         TrafficLightData trafficLightData = trafficLightPanel.getValue();
 
-        ConfigurationData configData = new ConfigurationData(directionData, trafficLightData);
-
+        // read config name from panel
+        // TODO: should be part of submissionPanel.getValue()
         String configName = submissionPanel.getConfigurationName();
+
+        ConfigurationData configData = new ConfigurationData(configName, directionData, trafficLightData);
+
         // submit configuration collected from form through data service
-        List<String> errors = dataService.submitEnteredConfiguration(configData,configName);
+        List<String> errors = dataService.submitEnteredConfiguration(configData);
         assert errors != null;
 
         // TODO: handle errors in UI, show to user
@@ -144,8 +147,11 @@ public class MainForm extends JFrame {
             fileChooser.setFileHidingEnabled(false);
             File selectedFile = fileChooser.getSelectedFile();
             List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath());
+
+            // TODO: handle errors in UI, show to user
+            for (String error : errors) {
+                System.out.println(error);
+            }
         }
     }
-    
-    
 }

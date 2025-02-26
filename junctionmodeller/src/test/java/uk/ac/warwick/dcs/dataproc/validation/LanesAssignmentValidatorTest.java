@@ -29,7 +29,6 @@ public class LanesAssignmentValidatorTest {
         assertTrue(actual.isEmpty());
     }
 
-    // TODO: failing cases
     @Test
     public void validate_ReturnsNonEmptyList_IfErrors() {
         // Arrange

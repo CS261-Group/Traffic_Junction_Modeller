@@ -9,11 +9,17 @@ import com.google.gson.GsonBuilder;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 
-public class Loader {
+public class FileLoader implements ILoader {
+    private final String filePath;
+    private String error;
 
-    public JunctionConfiguration LoadFile(String path){
+    public FileLoader(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public JunctionConfiguration load(){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        File file = new File(path);
+        File file = new File(filePath);
         if(!file.exists()){
             System.out.println("File not found");
             return null;
@@ -21,9 +27,14 @@ public class Loader {
         try(FileReader reader = new FileReader(file)){
             System.out.println("file loaded successfully");
             return gson.fromJson(reader,JunctionConfiguration.class);
-        }catch(IOException e){
-            e.printStackTrace();
+        }catch(IOException ex){
+            error = ex.getMessage();
             return null;
         }
+    }
+
+    @Override
+    public String getLoadErrors() {
+        return error;
     }
 }
