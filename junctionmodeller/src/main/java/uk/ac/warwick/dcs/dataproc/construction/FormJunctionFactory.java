@@ -108,8 +108,9 @@ public class FormJunctionFactory implements IJunctionFactory<ConfigurationData> 
         }
 
         // construct outgoing road
-        // TODO: how do we determine the number of outgoing roads
-        builder.addOutgoingLane();
+        for (int i = 0; i < directionData.numOutgoingLanes(); i++) {
+            builder.addOutgoingLane();
+        }
 
         // construct incoming road
         for (AvailableDirections directions : availableDirections) {
