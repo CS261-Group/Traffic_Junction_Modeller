@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.contracts.structure;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidLaneNumberException;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ public class IncomingRoad extends Road<IncomingLane> {
      * @return The incoming lane object with the corresponding number.
      */
     public IncomingLane get(int laneNum) {
+        if (laneNum < 1 || laneNum > numLanes()) {
+            throw new InvalidLaneNumberException(laneNum, numLanes(), direction);
+        }
         return lanes.get(laneNum - 1); // -1 corrected for index
     }
 
