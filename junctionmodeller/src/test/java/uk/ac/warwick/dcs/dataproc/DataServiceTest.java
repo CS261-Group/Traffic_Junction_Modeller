@@ -38,12 +38,12 @@ public class DataServiceTest {
     @Test
     public void submitEnteredConfiguration_ReturnsEmptyList_OnSuccess() {
         // Arrange
-        ConfigurationData configData = new ConfigurationData(null, null);
+        ConfigurationData configData = new ConfigurationData(null, null, null);
         when(validator.validate(any())).thenReturn(List.of());
         when(formLoaderService.load(any())).thenReturn(new Pair<>(any(), null));
 
         // Act
-        final List<String> actual = dataService.submitEnteredConfiguration(configData,"Testfile");
+        final List<String> actual = dataService.submitEnteredConfiguration(configData);
 
         // Assert
         assertEquals(0, actual.size());
