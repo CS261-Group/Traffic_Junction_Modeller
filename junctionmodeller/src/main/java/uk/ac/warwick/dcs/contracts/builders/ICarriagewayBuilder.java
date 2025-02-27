@@ -60,14 +60,13 @@ public interface ICarriagewayBuilder {
     /**
      * At least one incoming lane must be specified for each carriageway.
      * @param type The type of the vehicle the lane accommodates.
-     * @param queuingSpace The queuing space of the vehicle given TODO: is this param needed?
      * @param directions An array of the available directions. Must be of size 4 and must be false
      *                   for the incoming direction. Specified in order N, E, S, W.
      * @return Same instance of builder object. Useful for chaining.
      * @throws InvalidPermittedDirectionsException Thrown if incoming direction is set to true,
      *                                             or if no outgoing direction is set to true.
      */
-    ICarriagewayBuilder addIncomingLane(VehicleType type, int queuingSpace, boolean[] directions) throws InvalidPermittedDirectionsException;
+    ICarriagewayBuilder addIncomingLane(VehicleType type, boolean[] directions) throws InvalidPermittedDirectionsException;
 
     /**
      *

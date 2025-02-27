@@ -89,8 +89,8 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
     }
 
     @Override
-    public ICarriagewayBuilder addIncomingLane(VehicleType type, int queuingSpace, boolean[] directions) throws InvalidPermittedDirectionsException {
-        IncomingLane lane = laneFactory.createIncomingLane(type, queuingSpace, directions);
+    public ICarriagewayBuilder addIncomingLane(VehicleType type, boolean[] directions) throws InvalidPermittedDirectionsException {
+        IncomingLane lane = laneFactory.createIncomingLane(type, directions);
         incomingLanes.add(lane);
         return this;
     }

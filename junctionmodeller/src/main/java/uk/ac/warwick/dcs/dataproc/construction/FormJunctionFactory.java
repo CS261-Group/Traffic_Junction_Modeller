@@ -103,9 +103,8 @@ public class FormJunctionFactory implements IJunctionFactory<ConfigurationData> 
         builder.setPedestrianCrossing(directionData.pedestrianCrossing());
 
         // if there is a bus lane add an EXTRA
-        // TODO: determining queuing space
         if (directionData.busLane()) {
-            builder.addIncomingLane(VehicleType.BUS, 15, new boolean[]{ true,true,true,true });
+            builder.addIncomingLane(VehicleType.BUS, new boolean[]{ true,true,true,true });
         }
 
         // construct outgoing road
@@ -119,8 +118,7 @@ public class FormJunctionFactory implements IJunctionFactory<ConfigurationData> 
             directionBools[Direction.EAST.ordinal()] = directions.getE();
             directionBools[Direction.SOUTH.ordinal()] = directions.getS();
             directionBools[Direction.WEST.ordinal()] = directions.getW();
-            // TODO: determining queuing space?
-            builder.addIncomingLane(VehicleType.CAR, 5, directionBools);
+            builder.addIncomingLane(VehicleType.CAR, directionBools);
         }
 
         // extract incoming flow and reset the corresponding value to 0
