@@ -52,8 +52,7 @@ public class CarriagewayValidatorTest {
                                                 new IncomingLane(
                                                         Direction.NORTH,
                                                         VehicleType.CAR,
-                                                        Seeds.allDirectionsN,
-                                                        5
+                                                        Seeds.allDirectionsN
                                                 )
                                         ),
                                         150,
@@ -81,9 +80,7 @@ public class CarriagewayValidatorTest {
                                                 new IncomingLane(
                                                         Direction.EAST,
                                                         VehicleType.CAR,
-                                                        Seeds.allDirectionsE,
-                                                        5
-                                                )
+                                                        Seeds.allDirectionsE)
                                         ),
                                         150,
                                         new int[] { 50, 0, 30, 75 }
@@ -110,8 +107,7 @@ public class CarriagewayValidatorTest {
                                                 new IncomingLane(
                                                         Direction.SOUTH,
                                                         VehicleType.CAR,
-                                                        Seeds.allDirectionsS,
-                                                        5
+                                                        Seeds.allDirectionsS
                                                 )
                                         ),
                                         150,
@@ -139,8 +135,7 @@ public class CarriagewayValidatorTest {
                                                 new IncomingLane(
                                                         Direction.WEST,
                                                         VehicleType.CAR,
-                                                        Seeds.allDirectionsW,
-                                                        5
+                                                        Seeds.allDirectionsW
                                                 )
                                         ),
                                         90,
@@ -183,8 +178,7 @@ public class CarriagewayValidatorTest {
                                                 new IncomingLane(
                                                         Direction.WEST,
                                                         VehicleType.CAR,
-                                                        Seeds.allDirectionsW,
-                                                        5
+                                                        Seeds.allDirectionsW
                                                 )
                                         ),
                                         90,
@@ -213,8 +207,7 @@ public class CarriagewayValidatorTest {
                                                 new IncomingLane(
                                                         Direction.NORTH,
                                                         VehicleType.CAR,
-                                                        Seeds.allDirectionsN,
-                                                        5
+                                                        Seeds.allDirectionsN
                                                 )
                                         ),
                                         90,
@@ -258,15 +251,13 @@ public class CarriagewayValidatorTest {
                                                     Direction.NORTH,
                                                     VehicleType.CAR,
                                                     // right-only
-                                                    new boolean[] {false, false, false, true},
-                                                    5
+                                                    new boolean[] {false, false, false, true}
                                             ),
                                             new IncomingLane(
                                                     Direction.NORTH,
                                                     VehicleType.CAR,
                                                     // left-forward
-                                                    new boolean[] {false, true, true, false},
-                                                    5
+                                                    new boolean[] {false, true, true, false}
                                             )
                                     ),
                                     90,
@@ -295,15 +286,13 @@ public class CarriagewayValidatorTest {
                                                 new IncomingLane(
                                                         Direction.EAST,
                                                         VehicleType.CAR,
-                                                        Seeds.allDirectionsE,
-                                                        5
+                                                        Seeds.allDirectionsE
                                                 ),
                                                 new IncomingLane(
                                                         Direction.EAST,
                                                         VehicleType.CAR,
                                                         // left-only
-                                                        new boolean[] {false, false, true, false},
-                                                        5
+                                                        new boolean[] {false, false, true, false}
                                                 )
                                         ),
                                         90,
@@ -333,22 +322,19 @@ public class CarriagewayValidatorTest {
                                                         Direction.SOUTH,
                                                         VehicleType.CAR,
                                                         // left-forward
-                                                        new boolean[] {true, false, false, true},
-                                                        5
+                                                        new boolean[] {true, false, false, true}
                                                 ),
                                                 new IncomingLane(
                                                         Direction.SOUTH,
                                                         VehicleType.CAR,
                                                         // all-directions
-                                                        Seeds.allDirectionsS,
-                                                        5
+                                                        Seeds.allDirectionsS
                                                 ),
                                                 new IncomingLane(
                                                         Direction.SOUTH,
                                                         VehicleType.CAR,
                                                         // left-forward
-                                                        new boolean[] {true, false, false, true},
-                                                        5
+                                                        new boolean[] {true, false, false, true}
                                                 )
                                         ),
                                         90,
@@ -378,29 +364,25 @@ public class CarriagewayValidatorTest {
                                                         Direction.WEST,
                                                         VehicleType.CAR,
                                                         // left-forward
-                                                        new boolean[] {true, true, false, false},
-                                                        5
+                                                        new boolean[] {true, true, false, false}
                                                 ),
                                                 new IncomingLane(
                                                         Direction.WEST,
                                                         VehicleType.CAR,
                                                         // forward-only
-                                                        new boolean[] {false, true, false, false},
-                                                        5
+                                                        new boolean[] {false, true, false, false}
                                                 ),
                                                 new IncomingLane(
                                                         Direction.WEST,
                                                         VehicleType.CAR,
                                                         // all-directions
-                                                        Seeds.allDirectionsW,
-                                                        5
+                                                        Seeds.allDirectionsW
                                                 ),
                                                 new IncomingLane(
                                                         Direction.WEST,
                                                         VehicleType.CAR,
                                                         // all-directions
-                                                        Seeds.allDirectionsW,
-                                                        5
+                                                        Seeds.allDirectionsW
                                                 )
                                         ),
                                         90,
@@ -431,36 +413,31 @@ public class CarriagewayValidatorTest {
                                                         Direction.WEST,
                                                         VehicleType.CAR,
                                                         // left-only
-                                                        new boolean[] {true, false, false, false},
-                                                        5
+                                                        new boolean[] {true, false, false, false}
                                                 ),
                                                 new IncomingLane(
                                                         Direction.WEST,
                                                         VehicleType.CAR,
                                                         // left-only
-                                                        new boolean[] {true, false, false, false},
-                                                        5
+                                                        new boolean[] {true, false, false, false}
                                                 ),
                                                 new IncomingLane(
                                                         Direction.WEST,
                                                         VehicleType.CAR,
                                                         // forward-only
-                                                        new boolean[] {false, true, false, false},
-                                                        5
+                                                        new boolean[] {false, true, false, false}
                                                 ),
                                                 new IncomingLane(
                                                         Direction.WEST,
                                                         VehicleType.CAR,
                                                         // right-forward
-                                                        new boolean[] {false, true, true, false},
-                                                        5
+                                                        new boolean[] {false, true, true, false}
                                                 ),
                                                 new IncomingLane(
                                                         Direction.WEST,
                                                         VehicleType.CAR,
                                                         // right-only
-                                                        new boolean[] {false, false, true, false},
-                                                        5
+                                                        new boolean[] {false, false, true, false}
                                                 )
                                         ),
                                         90,
@@ -501,8 +478,7 @@ public class CarriagewayValidatorTest {
                                                         Direction.NORTH,
                                                         VehicleType.CAR,
                                                         // left-only
-                                                        new boolean[] {false, true, false, false},
-                                                        5
+                                                        new boolean[] {false, true, false, false}
                                                 )
                                         ),
                                         90,
@@ -532,8 +508,7 @@ public class CarriagewayValidatorTest {
                                                         Direction.EAST,
                                                         VehicleType.CAR,
                                                         // left-only
-                                                        new boolean[] {false, false, true, true},
-                                                        5
+                                                        new boolean[] {false, false, true, true}
                                                 )
                                         ),
                                         60,
@@ -560,22 +535,19 @@ public class CarriagewayValidatorTest {
                                                         Direction.SOUTH,
                                                         VehicleType.CAR,
                                                         // left-only
-                                                        new boolean[] {false, false, false, true},
-                                                        5
+                                                        new boolean[] {false, false, false, true}
                                                 ),
                                                 new IncomingLane(
                                                         Direction.SOUTH,
                                                         VehicleType.CAR,
                                                         // forward-only
-                                                        new boolean[] {true, false, false, false},
-                                                        5
+                                                        new boolean[] {true, false, false, false}
                                                 ),
                                                 new IncomingLane(
                                                         Direction.SOUTH,
                                                         VehicleType.CAR,
                                                         // forward-only
-                                                        new boolean[] {true, false, false, false},
-                                                        5
+                                                        new boolean[] {true, false, false, false}
                                                 )
                                         ),
                                         150,
