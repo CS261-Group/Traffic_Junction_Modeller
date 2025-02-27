@@ -37,3 +37,5 @@ If a certain link is useful for you, please add it to this list before committin
 - [JUnit for unit testing 2](https://www.tutorialspoint.com/junit/index.htm)
 - [Git cheat sheet](https://education.github.com/git-cheat-sheet-education.pdf)
 - [GSON library Github page](https://github.com/google/gson)
+- [EJML for matrix algebra](https://github.com/lessthanoptimal/ejml)
+- [Mocking for unit testing with Mockito](https://medium.com/@keployio/junit-mocking-a-complete-guide-43965665c29f)

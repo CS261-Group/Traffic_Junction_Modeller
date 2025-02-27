@@ -7,6 +7,10 @@ import uk.ac.warwick.dcs.ui.panels.*;
 import java.awt.Font;
 import java.util.List;
 
+/**
+ * Factory for creating <code>DirectionPanel</code> to encapsulate
+ * all the panels for getting directional inputs easier.
+ */
 public class DirectionPanelFactory {
     private final Font headingFont;
     private final Font labelFont;
@@ -16,8 +20,13 @@ public class DirectionPanelFactory {
         this.labelFont = labelFont;
     }
 
+    /**
+     *
+     * @param direction Incoming direction of the carriageway we are configuring.
+     * @param externalSubscribers List of subscribers to notify upon changing the number of lanes.
+     * @return Constructed <code>DirectionPanel</code> from parameters.
+     */
     public DirectionPanel createDirectionPanel(Direction direction, List<ILaneChangedSubscriber> externalSubscribers) {
-        DirectionPanel directionPanel = new DirectionPanel(headingFont, labelFont, direction, externalSubscribers);
-        return directionPanel;
+        return new DirectionPanel(headingFont, labelFont, direction, externalSubscribers);
     }
 }

@@ -12,14 +12,15 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Panel used to configure the available directions of each lane.
+ */
 public class LaneDirectionsPanel extends CustomPanel implements ILaneChangedSubscriber, IReadablePanel<List<AvailableDirections>> {
     private final List<LaneDirectionSettingsPanel> lanes;
-    private final Direction direction;
 
-    public LaneDirectionsPanel(Font headingFont, Font labelFont, Direction dir) {
+    public LaneDirectionsPanel(Font headingFont, Font labelFont) {
         super(headingFont, labelFont);
         lanes = new ArrayList<>(Constants.MAX_LANES);
-        direction = dir;
         setUp();
     }
 

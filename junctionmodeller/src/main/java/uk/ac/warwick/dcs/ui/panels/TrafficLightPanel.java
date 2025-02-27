@@ -2,6 +2,8 @@ package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.contracts.timings.Groups;
+import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
 import uk.ac.warwick.dcs.ui.formdata.LaneGroups;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
@@ -13,10 +15,14 @@ import java.awt.Font;
 import java.awt.event.ItemEvent;
 import java.util.Arrays;
 
+/**
+ * Panel to choose the type of traffic light and the number of groups.
+ * Also contains the settings for assigning lanes to traffic light groups.
+ */
 public class TrafficLightPanel extends CustomPanel implements IReadablePanel<TrafficLightData>, ILaneChangedSubscriber {
-    private final static int MAX_NUM_GROUPS = 6;
-    private final static int MIN_NUM_GROUPS = 2; // there must be at least 2 groups in any case
-    private final static int DEFAULT_GROUP_NUM = 2;
+    private final static int MAX_NUM_GROUPS = Groups.MAX_GROUP_NUM;
+    private final static int MIN_NUM_GROUPS = Groups.MIN_GROUP_NUM; // there must be at least 2 groups in any case
+    private final static int DEFAULT_NUM_GROUPS = Groups.MIN_NUM_GROUPS;
 
     private JComboBox<TrafficLightType> lightTypeCombo;
     private JComboBox<Integer> groupsCombo;
@@ -26,7 +32,7 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
 
     public TrafficLightPanel(Font headingFont, Font labelFont) {
         super(headingFont, labelFont);
-        numGroups = DEFAULT_GROUP_NUM;
+        numGroups = DEFAULT_NUM_GROUPS;
         laneGroupsPanels = new LaneGroupPanel[4];
         setUp();
     }
@@ -86,7 +92,7 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
 
         // this should trigger the change event
         // and also select the default value
-        groupsCombo.setSelectedItem(DEFAULT_GROUP_NUM);
+        groupsCombo.setSelectedItem(DEFAULT_NUM_GROUPS);
     }
 
     @Override
@@ -100,7 +106,10 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
                 .toArray(LaneGroups[]::new);
         assert directionalLaneGroups.length == 4; // sanity check: one in each direction
 
-        return new TrafficLightData(lightType, numGroups, directionalLaneGroups);
+        GroupTimings groupTimings = groupTimingsPanel.getValue();
+        assert numGroups == groupTimings.groupTimings().size();
+
+        return new TrafficLightData(lightType, numGroups, directionalLaneGroups, groupTimings);
     }
 
     @Override

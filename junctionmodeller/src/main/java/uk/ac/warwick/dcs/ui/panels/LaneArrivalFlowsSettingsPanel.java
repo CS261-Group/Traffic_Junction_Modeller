@@ -1,12 +1,12 @@
 package uk.ac.warwick.dcs.ui.panels;
 
-import uk.ac.warwick.dcs.ui.Constants;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 import uk.ac.warwick.dcs.ui.util.IntegerTextField;
 
 import javax.swing.JLabel;
 import java.awt.Font;
 
+@Deprecated
 public class LaneArrivalFlowsSettingsPanel extends CustomPanel implements IReadablePanel<Integer> {
     private static final int DEFAULT_VALUE = 100;
     private final int laneNum;

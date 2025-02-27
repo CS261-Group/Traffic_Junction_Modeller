@@ -1,18 +1,26 @@
 package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.ui.formdata.DirectionInputData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
-import uk.ac.warwick.dcs.ui.LanesComboBox;
+import uk.ac.warwick.dcs.ui.util.LanesComboBox;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 
 import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.Font;
 import java.util.List;
 
-public class DirectionInputsPanel extends CustomPanel {
+/**
+ * Panel which holds data regarding whether there is a bus lane and/or
+ * a pedestrian crossing on the carriageway being configured.
+ */
+public class DirectionInputsPanel extends CustomPanel implements IReadablePanel<DirectionInputData> {
     private final List<ILaneChangedSubscriber> subscribers;
     private final int maxLanes;
     private final Direction direction;
+    private JCheckBox pedestrianCrossing;
+    private JCheckBox busLane;
 
     public DirectionInputsPanel(Font headingFont, Font labelFont, int maxLanes, List<ILaneChangedSubscriber> subscribers, Direction direction) {
         super(headingFont, labelFont);
@@ -38,12 +46,17 @@ public class DirectionInputsPanel extends CustomPanel {
         add(numLanesLbl);
         add(lanesComboBox);
 
-        JCheckBox pedestrianCrossing = new JCheckBox("Pedestrian crossing");
+        pedestrianCrossing = new JCheckBox("Pedestrian crossing");
         pedestrianCrossing.setFont(labelFont);
-        JCheckBox busLane = new JCheckBox("Bus Lane");
+        busLane = new JCheckBox("Bus Lane");
         busLane.setFont(labelFont);
 
         add(pedestrianCrossing);
         add(busLane);
+    }
+
+    @Override
+    public DirectionInputData getValue() {
+        return new DirectionInputData(busLane.isSelected(), pedestrianCrossing.isSelected());
     }
 }

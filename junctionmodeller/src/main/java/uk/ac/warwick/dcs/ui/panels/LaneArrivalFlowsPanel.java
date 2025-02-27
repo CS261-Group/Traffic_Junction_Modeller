@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class LaneArrivalFlowsPanel extends CustomPanel implements ILaneChangedSubscriber, IReadablePanel<List<Integer>> {
     private final List<LaneArrivalFlowsSettingsPanel> lanes;
 

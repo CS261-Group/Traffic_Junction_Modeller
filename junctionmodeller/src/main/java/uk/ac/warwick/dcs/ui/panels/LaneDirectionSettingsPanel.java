@@ -10,6 +10,9 @@ import javax.swing.JCheckBox;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
 
+/**
+ * Panel used to enter a single lane's available directions.
+ */
 public class LaneDirectionSettingsPanel extends CustomPanel implements IReadablePanel<AvailableDirections> {
     private final Direction direction;
     private final AvailableDirections availableDirections;

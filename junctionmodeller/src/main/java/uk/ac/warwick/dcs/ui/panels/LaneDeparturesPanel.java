@@ -12,6 +12,7 @@ import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 
+@Deprecated
 public class LaneDeparturesPanel extends CustomPanel implements ILaneChangedSubscriber, IReadablePanel<List<Integer>> {
     private final List<LaneDepartureSettingsPanel> lanes;
 

@@ -12,6 +12,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Panel used to store data about which lanes are in which traffic light groups.
+ */
 public class LaneGroupPanel extends CustomPanel implements ILaneChangedSubscriber, IReadablePanel<LaneGroups> {
     private final Direction direction;
     private final int defaultGroup;

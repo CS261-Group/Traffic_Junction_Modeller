@@ -7,6 +7,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
 
+/**
+ * Listener used for pub-sub pattern for the lanes that changed.
+ */
 public class LanesChangedListener implements ItemListener {
     private final List<ILaneChangedSubscriber> subscribers;
     private final Direction direction;

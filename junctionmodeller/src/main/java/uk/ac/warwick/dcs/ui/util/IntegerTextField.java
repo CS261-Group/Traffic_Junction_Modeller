@@ -4,6 +4,9 @@ import javax.swing.JTextField;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * JTextField child which only allows integers to be entered.
+ */
 public class IntegerTextField extends JTextField {
     private final int defaultValue;
     private static final int MAX_DIGIT_COLUMNS = 7;
@@ -29,6 +32,10 @@ public class IntegerTextField extends JTextField {
         setText(String.valueOf(defaultValue));
     }
 
+    /**
+     *
+     * @return The integer entered in the text field.
+     */
     public int getIntegerValue() {
         try {
             return Integer.parseInt(getText());
