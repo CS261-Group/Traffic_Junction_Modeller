@@ -10,37 +10,33 @@ import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import java.util.concurrent.ExecutionException;
 import java.lang.InterruptedException;
 
-public class ModelContainer implements IModelContainer {
-    private Set<Model> models;
+class ModelContainer implements IModelContainer {
+    /**
+     * Maximum number of models we can support concurrently.
+     * i.e., the number of threads in the thread pool.
+     */
+    private static final int MAX_CONCURRENT_MODELS = 8;
+
+    private final Set<Model> models;
     private final IModelFactory modelFactory;
-    private ExecutorService executorService;
+    private final ExecutorService executorService;
 
     public ModelContainer(IModelFactory modelFactory) {
         this.models = new HashSet<>();
         this.modelFactory = modelFactory;
-        this.executorService = Executors.newFixedThreadPool(4);  // Initial thread size, will be updated dynamically
+        this.executorService = Executors.newFixedThreadPool(MAX_CONCURRENT_MODELS);  // Initial thread size, will be updated dynamically
     }
 
     @Override
-    public void addModel(JunctionConfiguration junctionConfiguration) {
+    public boolean addModel(JunctionConfiguration junctionConfiguration) {
+        // we can't have more concurrently running threads
+        if (models.size() == MAX_CONCURRENT_MODELS) {
+            return false; // failure
+        }
+
         Model model = modelFactory.createModel(junctionConfiguration);
         models.add(model);
-        adjustThreadPoolSize();  // Adjust thread pool size when a new model is added
-    }
-
-    /**
-     * Dynamically adjusts the thread pool size based on the number of models.
-     */
-    private void adjustThreadPoolSize() {
-        int modelCount = models.size();
-        int poolSize = Math.max(1, modelCount);  // Ensure at least 1 thread.
-        
-        if (executorService != null && !executorService.isShutdown()) {
-            executorService.shutdown();  // Shutdown the old thread pool
-        }
-        
-        // Reinitialize the executor service with the new pool size
-        executorService = Executors.newFixedThreadPool(poolSize);
+        return true; // successfully created
     }
 
     /**

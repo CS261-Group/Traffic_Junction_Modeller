@@ -9,14 +9,22 @@ import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
  * Class used to hold settings and configurations for a running
  * model instance being analysed.
  */
-public class Model {
-    private Optimiser optimiser;
-    private Evaluation evaluation;
+class Model {
+    private final long id;
+    private final Optimiser optimiser;
+    private final Evaluation evaluation;
 
-    public Model() {
+    public Model(long id) {
+        this.id = id;
         this.optimiser = new Optimiser();
         this.evaluation = new Evaluation();
     }
+
+    /**
+     *
+     * @return The ID of this model instance.
+     */
+    public long getId() { return id; }
 
     public Optimiser getOptimiser() {
         return optimiser;
@@ -39,11 +47,11 @@ public class Model {
     /**
      * Optimise the model using a specific junction configuration.
      * @param junctionConfiguration The configuration for the junction to be evaluated.
-     * @return optimised  junction configuration.
      */
     public void optimiseModel(JunctionConfiguration junctionConfiguration) {
         //TO DO: implement this 
     }
 
-
+    @Override
+    public int hashCode() { return (int)id; }
 }
