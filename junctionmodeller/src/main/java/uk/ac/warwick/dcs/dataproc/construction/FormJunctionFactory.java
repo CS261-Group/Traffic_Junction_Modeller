@@ -98,14 +98,14 @@ public class FormJunctionFactory implements IJunctionFactory<ConfigurationData> 
         // unpack corresponding builder
         ICarriagewayBuilder builder = carriagewayBuilders[direction.ordinal()];
 
-        // pedestrian crossing and bus lane
-        builder.setBusLane(directionData.busLane());
+        // pedestrian crossing
         builder.setPedestrianCrossing(directionData.pedestrianCrossing());
 
-        // if there is a bus lane add an EXTRA
-        if (directionData.busLane()) {
-            builder.addIncomingLane(VehicleType.BUS, new boolean[]{ true,true,true,true });
-        }
+//        builder.setBusLane(directionData.busLane());
+//        // if there is a bus lane add an EXTRA
+//        if (directionData.busLane()) {
+//            builder.addIncomingLane(VehicleType.BUS, new boolean[]{ true,true,true,true });
+//        }
 
         // construct outgoing road
         for (int i = 0; i < directionData.numOutgoingLanes(); i++) {
