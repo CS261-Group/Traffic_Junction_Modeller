@@ -223,23 +223,4 @@ public class DiagnosticFactoryTest {
         // Assert
         assertEquals(expected, actual);
     }
-
-    private static Stream<Arguments> noBusLaneMessageInputsAndOutputs() {
-        return Stream.of(
-                Arguments.of(Direction.NORTH, "No incoming bus lane found on NORTH carriageway, despite a bus lane being configured."),
-                Arguments.of(Direction.EAST, "No incoming bus lane found on EAST carriageway, despite a bus lane being configured."),
-                Arguments.of(Direction.SOUTH, "No incoming bus lane found on SOUTH carriageway, despite a bus lane being configured."),
-                Arguments.of(Direction.WEST, "No incoming bus lane found on WEST carriageway, despite a bus lane being configured.")
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("noBusLaneMessageInputsAndOutputs")
-    public void createNoBusLaneMessage_ShouldReturnCorrectString(Direction direction, String expected) {
-        // Arrange
-        // Act
-        final String actual = df.createNoBusLaneMessage(direction);
-        // Assert
-        assertEquals(expected, actual);
-    }
 }

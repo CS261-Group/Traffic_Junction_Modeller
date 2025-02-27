@@ -14,14 +14,6 @@ import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 public interface ICarriagewayBuilder {
     /**
      *
-     * @param bus True if a bus lane incoming along this carriageway, false otherwise.
-     *            Optional, default false.
-     * @return Same instance of builder object. Useful for chaining.
-     */
-    ICarriagewayBuilder setBusLane(boolean bus);
-
-    /**
-     *
      * @param crossing True if there is a pedestrian crossing across this carriageway, false otherwise.
      *                 Optional setting, default false.
      * @return Same instance of builder object. Useful for chaining.

@@ -69,7 +69,7 @@ class Seeds {
                         new IncomingLane(direction, VehicleType.CAR, specificDirections)
                 ), 150, specificFlows);
                 OutgoingRoad outgoingRoad = new OutgoingRoad(direction, List.of(new OutgoingLane(direction)));
-                goodCarriageways[direction.ordinal()] = new Carriageway(direction, outgoingRoad, incomingRoad, false, false);
+                goodCarriageways[direction.ordinal()] = new Carriageway(direction, outgoingRoad, incomingRoad, false);
             }
         }
         return goodCarriageways;
