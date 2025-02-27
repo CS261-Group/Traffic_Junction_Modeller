@@ -26,7 +26,7 @@ public abstract class LaneMetricCalculator {
 
     }
 
-    public static double greenTimeToEffectiveGreenTime(double tg){
+    public double greenTimeToEffectiveGreenTime(double tg){
         return tg - 1.2;
     }
 
@@ -40,8 +40,7 @@ public abstract class LaneMetricCalculator {
 
     public double averageOverflowQueue(double C, double x, double s, double g){
         double z = (x - 1);
-        double sg = s/3600 * g;
-        double kB = this.getCalibrationConstant(sg);
+        double kB = getCalibrationConstant(s/3600 * g);
 
         return (C*T/4) * (z + Math.sqrt(z*z + 8 * kB * x / (C * T)));
     }
@@ -49,14 +48,12 @@ public abstract class LaneMetricCalculator {
     //1.1a in Akcelik 2000
     // x = sat
     // c = cycle time
-    // TODO remove cached u variable
     public double averageUniformQueue(double x, double c, double g, double q){
-        double u = g / c; // green time ratio
 
         if (x > 1){
             return q * c;
         }else{
-            return q * x * (1 - u) / (1 - x * u);
+            return q * x * (1 - (g / c)) / (1 - x * (g / c));
         }
     }
 
@@ -89,22 +86,25 @@ public abstract class LaneMetricCalculator {
      * @param g effective green time (seconds)
      * @return
      */
-    //TODO get rid of cached variables
     public double averageUniformDelay(double c, double g, double x, double q, double s){
-        double r = c - g; //red time
-        double y = q / s; // flow ratio
-        double u = g / c; // green time ratio
+        // c - g = red time c - g (r)
+        // q / s = flow ratio (y)
+        // g / c green time ratio (u)
 
         if (x <= 1) {
-            return r * (1 - u) / ((1 - y) * 2);
+            return 0.5 * (c - g) * (1 - (g / c)) / (1 - (q / s));
         }
         else {
-            return r / 2;
+            return 0.5 * (c - g);
         }
     }
 
-    public static double degreeOfSaturation(double q, double c, double s, double g){
-
-        return (q * c) / (s * g);
+    public double degreeOfSaturation(double q, double C){
+        return q / C;
     }
+
+    public double capacity(double s, double g, double c){
+        return s * g / c;
+    }
+
 }
