@@ -1,7 +1,6 @@
 package uk.ac.warwick.dcs.dataproc.validation;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
-import uk.ac.warwick.dcs.contracts.enums.VehicleType;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 
@@ -222,38 +221,13 @@ public class CarriagewayValidator extends Validator<Carriageway> {
         return errors;
     }
 
-    /**
-     * Ensure that ifa bus lane is configured, then one of the incoming
-     * lanes must permit bus vehicle types.
-     * @param carriageway Carriageway object to validate.
-     * @return List of errors.
-     */
-    private List<String> validateBusLane(Carriageway carriageway) {
-        List<String> errors = new LinkedList<>();
-
-        if (carriageway.isBusLane()) {
-            boolean foundBusLane = false;
-            for (int laneNum = 1; laneNum <= carriageway.getNumIncomingLanes(); laneNum++) {
-                if (carriageway.getIncomingLane(laneNum).getVehicleType() == VehicleType.BUS) {
-                    foundBusLane = true;
-                    break;
-                }
-            }
-            if (!foundBusLane) {
-                errors.add(diagFactory.createNoBusLaneMessage(carriageway.getDirection()));
-            }
-        }
-
-        return errors;
-    }
-
     @Override
     public List<String> validate(Carriageway carriageway) {
         List<String> errors = validateNumLanes(carriageway);
         errors.addAll(validateFlows(carriageway));
         errors.addAll(validateDirections(carriageway));
         errors.addAll(validateOutgoingFlowExitExistence(carriageway));
-        errors.addAll(validateBusLane(carriageway));
+//        errors.addAll(validateBusLane(carriageway));
         return errors;
     }
 }
