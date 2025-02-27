@@ -38,7 +38,6 @@ public class Carriageway {
      * @param laneNum The number of the incoming lane we are getting. Lanes are
      *                counted 1 (leftmost) to <code>numLanes</code> (rightmost).
      * @return The incoming lane object with the corresponding number.
-     * TODO: custom error for invalid lane number
      */
     public IncomingLane getIncomingLane(int laneNum) { return incomingRoad.get(laneNum); }
 

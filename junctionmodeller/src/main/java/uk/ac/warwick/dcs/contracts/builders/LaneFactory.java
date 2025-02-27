@@ -19,7 +19,7 @@ public class LaneFactory {
         return new OutgoingLane(direction);
     }
 
-    public IncomingLane createIncomingLane(VehicleType type, int queuingSpace, boolean[] availableDirections) throws InvalidPermittedDirectionsException {
+    public IncomingLane createIncomingLane(VehicleType type, boolean[] availableDirections) throws InvalidPermittedDirectionsException {
         // the incoming direction must be false
         if (availableDirections[direction.ordinal()]) {
             throw new InvalidPermittedDirectionsException(direction, availableDirections);
@@ -32,6 +32,6 @@ public class LaneFactory {
                 !availableDirections[Direction.WEST.ordinal()]) {
             throw new InvalidPermittedDirectionsException(direction, availableDirections);
         }
-        return new IncomingLane(direction, type, availableDirections, queuingSpace);
+        return new IncomingLane(direction, type, availableDirections);
     }
 }
