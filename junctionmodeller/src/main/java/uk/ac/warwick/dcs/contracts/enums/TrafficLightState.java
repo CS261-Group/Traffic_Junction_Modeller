@@ -6,6 +6,7 @@ package uk.ac.warwick.dcs.contracts.enums;
  * NOTE: might abstract to <code>RED</code> and <code>GREEN</code>
  * only, as it simplifies the model.
  */
+@Deprecated
 public enum TrafficLightState {
     RED,
     AMBER,

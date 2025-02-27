@@ -46,4 +46,8 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
     public Iterator<Carriageway> iterator() {
         return Arrays.stream(carriageways).iterator();
     }
+
+    // -- ACCESSORS --
+
+    public int getNumberOfLanes(){ return 0;}
 }
