@@ -1,4 +1,4 @@
 package uk.ac.warwick.dcs.ui.formdata;
 
-public record DirectionInputData(boolean busLane, boolean pedestrianCrossing, int numOutgoingLanes) {
+public record DirectionInputData(/*boolean busLane, */boolean pedestrianCrossing, int numOutgoingLanes) {
 }

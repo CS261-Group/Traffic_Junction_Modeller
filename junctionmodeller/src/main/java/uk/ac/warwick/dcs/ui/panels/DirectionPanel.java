@@ -68,7 +68,7 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
 //                laneArrivalFlows.getValue(),
                 laneDirections.getValue(),
 //                laneDepartures.getValue(),
-                directionInputData.busLane(),
+//                directionInputData.busLane(),
                 directionInputData.pedestrianCrossing(),
                 directionInputData.numOutgoingLanes()
         );

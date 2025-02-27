@@ -4,5 +4,5 @@ import uk.ac.warwick.dcs.contracts.enums.Direction;
 
 import java.util.List;
 
-public record DirectionData(Direction direction, FlowData flowData, List<AvailableDirections> availableDirections, boolean busLane, boolean pedestrianCrossing, int numOutgoingLanes) {
+public record DirectionData(Direction direction, FlowData flowData, List<AvailableDirections> availableDirections, /* boolean busLane, */ boolean pedestrianCrossing, int numOutgoingLanes) {
 }
