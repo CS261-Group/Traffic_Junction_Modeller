@@ -1,12 +1,17 @@
 package uk.ac.warwick.dcs.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
+import uk.ac.warwick.dcs.model.exceptions.NoSuchModelException;
+import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
+
 import java.util.concurrent.ExecutionException;
 import java.lang.InterruptedException;
 
@@ -17,26 +22,39 @@ class ModelContainer implements IModelContainer {
      */
     private static final int MAX_CONCURRENT_MODELS = 8;
 
-    private final Set<Model> models;
+    private final Map<Long, Model> models;
     private final IModelFactory modelFactory;
     private final ExecutorService executorService;
 
     public ModelContainer(IModelFactory modelFactory) {
-        this.models = new HashSet<>();
+        this.models = new HashMap<>();
         this.modelFactory = modelFactory;
         this.executorService = Executors.newFixedThreadPool(MAX_CONCURRENT_MODELS);  // Initial thread size, will be updated dynamically
     }
 
     @Override
-    public boolean addModel(JunctionConfiguration junctionConfiguration) {
+    public boolean addModel(JunctionConfiguration junctionConfiguration, IModelVisualisation visualisation) {
         // we can't have more concurrently running threads
         if (models.size() == MAX_CONCURRENT_MODELS) {
             return false; // failure
         }
 
-        Model model = modelFactory.createModel(junctionConfiguration);
-        models.add(model);
+        Model model = modelFactory.createModel(junctionConfiguration, visualisation);
+        models.put(model.getId(), model);
         return true; // successfully created
+    }
+
+    @Override
+    public void stopModel(long modelId) throws NoSuchModelException {
+        if (!models.containsKey(modelId)) {
+            throw new NoSuchModelException(modelId);
+        }
+
+        // remove from model set
+        Model removedModel = models.remove(modelId);
+
+        // stop the running model which we just removed
+        removedModel.stop();
     }
 
     /**
@@ -48,7 +66,7 @@ class ModelContainer implements IModelContainer {
     public Set<Future<Model>> evaluateModelsConcurrently(JunctionConfiguration junctionConfiguration) {
         Set<Future<Model>> futures = new HashSet<>();
         
-        for (Model model : models) {
+        for (Model model : models.values()) {
             Callable<Model> task = () -> {
                 model.evaluateModel(junctionConfiguration);  // Evaluate the model
                 return model;
@@ -70,7 +88,7 @@ class ModelContainer implements IModelContainer {
         Set<Future<Model>> futures = new HashSet<>();
         
         // Submit tasks for each model to optimize them concurrently
-        for (Model model : models) {
+        for (Model model : models.values()) {
             Callable<Model> task = () -> {
                 model.optimiseModel(junctionConfiguration);  // Optimise the model (method to be implemented)
                 return model;

@@ -2,22 +2,28 @@ package uk.ac.warwick.dcs.model;
 
 import uk.ac.warwick.dcs.evaluation.Evaluation;
 import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
+import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
 import uk.ac.warwick.dcs.optimisation.Optimiser;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
+import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
 
 /**
  * Class used to hold settings and configurations for a running
  * model instance being analysed.
  */
-class Model {
+class Model implements Runnable {
     private final long id;
     private final Optimiser optimiser;
     private final Evaluation evaluation;
+    private final IModelVisualisation visualisation;
+    private boolean running;
 
-    public Model(long id) {
+    public Model(long id, IModelVisualisation visualisation) {
         this.id = id;
         this.optimiser = new Optimiser();
         this.evaluation = new Evaluation();
+        this.visualisation = visualisation;
+        this.running = false;
     }
 
     /**
@@ -54,4 +60,17 @@ class Model {
 
     @Override
     public int hashCode() { return (int)id; }
+
+    public void stop() {
+        running = false;
+    }
+
+    @Override
+    public void run() {
+        running = true;
+        while (running) {
+            System.out.println("Sending update.");
+            visualisation.notify(new ModelUpdate());
+        }
+    }
 }

@@ -10,6 +10,7 @@ import uk.ac.warwick.dcs.dataproc.saving.Saver;
 import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 import uk.ac.warwick.dcs.model.IModelContainer;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
+import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
 
 /**
  * Concrete implementation of <code>IDataService</code> interface.
@@ -51,7 +52,9 @@ class DataService implements IDataService {
         saver.save(junctionConfig, configData.configName());
 
         // Create a model instance asynchronously
-        boolean success = modelContainer.addModel(junctionConfig);
+        // TODO: model visualisation object generation
+        IModelVisualisation modelVisualisation = null;
+        boolean success = modelContainer.addModel(junctionConfig, modelVisualisation);
         if (!success) {
             return List.of("Couldn't run model, maybe reached maximum number of concurrently running models.");
         }
@@ -69,7 +72,9 @@ class DataService implements IDataService {
         // TODO: Implement the error handling from FormLoaderService.load to get an error list
 
         // Create a model instance asynchronously
-        boolean success = modelContainer.addModel(junctionConfig);
+        // TODO: model visualisation object generation
+        IModelVisualisation modelVisualisation = null;
+        boolean success = modelContainer.addModel(junctionConfig, modelVisualisation);
         if (!success) {
             return List.of("Couldn't run model, maybe reached maximum number of concurrently running models.");
         }
