@@ -70,7 +70,18 @@ class Model implements Runnable {
         running = true;
         while (running) {
             System.out.println("Sending update.");
-            visualisation.notify(new ModelUpdate());
+
+            // if there is a visualisation, send the updates as required
+            if (visualisation != null) {
+                visualisation.notify(new ModelUpdate());
+            }
+
+            // TODO: remove this busy-wait
+            try {
+                Thread.sleep(500L);
+            } catch (InterruptedException ex) {
+
+            }
         }
     }
 }

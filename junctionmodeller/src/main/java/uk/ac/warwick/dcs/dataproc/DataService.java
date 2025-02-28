@@ -11,6 +11,7 @@ import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 import uk.ac.warwick.dcs.model.IModelContainer;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
+import uk.ac.warwick.dcs.visualisation.IVisualisationFactory;
 
 /**
  * Concrete implementation of <code>IDataService</code> interface.
@@ -19,13 +20,15 @@ class DataService implements IDataService {
     private final IValidator<JunctionConfiguration> validator;
     private final IModelContainer modelContainer;
     private final ILoaderService<ConfigurationData> formLoaderService;
+    private final IVisualisationFactory visualisationFactory;
     private Saver saver;
     private FileLoader loader;
 
-    public DataService(IValidator<JunctionConfiguration> validator, IModelContainer modelContainer, ILoaderService<ConfigurationData> formLoaderService) {
+    public DataService(IValidator<JunctionConfiguration> validator, IModelContainer modelContainer, ILoaderService<ConfigurationData> formLoaderService, IVisualisationFactory visualisationFactory) {
         this.validator = validator;
         this.modelContainer = modelContainer;
         this.formLoaderService = formLoaderService;
+        this.visualisationFactory = visualisationFactory;
     }
 
     @Override
@@ -52,8 +55,12 @@ class DataService implements IDataService {
         saver.save(junctionConfig, configData.configName());
 
         // Create a model instance asynchronously
-        // TODO: model visualisation object generation
-        IModelVisualisation modelVisualisation = null;
+        IModelVisualisation modelVisualisation;
+        if (configData.showVisualisation()) {
+            modelVisualisation = visualisationFactory.createVisualisation(configData.configName(), junctionConfig);
+        } else {
+            modelVisualisation = null;
+        }
         boolean success = modelContainer.addModel(junctionConfig, modelVisualisation);
         if (!success) {
             return List.of("Couldn't run model, maybe reached maximum number of concurrently running models.");
@@ -64,7 +71,7 @@ class DataService implements IDataService {
     }
 
     @Override
-    public List<String> submitFileConfiguration(String filePath) {
+    public List<String> submitFileConfiguration(String filePath, boolean showVisualisation) {
         loader = new FileLoader(filePath);
         JunctionConfiguration junctionConfig = loader.load();
         
@@ -72,8 +79,14 @@ class DataService implements IDataService {
         // TODO: Implement the error handling from FormLoaderService.load to get an error list
 
         // Create a model instance asynchronously
-        // TODO: model visualisation object generation
-        IModelVisualisation modelVisualisation = null;
+        // Create a model instance asynchronously
+        IModelVisualisation modelVisualisation;
+        if (showVisualisation) {
+            // TODO: get config name from saved file
+            modelVisualisation = visualisationFactory.createVisualisation("configname", junctionConfig);
+        } else {
+            modelVisualisation = null;
+        }
         boolean success = modelContainer.addModel(junctionConfig, modelVisualisation);
         if (!success) {
             return List.of("Couldn't run model, maybe reached maximum number of concurrently running models.");

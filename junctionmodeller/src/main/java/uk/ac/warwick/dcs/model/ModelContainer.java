@@ -34,6 +34,9 @@ class ModelContainer implements IModelContainer {
 
     @Override
     public boolean addModel(JunctionConfiguration junctionConfiguration, IModelVisualisation visualisation) {
+        assert !executorService.isShutdown();
+        assert !executorService.isTerminated();
+
         // we can't have more concurrently running threads
         if (models.size() == MAX_CONCURRENT_MODELS) {
             return false; // failure
@@ -41,6 +44,9 @@ class ModelContainer implements IModelContainer {
 
         Model model = modelFactory.createModel(junctionConfiguration, visualisation);
         models.put(model.getId(), model);
+
+        executorService.submit(model);
+
         return true; // successfully created
     }
 
