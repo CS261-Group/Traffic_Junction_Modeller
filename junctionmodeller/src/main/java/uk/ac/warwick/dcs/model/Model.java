@@ -13,17 +13,17 @@ import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
  */
 class Model implements Runnable {
     private final long id;
-    private final Optimiser optimiser;
     private final Evaluation evaluation;
+    private final Optimiser optimiser;
     private final IModelVisualisation visualisation;
-    private boolean running;
+    private final JunctionConfiguration junctionConfig;
 
-    public Model(long id, IModelVisualisation visualisation) {
+    public Model(long id, JunctionConfiguration junctionConfig, IModelVisualisation visualisation) {
         this.id = id;
-        this.optimiser = new Optimiser();
-        this.evaluation = new Evaluation();
+        this.junctionConfig = junctionConfig;
+        this.optimiser = new Optimiser(junctionConfig);
+        this.evaluation = new Evaluation(junctionConfig);
         this.visualisation = visualisation;
-        this.running = false;
     }
 
     /**
@@ -32,56 +32,27 @@ class Model implements Runnable {
      */
     public long getId() { return id; }
 
-    public Optimiser getOptimiser() {
-        return optimiser;
-    }
-
-    public Evaluation getEvaluation() {
-        return evaluation;
-    }
-
     /**
      * Evaluate the model using a specific junction configuration.
-     * @param junctionConfiguration The configuration for the junction to be evaluated.
      * @return JunctionMetrics for the given junction configuration.
      */
-    public JunctionMetrics evaluateModel(JunctionConfiguration junctionConfiguration) {
-        return evaluation.getEvaluation(junctionConfiguration);
+    public JunctionMetrics evaluateModel() {
+        return evaluation.getEvaluation();
     }
-
 
     /**
      * Optimise the model using a specific junction configuration.
      * @param junctionConfiguration The configuration for the junction to be evaluated.
      */
     public void optimiseModel(JunctionConfiguration junctionConfiguration) {
-        //TO DO: implement this 
+        // TODO: implement this
     }
 
     @Override
     public int hashCode() { return (int)id; }
 
-    public void stop() {
-        running = false;
-    }
-
     @Override
     public void run() {
-        running = true;
-        while (running) {
-            System.out.println("Sending update.");
-
-            // if there is a visualisation, send the updates as required
-            if (visualisation != null) {
-                visualisation.notify(new ModelUpdate());
-            }
-
-            // TODO: remove this busy-wait
-            try {
-                Thread.sleep(500L);
-            } catch (InterruptedException ex) {
-
-            }
-        }
+        // TODO: SGD updates
     }
 }
