@@ -3,6 +3,7 @@ package uk.ac.warwick.dcs.dataproc;
 import uk.ac.warwick.dcs.dataproc.validation.*;
 import uk.ac.warwick.dcs.model.IModelContainer;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
+import uk.ac.warwick.dcs.visualisation.VisualisationFactoryBuilder;
 
 /**
  * Static class used to initialise an <code>IDataService</code>
@@ -24,9 +25,14 @@ public class DataServiceBuilder {
      * @return Singleton instance of data service.
      */
     public static IDataService buildService(IModelContainer modelContainer) {
-        return new DataService(ValidatorFactory.getJunctionValidator(), modelContainer, getFormLoaderService());
+        return new DataService(ValidatorFactory.getJunctionValidator(), modelContainer,
+                getFormLoaderService(), VisualisationFactoryBuilder.getVisualisationFactory());
     }
 
+    /**
+     *
+     * @return Singleton instance of form loader service.
+     */
     static ILoaderService<ConfigurationData> getFormLoaderService() {
         if (formLoaderService == null) {
             formLoaderService = new FormLoaderService();

@@ -3,6 +3,7 @@ package uk.ac.warwick.dcs.ui;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -120,10 +121,11 @@ public class MainForm extends JFrame {
         TrafficLightData trafficLightData = trafficLightPanel.getValue();
 
         // read config name from panel
+        boolean showVisualisation = submissionPanel.getValue();
         // TODO: should be part of submissionPanel.getValue()
         String configName = submissionPanel.getConfigurationName();
 
-        ConfigurationData configData = new ConfigurationData(configName, directionData, trafficLightData);
+        ConfigurationData configData = new ConfigurationData(configName, directionData, trafficLightData, showVisualisation);
 
         // submit configuration collected from form through data service
         List<String> errors = dataService.submitEnteredConfiguration(configData);
@@ -140,13 +142,14 @@ public class MainForm extends JFrame {
         fileChooser.setDialogTitle("Select Configuration File");
         int userSelection = fileChooser.showOpenDialog(this);
         //issue, can't open appdata on GUI
-        String path = System.getProperty("user.home")+"/Documents/";
+        String path = Paths.get(System.getProperty("user.home"), "Documents/").toAbsolutePath().toString();
         File pathFolder = new File(path);
         fileChooser.setCurrentDirectory(pathFolder);
         if(userSelection == JFileChooser.APPROVE_OPTION){
             fileChooser.setFileHidingEnabled(false);
             File selectedFile = fileChooser.getSelectedFile();
-            List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath());
+            // TODO: get showVisualisation instead of hard-coding false
+            List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath(), false);
 
             // TODO: handle errors in UI, show to user
             for (String error : errors) {
