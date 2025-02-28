@@ -1,15 +1,18 @@
 package uk.ac.warwick.dcs.optimisation;
 
+import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 
 import java.util.Arrays;
 
 public class Optimiser {
+    private final JunctionConfiguration junctionConfig;
     private ActuatedTimingsOptimiser actuatedTimingsOptimiser;
     private FixedTimingsOptimiser fixedTimingsOptimiser;
     private CycleTimeOptimiser cycleTimeOptimiser;
 
-    public Optimiser() {
+    public Optimiser(JunctionConfiguration junctionConfig) {
+        this.junctionConfig = junctionConfig;
         this.actuatedTimingsOptimiser = new ActuatedTimingsOptimiser();
         this.fixedTimingsOptimiser = new FixedTimingsOptimiser();
         this.cycleTimeOptimiser = new CycleTimeOptimiser();

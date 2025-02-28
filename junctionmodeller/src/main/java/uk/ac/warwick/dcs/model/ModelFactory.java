@@ -16,6 +16,6 @@ class ModelFactory implements IModelFactory {
     @Override
     public Model createModel(JunctionConfiguration junctionConfiguration, IModelVisualisation visualisation) {
         // Create and return a new instance of the Model
-        return new Model(idGenService.generateId(), visualisation);
+        return new Model(idGenService.generateId(), junctionConfiguration, visualisation);
     }
 }
