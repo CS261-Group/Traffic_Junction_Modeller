@@ -15,14 +15,12 @@ import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 public class Carriageway {
     private final OutgoingRoad outgoingRoad;
     private final IncomingRoad incomingRoad;
-    private final boolean busLane;
     private final boolean pedestrianCrossing;
     private final Direction direction;
 
-    public Carriageway(Direction d, OutgoingRoad or, IncomingRoad ir, boolean bus, boolean pedestrian) {
+    public Carriageway(Direction d, OutgoingRoad or, IncomingRoad ir, boolean pedestrian) {
         outgoingRoad = or;
         incomingRoad = ir;
-        busLane = bus;
         pedestrianCrossing = pedestrian;
         direction = d;
     }
@@ -82,15 +80,6 @@ public class Carriageway {
      */
     public boolean getLaneAllowsDirection(int laneNum, Direction direction) {
         return incomingRoad.get(laneNum).allowsGoing(direction);
-    }
-
-    /**
-     *
-     * @return True if there is a bus lane configured on this carriageway,
-     *         false otherwise.
-     */
-    public boolean isBusLane() {
-        return busLane;
     }
 
     /**

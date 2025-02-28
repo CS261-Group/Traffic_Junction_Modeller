@@ -1,6 +1,8 @@
 package uk.ac.warwick.dcs.model;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
+import uk.ac.warwick.dcs.model.exceptions.NoSuchModelException;
+import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
 
 /**
  * Interface that the objects that contain models must implement.
@@ -9,6 +11,18 @@ public interface IModelContainer {
     /**
      * Create and add a model instance based on some supplied junction configuration.
      * @param junctionConfiguration The configuration to start analysis for
+     * @param visualisation The visualisation to send updates to.
+     * @return True if no errors, false otherwise. Usually the only reason for an
+     *         error is that we have reached the maximum number of concurrently running
+     *         models.
      */
-    void addModel(JunctionConfiguration junctionConfiguration);
+    boolean addModel(JunctionConfiguration junctionConfiguration, IModelVisualisation visualisation);
+
+    /**
+     *
+     * @param modelId ID of the model to stop.
+     * @throws NoSuchModelException Thrown if the supplied model ID doesn't belong to
+     *                              any running model.
+     */
+    void stopModel(long modelId) throws NoSuchModelException;
 }

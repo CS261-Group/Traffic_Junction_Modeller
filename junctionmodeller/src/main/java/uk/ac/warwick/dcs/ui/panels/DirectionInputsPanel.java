@@ -20,7 +20,6 @@ public class DirectionInputsPanel extends CustomPanel implements IReadablePanel<
     private final int maxLanes;
     private final Direction direction;
     private JCheckBox pedestrianCrossing;
-    private JCheckBox busLane;
     private LanesComboBox outLanesComboBox;
 
     public DirectionInputsPanel(Font headingFont, Font labelFont, int maxLanes, List<ILaneChangedSubscriber> subscribers, Direction direction) {
@@ -56,15 +55,12 @@ public class DirectionInputsPanel extends CustomPanel implements IReadablePanel<
 
         pedestrianCrossing = new JCheckBox("Pedestrian crossing");
         pedestrianCrossing.setFont(labelFont);
-        busLane = new JCheckBox("Bus Lane");
-        busLane.setFont(labelFont);
 
         add(pedestrianCrossing);
-        add(busLane);
     }
 
     @Override
     public DirectionInputData getValue() {
-        return new DirectionInputData(busLane.isSelected(), pedestrianCrossing.isSelected(), outLanesComboBox.getValue());
+        return new DirectionInputData(/*busLane.isSelected(), */pedestrianCrossing.isSelected(), outLanesComboBox.getValue());
     }
 }

@@ -1,46 +1,66 @@
 package uk.ac.warwick.dcs.model;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
+import uk.ac.warwick.dcs.model.exceptions.NoSuchModelException;
+import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
+
 import java.util.concurrent.ExecutionException;
 import java.lang.InterruptedException;
 
-public class ModelContainer implements IModelContainer {
-    private Set<Model> models;
+class ModelContainer implements IModelContainer {
+    /**
+     * Maximum number of models we can support concurrently.
+     * i.e., the number of threads in the thread pool.
+     */
+    private static final int MAX_CONCURRENT_MODELS = 8;
+
+    private final Map<Long, Model> models;
     private final IModelFactory modelFactory;
-    private ExecutorService executorService;
+    private final ExecutorService executorService;
 
     public ModelContainer(IModelFactory modelFactory) {
-        this.models = new HashSet<>();
+        this.models = new HashMap<>();
         this.modelFactory = modelFactory;
-        this.executorService = Executors.newFixedThreadPool(4);  // Initial thread size, will be updated dynamically
+        this.executorService = Executors.newFixedThreadPool(MAX_CONCURRENT_MODELS);  // Initial thread size, will be updated dynamically
     }
 
     @Override
-    public void addModel(JunctionConfiguration junctionConfiguration) {
-        Model model = modelFactory.createModel(junctionConfiguration);
-        models.add(model);
-        adjustThreadPoolSize();  // Adjust thread pool size when a new model is added
+    public boolean addModel(JunctionConfiguration junctionConfiguration, IModelVisualisation visualisation) {
+        assert !executorService.isShutdown();
+        assert !executorService.isTerminated();
+
+        // we can't have more concurrently running threads
+        if (models.size() == MAX_CONCURRENT_MODELS) {
+            return false; // failure
+        }
+
+        Model model = modelFactory.createModel(junctionConfiguration, visualisation);
+        models.put(model.getId(), model);
+
+        executorService.submit(model);
+
+        return true; // successfully created
     }
 
-    /**
-     * Dynamically adjusts the thread pool size based on the number of models.
-     */
-    private void adjustThreadPoolSize() {
-        int modelCount = models.size();
-        int poolSize = Math.max(1, modelCount);  // Ensure at least 1 thread.
-        
-        if (executorService != null && !executorService.isShutdown()) {
-            executorService.shutdown();  // Shutdown the old thread pool
+    @Override
+    public void stopModel(long modelId) throws NoSuchModelException {
+        if (!models.containsKey(modelId)) {
+            throw new NoSuchModelException(modelId);
         }
-        
-        // Reinitialize the executor service with the new pool size
-        executorService = Executors.newFixedThreadPool(poolSize);
+
+        // remove from model set
+        Model removedModel = models.remove(modelId);
+
+        // stop the running model which we just removed
+        removedModel.stop();
     }
 
     /**
@@ -52,7 +72,7 @@ public class ModelContainer implements IModelContainer {
     public Set<Future<Model>> evaluateModelsConcurrently(JunctionConfiguration junctionConfiguration) {
         Set<Future<Model>> futures = new HashSet<>();
         
-        for (Model model : models) {
+        for (Model model : models.values()) {
             Callable<Model> task = () -> {
                 model.evaluateModel(junctionConfiguration);  // Evaluate the model
                 return model;
@@ -74,7 +94,7 @@ public class ModelContainer implements IModelContainer {
         Set<Future<Model>> futures = new HashSet<>();
         
         // Submit tasks for each model to optimize them concurrently
-        for (Model model : models) {
+        for (Model model : models.values()) {
             Callable<Model> task = () -> {
                 model.optimiseModel(junctionConfiguration);  // Optimise the model (method to be implemented)
                 return model;

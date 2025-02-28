@@ -58,7 +58,6 @@ public class CarriagewayValidatorTest {
                                         150,
                                         new int[] { 0, 20, 30, 75 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of(
@@ -85,7 +84,6 @@ public class CarriagewayValidatorTest {
                                         150,
                                         new int[] { 50, 0, 30, 75 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of(
@@ -113,7 +111,6 @@ public class CarriagewayValidatorTest {
                                         150,
                                         new int[] { 150, 150, 0, 150 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of(
@@ -141,7 +138,6 @@ public class CarriagewayValidatorTest {
                                         90,
                                         new int[] { 20, 30, 30, 0 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of(
@@ -158,77 +154,6 @@ public class CarriagewayValidatorTest {
         final List<String> actual = carriagewayValidator.validate(carriageway);
         // Assert
         assertEquals(expected.size(), actual.size());
-        assertArrayEquals(expected.toArray(), actual.toArray());
-    }
-
-    private static Stream<Arguments> busLaneInputsAndOutputs() {
-        return Stream.of(
-                Arguments.of(
-                        new Carriageway(
-                                Direction.WEST,
-                                new OutgoingRoad(
-                                        Direction.WEST,
-                                        List.of(
-                                                new OutgoingLane(Direction.WEST)
-                                        )
-                                ),
-                                new IncomingRoad(
-                                        Direction.WEST,
-                                        List.of(
-                                                new IncomingLane(
-                                                        Direction.WEST,
-                                                        VehicleType.CAR,
-                                                        Seeds.allDirectionsW
-                                                )
-                                        ),
-                                        90,
-                                        new int[] { 30, 30, 30, 0 }
-                                ),
-                                true,
-                                false
-                        ),
-                        List.of(
-                                "No incoming bus lane found on WEST carriageway, despite a bus lane being configured."
-                        )
-                ),
-                Arguments.of(
-                        new Carriageway(
-                                Direction.NORTH,
-                                new OutgoingRoad(
-                                        Direction.NORTH,
-                                        List.of(
-                                                new OutgoingLane(Direction.NORTH),
-                                                new OutgoingLane(Direction.NORTH)
-                                        )
-                                ),
-                                new IncomingRoad(
-                                        Direction.NORTH,
-                                        List.of(
-                                                new IncomingLane(
-                                                        Direction.NORTH,
-                                                        VehicleType.CAR,
-                                                        Seeds.allDirectionsN
-                                                )
-                                        ),
-                                        90,
-                                        new int[] { 0, 30, 30, 30 }
-                                ),
-                                true,
-                                false
-                        ),
-                        List.of(
-                                "No incoming bus lane found on NORTH carriageway, despite a bus lane being configured."
-                        )
-                )
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("busLaneInputsAndOutputs")
-    public void validate_ShouldReturnNonEmptyList_IfNoBusLaneWhenConfigured(Carriageway carriageway, List<String> expected) {
-        // Act
-        final List<String> actual = carriagewayValidator.validate(carriageway);
-        // Assert
         assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
@@ -263,7 +188,6 @@ public class CarriagewayValidatorTest {
                                     90,
                                     new int[] { 0, 30, 30, 30 }
                             ),
-                            false,
                             false
                     ),
                     List.of(
@@ -298,7 +222,6 @@ public class CarriagewayValidatorTest {
                                         90,
                                         new int[] { 30, 0, 30, 30 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of(
@@ -340,7 +263,6 @@ public class CarriagewayValidatorTest {
                                         90,
                                         new int[] { 30, 30, 0, 30 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of(
@@ -388,7 +310,6 @@ public class CarriagewayValidatorTest {
                                         90,
                                         new int[] { 30, 30, 30, 0 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of(
@@ -443,7 +364,6 @@ public class CarriagewayValidatorTest {
                                         90,
                                         new int[] { 30, 30, 30, 0 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of() // no errors
@@ -484,7 +404,6 @@ public class CarriagewayValidatorTest {
                                         90,
                                         new int[] { 0, 30, 30, 30 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of(
@@ -514,7 +433,6 @@ public class CarriagewayValidatorTest {
                                         60,
                                         new int[] { 0, 0, 30, 30 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of()
@@ -553,7 +471,6 @@ public class CarriagewayValidatorTest {
                                         150,
                                         new int[] { 50, 50, 0, 50 }
                                 ),
-                                false,
                                 false
                         ),
                         List.of(

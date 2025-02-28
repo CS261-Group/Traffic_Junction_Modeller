@@ -47,7 +47,7 @@ public class LanesAssignmentValidatorTest {
                     new IncomingLane(direction, VehicleType.CAR, specificDirections)
             ), 150, specificFlows);
             OutgoingRoad outgoingRoad = new OutgoingRoad(direction, List.of(new OutgoingLane(direction)));
-            carriageways[direction.ordinal()] = new Carriageway(direction, outgoingRoad, incomingRoad, false, false);
+            carriageways[direction.ordinal()] = new Carriageway(direction, outgoingRoad, incomingRoad, false);
         }
         Groups groups = new Groups(
                 List.of(
