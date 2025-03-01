@@ -114,17 +114,11 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
      * 
      * @param direction The cardinal direction (e.g., NORTH, SOUTH) for which the outgoing flow is requested.
      * @return The outgoing flow towards the specified direction.
-     * @throws InvalidDirectionException if the provided direction is invalid for the given Carriageway.
+     * @throws InvalidDirectionException Thrown if the provided direction is invalid for the given Carriageway.
      */
-    public int getOutgoingFlow(Direction direction) {
+    public int getOutgoingFlow(Direction direction) throws InvalidDirectionException {
         Carriageway cw = getCarriageway(direction);
-        try {
-            return cw.getOutgoingFlow(direction);
-        } catch (InvalidDirectionException e) {
-            // Handle the exception (e.g., log it, rethrow it, or return a default value)
-            System.out.println("Invalid direction: " + e.getMessage());
-            return -1;  // Return a default value in case of exception
-        }
+        return cw.getOutgoingFlow(direction);
     }
 
     /**
