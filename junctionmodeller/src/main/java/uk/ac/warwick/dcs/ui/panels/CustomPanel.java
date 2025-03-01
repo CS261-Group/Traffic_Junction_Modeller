@@ -21,6 +21,7 @@ abstract class CustomPanel extends JPanel {
     public CustomPanel(Font headingFont, Font labelFont) {
         this.headingFont = headingFont;
         this.labelFont = labelFont;
+        setAlignmentX(LEFT_ALIGNMENT);
     }
 
     /**
