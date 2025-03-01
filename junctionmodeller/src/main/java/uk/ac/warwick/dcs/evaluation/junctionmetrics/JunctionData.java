@@ -58,7 +58,7 @@ public class JunctionData {
 
         Direction carriagewayDir = carriageway.getDirection();
         //null initialising instead of throwing InvalidPerm
-        Direction prefferedFlowDirection; //null initialising instead of throwing InvalidPermi
+        Direction prefferedFlowDirection;
 
         if (lane.allowsGoing(rightOf(carriagewayDir))){
             prefferedFlowDirection = rightOf(carriagewayDir);
