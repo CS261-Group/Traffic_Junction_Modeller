@@ -6,7 +6,7 @@ import uk.ac.warwick.dcs.contracts.exceptions.InvalidLaneNumberException;
 
 import java.util.List;
 
-public class IncomingRoad extends Road<IncomingLane> {
+public class IncomingRoad extends Road<IncomingLane>{
     public static final int MINIMUM_INCOMING_FLOW = 20;
     public static final int MINIMUM_OUTGOING_FLOW = 0;
     private final int incomingFlow;
