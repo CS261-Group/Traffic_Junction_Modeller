@@ -7,10 +7,12 @@ package uk.ac.warwick.dcs.visualisation;
  * Swing is in-built and actually has all I need 
  */
 
+import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Visualiser {
+public class Visualiser implements IModelVisualisation {
     private static final int screenSizeX = 400;
     private static final int screenSizeY = 400;
 
@@ -32,7 +34,11 @@ public class Visualiser {
 
     private void drawStatics(){
         JPanel background = new JPanel();
+    }
 
-        
+    @Override
+    public void notify(ModelUpdate update) {
+        System.out.println("NOTIFIED");
+        // TODO: implement
     }
 }
