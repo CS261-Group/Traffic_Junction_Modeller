@@ -69,7 +69,6 @@ public class MainForm extends JFrame {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setAlignmentX(LEFT_ALIGNMENT);
 
         // Traffic Lights Section
         trafficLightPanel = new TrafficLightPanel(headingFont, labelFont);

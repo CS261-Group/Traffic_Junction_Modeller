@@ -52,7 +52,6 @@ public class LaneGroupPanel extends CustomPanel implements ILaneChangedSubscribe
         if (oldLanes < newLanes) {
             while (lanes.size() != newLanes) {
                 LaneGroupSettingsPanel setting = new LaneGroupSettingsPanel(headingFont, labelFont, lanes.size() + 1, numGroups, defaultGroup);
-                setting.setAlignmentX(LEFT_ALIGNMENT);
                 add(setting);
                 lanes.add(setting);
             }
