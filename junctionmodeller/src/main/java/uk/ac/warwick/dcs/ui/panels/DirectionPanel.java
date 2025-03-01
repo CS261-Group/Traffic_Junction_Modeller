@@ -35,14 +35,11 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
     @Override
     protected void setUp() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setAlignmentX(LEFT_ALIGNMENT);
         setBorder(BorderFactory.createTitledBorder(Constants.DIRECTIONS[direction.ordinal()]));
 
         // custom panels required for each section
         flowsPanel = new FlowsPanel(headingFont, labelFont, direction);
-        flowsPanel.setAlignmentX(LEFT_ALIGNMENT);
         laneDirections = new LaneDirectionsPanel(headingFont, labelFont);
-        laneDirections.setAlignmentX(LEFT_ALIGNMENT);
 
         // although this is first, it needs to be instantiated last so all the other
         // objects (which are subscribers) can be registered
@@ -52,7 +49,6 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
 
         // first panel defines alignment for whole column, for some reason
         directionInputs = new DirectionInputsPanel(headingFont, labelFont, Constants.MAX_LANES, subscribers, direction);
-        directionInputs.setAlignmentX(LEFT_ALIGNMENT);
 
         add(directionInputs);
         add(flowsPanel);

@@ -85,7 +85,6 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         comboBoxContainer.add(groupsCombo);
         add(comboBoxContainer);
         for (LaneGroupPanel laneGroupPanel : laneGroupsPanels) {
-            laneGroupPanel.setAlignmentX(LEFT_ALIGNMENT);
             add(laneGroupPanel);
         }
         add(groupTimingsPanel);
