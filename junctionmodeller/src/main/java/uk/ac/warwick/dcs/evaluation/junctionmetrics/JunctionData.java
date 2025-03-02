@@ -5,6 +5,11 @@ import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
+import uk.ac.warwick.dcs.contracts.timings.Group;
+import uk.ac.warwick.dcs.contracts.timings.GroupTiming;
+import uk.ac.warwick.dcs.contracts.timings.Groups;
+
+import java.util.Iterator;
 
 public class JunctionData {
 
@@ -15,7 +20,7 @@ public class JunctionData {
      * @param carriageway carriageway containing lanes
      * @return the arrival flow rate
      */
-    public double getLaneArrivalFlow(Carriageway carriageway){
+    public static double getLaneArrivalFlow(Carriageway carriageway){
         return (double) carriageway.getIncomingFlow() / carriageway.getNumIncomingLanes();
     }
 
@@ -24,7 +29,7 @@ public class JunctionData {
      * @param dir The input direction
      * @return The direction of the left turn from the input direction
      */
-    public Direction leftOf(Direction dir) {
+    public static Direction leftOf(Direction dir) {
         return Direction.values()[(dir.ordinal() + 1) % 4];
     }
 
@@ -33,7 +38,7 @@ public class JunctionData {
      * @param dir The input direction
      * @return The direction of the right turn from the input direction
      */
-    public Direction rightOf(Direction dir){
+    public static Direction rightOf(Direction dir){
         return Direction.values()[(dir.ordinal() - 1) % 4];
     }
 
@@ -42,7 +47,7 @@ public class JunctionData {
      * @param dir The input direction
      * @return The direction of ahead from the input direction
      */
-    public Direction aheadOf(Direction dir){
+    public static Direction aheadOf(Direction dir){
         return Direction.values()[(dir.ordinal() + 2) % 4];
     }
 
@@ -54,7 +59,7 @@ public class JunctionData {
      * @param lane A lane belonging to the carriageway
      * @return the saturation flow rate ascribed to the lane
      */
-    public double laneSaturationFlow(Carriageway carriageway, IncomingLane lane){
+    public static double getLaneSaturationFlow(Carriageway carriageway, IncomingLane lane){
 
         Direction carriagewayDir = carriageway.getDirection();
         //null initialising instead of throwing InvalidPerm
@@ -77,6 +82,18 @@ public class JunctionData {
         } catch (InvalidDirectionException e) {
             throw new RuntimeException(e);
         }
-
     }
+
+    public static double getLaneGreenTime(IncomingLane lane, Groups groups){
+
+
+        Iterator<Group> i = groups.iterator();
+        while group.
+
+        GroupTiming groupTiming;
+        groupTiming.getTiming();
+
+        return 0;
+    }
+
 }
