@@ -33,6 +33,10 @@ public class IncomingRoad extends Road<IncomingLane>{
         return lanes.get(laneNum - 1); // -1 corrected for index
     }
 
+    public int getNumOf(IncomingLane lane){
+        return lanes.indexOf(lane);
+    }
+
     /**
      *
      * @return The incoming flow from the incoming road into the junction.

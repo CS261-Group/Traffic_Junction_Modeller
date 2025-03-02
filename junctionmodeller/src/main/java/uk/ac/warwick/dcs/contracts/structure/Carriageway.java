@@ -41,6 +41,11 @@ public class Carriageway{
      */
     public IncomingLane getIncomingLane(int laneNum) { return incomingRoad.get(laneNum); }
 
+    public int getIncomingLaneNum(IncomingLane lane){
+        return incomingRoad.getNumOf(lane);
+    }
+
+
     /**
      *
      * @return An iterator of all incomingLanes for the carriageway
