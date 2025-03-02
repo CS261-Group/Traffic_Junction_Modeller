@@ -54,4 +54,16 @@ public class IncomingRoad extends Road<IncomingLane>{
         }
         return outgoingFlows[direction.ordinal()];
     }
+
+    public double getMaxFlowRatio(){
+        int maxOutgoingFlow = 0;
+        for (int i = 0; i < 4; i++){
+            if (outgoingFlows[i] > maxOutgoingFlow) {
+                maxOutgoingFlow = outgoingFlows[i];
+            }
+        }
+
+        return (double) incomingFlow / maxOutgoingFlow;
+    }
+
 }
