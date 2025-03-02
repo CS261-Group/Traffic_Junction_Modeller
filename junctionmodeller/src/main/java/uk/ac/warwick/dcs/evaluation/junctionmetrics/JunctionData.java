@@ -84,16 +84,10 @@ public class JunctionData {
         }
     }
 
-    public static double getLaneGreenTime(IncomingLane lane, Groups groups){
-
-
-        Iterator<Group> i = groups.iterator();
-        while group.
-
-        GroupTiming groupTiming;
-        groupTiming.getTiming();
-
-        return 0;
+    public static int getLaneGreenTime(IncomingLane lane, Groups groups){
+        return groups.getLaneTiming(lane);
     }
+
+    public static double
 
 }

@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.contracts.timings;
 
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
+import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
 
 import java.util.Iterator;
 import java.util.List;
@@ -33,14 +34,14 @@ public class Groups implements Iterable<Group> {
     // TODO: source???
     private static final double TRANSITION_TIME = 2.5;
 
-    // time to go through all groups
-    private double CycleTime;
+    // 0 when being optimised
+    private int cycleTime;
 
     private final int numGroups;
     private final List<Group> groups;
     private final boolean optimiseTimings;
 
-    // separate from Group because it might be optimised
+    // null when being optimised
     private final List<GroupTiming> timings;
 
     public Groups(List<Group> groups, boolean optimiseTimings, List<GroupTiming> timings) {
@@ -49,7 +50,8 @@ public class Groups implements Iterable<Group> {
         this.optimiseTimings = optimiseTimings;
 
         if (optimiseTimings) {
-            this.timings = null; // not good, should create a default timings list instead
+            this.timings = null;
+            this.cycleTime = 0;
         } else {
             assert timings != null;
             // sanity check: each group should have its own timing
@@ -62,13 +64,13 @@ public class Groups implements Iterable<Group> {
 
 
     private void setCycleTime(){
-        double sumTimings = 0;
+        int sumTimings = 0;
 
         for (GroupTiming timing : timings) {
             sumTimings += timing.getTiming();
         }
 
-        CycleTime = sumTimings + (TRANSITION_TIME * numGroups);
+        cycleTime = sumTimings + (int) TRANSITION_TIME * numGroups;
     }
 
     /**
@@ -83,14 +85,13 @@ public class Groups implements Iterable<Group> {
         return optimiseTimings;
     }
 
-    // Not sure if I should throw an exception the input or just return 0
-    public double getLaneTiming(IncomingLane lane){
-        Iterator<Group> groupIterator = this.iterator();
-
-        while (groupIterator.hasNext()) {
-            Group group = groupIterator.next();
-            if (group.containsLane(lane)){
-
+    /**
+     * @param lane Input lane
+     * @return The timing of a lane, or 0 if no such lane.
+     */
+    public int getLaneTiming(IncomingLane lane){
+        for (Group group : this) {
+            if (group.containsLane(lane)) {
                 return getGroupTiming(group.getGroupNum()).getTiming();
             }
         }
@@ -98,19 +99,17 @@ public class Groups implements Iterable<Group> {
         return 0;
     }
 
-    // Not sure if I should throw an exception the input or just return null
+    /**
+     * @param groupNum Group number
+     * @return The GroupTiming object corresponding to the group number.
+     */
     public GroupTiming getGroupTiming(int groupNum){
-        Iterator<GroupTiming> timingsIterator = timings.iterator();
-
-        while (timingsIterator.hasNext()) {
-            GroupTiming groupTiming = timingsIterator.next();
-
+        for(GroupTiming groupTiming : this.timings){
             if (groupTiming.getGroupNum() == groupNum) {
                 return groupTiming;
             }
         }
 
-        //throw new InvalidGroupNumberException(groupNum, numGroups);
         return null;
     }
 
