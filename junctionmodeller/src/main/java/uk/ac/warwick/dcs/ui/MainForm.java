@@ -110,6 +110,15 @@ public class MainForm extends JFrame {
     }
 
     /**
+     * We need this method for testing (package private access to
+     * changing errors).
+     * @param errors The errors to set.
+     */
+    void setErrors(List<String> errors) {
+        errorsPanel.setErrors(errors);
+    }
+
+    /**
      * Action method for clicking the 'submit' button.
      * Effectively fetches the data stored across the
      * form and invokes the data service.
@@ -134,7 +143,7 @@ public class MainForm extends JFrame {
         assert errors != null;
 
         // update errors in UI
-        errorsPanel.setErrors(errors);
+        setErrors(errors);
     }
 
     private void onLoad(){
@@ -153,7 +162,7 @@ public class MainForm extends JFrame {
             List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath(), showVisualisation);
 
             // update errors in UI
-            errorsPanel.setErrors(errors);
+            setErrors(errors);
         }
     }
 }
