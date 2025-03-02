@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.ui;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.ac.warwick.dcs.dataproc.IDataService;
 
@@ -15,8 +16,8 @@ import static org.mockito.Mockito.mock;
 public class MainFormTest {
     private static MainForm mainForm;
 
-    @BeforeAll
-    public static void setUp() {
+    @BeforeEach
+    public void setUp() {
         IDataService dataService = mock(IDataService.class);
         mainForm = new MainForm(dataService);
         mainForm.setVisible(false); // don't need to see the UI
