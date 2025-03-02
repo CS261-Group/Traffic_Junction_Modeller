@@ -90,7 +90,7 @@ public class Groups implements Iterable<Group> {
      * @param lane Input lane
      * @return The timing of a lane, or 0 if no such lane.
      */
-    public double getLaneTiming(IncomingLane lane){
+    public int getLaneTiming(IncomingLane lane){
         for (Group group : this) {
             if (group.containsLane(lane)) {
                 return getGroupTiming(group.getGroupNum()).getTiming();

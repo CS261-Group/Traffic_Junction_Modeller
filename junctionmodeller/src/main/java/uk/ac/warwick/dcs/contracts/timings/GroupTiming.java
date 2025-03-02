@@ -38,10 +38,17 @@ public class GroupTiming {
     }
 
     /**
-     * Truncates double to an int when updating
+     * Truncates to an int
      * @param updatedTiming Takes a double
      */
     public void updateTiming(double updatedTiming){
-        this.timing = (int) updatedTiming;
+        this.updateTiming((int) updatedTiming);
+    }
+
+    /**
+     * @param updatedTiming Takes an int
+     */
+    public void updateTiming(int updatedTiming) {
+        this.timing = updatedTiming;
     }
 }

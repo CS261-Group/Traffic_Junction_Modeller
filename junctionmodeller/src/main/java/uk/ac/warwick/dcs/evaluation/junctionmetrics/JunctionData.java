@@ -84,9 +84,10 @@ public class JunctionData {
         }
     }
 
-    public static double getLaneGreenTime(IncomingLane lane, Groups groups){
-
+    public static int getLaneGreenTime(IncomingLane lane, Groups groups){
         return groups.getLaneTiming(lane);
     }
+
+    public static double
 
 }
