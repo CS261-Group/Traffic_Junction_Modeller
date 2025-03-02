@@ -7,33 +7,38 @@ package uk.ac.warwick.dcs.visualisation;
  * Swing is in-built and actually has all I need 
  */
 
+import com.almasb.fxgl.app.GameApplication;
+import com.almasb.fxgl.app.GameSettings;
 import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.util.LinkedList;
+import java.util.List;
 
-public class Visualiser implements IModelVisualisation {
-    private static final int screenSizeX = 400;
-    private static final int screenSizeY = 400;
+public class Visualiser extends GameApplication implements IModelVisualisation {
+    private static final String WINDOW_TITLE = "Junction Visualiser";
+    private final List<ModelVisualisation> modelVisualisations;
 
-    public Visualiser(){
+    public Visualiser() {
+        super();
+        modelVisualisations = new LinkedList<>();
+    }
+
+    /**
+     * Launch the 'game', i.e., visualise the app.
+     */
+    public void run(String[] args) {
+        launch(args);
 
     }
 
-    public void Run(){
-        JFrame scr = new JFrame();
-
-        // configure window
-        scr.setTitle("Hello World");
-        scr.setSize(screenSizeX, screenSizeY);
-        scr.setVisible(true);
-        scr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        drawStatics();
-    }
-
-    private void drawStatics(){
-        JPanel background = new JPanel();
+    @Override
+    protected void initSettings(GameSettings settings) {
+        settings.setWidth(Constants.VISUALISATION_WIDTH);
+        settings.setHeight(Constants.VISUALISATION_HEIGHT);
+        settings.setTitle(WINDOW_TITLE);
+        settings.setVersion("");
     }
 
     @Override
