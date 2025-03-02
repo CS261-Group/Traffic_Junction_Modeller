@@ -22,7 +22,7 @@ public class GroupTiming {
     public static final int MAX_GROUP_TIMING = 180;
 
     // timing field
-    private double timing;
+    private int timing;
 
     public GroupTiming(int groupNum, int timing) {
         this.groupNum = groupNum;
@@ -33,11 +33,15 @@ public class GroupTiming {
         return groupNum;
     }
 
-    public double getTiming(){
+    public int getTiming(){
         return timing;
     }
 
+    /**
+     * Truncates double to an int when updating
+     * @param updatedTiming Takes a double
+     */
     public void updateTiming(double updatedTiming){
-        this.timing = updatedTiming;
+        this.timing = (int) updatedTiming;
     }
 }
