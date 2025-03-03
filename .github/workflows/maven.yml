@@ -21,5 +21,7 @@ jobs:
           cache: 'maven'
 
       - name: Build and Test with Maven
-        run: mvn -B clean verify
+        # we are not testing ui stuff because no X11 display variable
+        # in the GitHub Actions thingy
+        run: mvn -B clean verify -Dtest=!uk.ac.warwick.dcs.ui.*
         working-directory: junctionmodeller/
