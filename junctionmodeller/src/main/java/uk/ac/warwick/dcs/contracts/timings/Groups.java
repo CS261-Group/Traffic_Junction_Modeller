@@ -30,9 +30,11 @@ public class Groups implements Iterable<Group> {
      */
     public static final int MIN_NUM_GROUPS = 2;
 
-    // time between amber in one group to green in another
-    // TODO: source???
-    private static final double TRANSITION_TIME = 2.5;
+    /**
+     * also called intergreen time. See:
+     * <a href="https://www.sciencedirect.com/science/article/pii/B9780128153024000030">Chow and Ampountolas</a>
+     */
+    private static final double TRANSITION_TIME = 7.5;
 
     // 0 when being optimised
     private int cycleTime;
@@ -62,7 +64,6 @@ public class Groups implements Iterable<Group> {
 
     }
 
-
     private void setCycleTime(){
         int sumTimings = 0;
 
@@ -70,8 +71,17 @@ public class Groups implements Iterable<Group> {
             sumTimings += timing.getTiming();
         }
 
-        cycleTime = sumTimings + (int) TRANSITION_TIME * numGroups;
+        cycleTime = (int) (sumTimings + this.cycleLostTime());
     }
+
+    public double getCycleTime(){
+        return cycleTime;
+    }
+
+    public double cycleLostTime(){
+        return TRANSITION_TIME * numGroups;
+    }
+
 
     /**
      * @return The number of traffic light groups in the configuration.

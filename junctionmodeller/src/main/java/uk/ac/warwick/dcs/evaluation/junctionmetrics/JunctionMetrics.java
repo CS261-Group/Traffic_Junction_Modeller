@@ -1,10 +1,15 @@
 package uk.ac.warwick.dcs.evaluation.junctionmetrics;
 
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.evaluation.junctiondata.GroupData;
+import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
+import uk.ac.warwick.dcs.evaluation.junctiondata.LaneData;
 import uk.ac.warwick.dcs.evaluation.lanemetrics.ActuatedLaneMetricCalculator;
 import uk.ac.warwick.dcs.evaluation.lanemetrics.FixedtimeLaneMetricCalculator;
 import uk.ac.warwick.dcs.evaluation.lanemetrics.LaneMetrics;
 import uk.ac.warwick.dcs.evaluation.lanemetrics.LaneMetricCalculator;
+
+import java.util.ArrayList;
 
 /**
  * JunctionMetrics object is created everytime a junction is evaluated
@@ -23,8 +28,7 @@ public class JunctionMetrics implements IJunctionMetrics {
     // must be an instance so the class can be threadable
     private final LaneMetricCalculator calculator;
 
-    // TODO take in junction data and create laneMetric classes from it
-    public JunctionMetrics(TrafficLightType type){
+    public JunctionMetrics(TrafficLightType type, JunctionData data){
         // create a calculator
         if (type == TrafficLightType.ACTUATION) {
             calculator = new ActuatedLaneMetricCalculator();
@@ -33,28 +37,39 @@ public class JunctionMetrics implements IJunctionMetrics {
         }
 
         //create lane metrics (evaluate each lane)
-        LaneMetrics[] laneMetrics;
+        ArrayList<LaneMetrics> laneMetricsList = new ArrayList<>();
 
-        //updateDelayMetrics(laneMetrics);
-        //updateQueueMetrics(laneMetrics);
+        for (GroupData group : data){
+            for (LaneData lane : group){
+                laneMetricsList.add(new LaneMetrics(calculator,
+                        lane.getSaturationFlow(),
+                        data.getCycleTime(),
+                        lane.getArrivalFlow(),
+                        group.greenTime));
+            }
+        }
+
+        // aggregate metrics
+        updateDelayMetrics(laneMetricsList);
+        updateQueueMetrics(laneMetricsList);
     }
 
     /**
      * Takes the average of wait times for each lane, and finds the maximum wait time
      * @param laneMetrics List of lane metrics
      */
-    private void updateDelayMetrics(LaneMetrics[] laneMetrics) {
+    private void updateDelayMetrics(ArrayList<LaneMetrics> laneMetrics) {
         avgDelay = 0;
 
-        for (int i = 0; i <= laneMetrics.length; i++){
-            avgDelay += laneMetrics[i].getAverageDelay();
+        for (int i = 0; i <= laneMetrics.size(); i++){
+            avgDelay += laneMetrics.get(i).getAverageDelay();
 
-            if (laneMetrics[i].getAverageDelay() > maxDelay){
-                maxDelay = laneMetrics[i].getAverageDelay();
+            if (laneMetrics.get(i).getAverageDelay() > maxDelay){
+                maxDelay = laneMetrics.get(i).getAverageDelay();
             }
         }
 
-        avgDelay /= laneMetrics.length;
+        avgDelay /= laneMetrics.size();
     }
 
     @Override
@@ -71,18 +86,18 @@ public class JunctionMetrics implements IJunctionMetrics {
      * Takes the average of queue lengths for each lane, and finds the maximum queue length
      * @param laneMetrics List of lane metrics
      */
-    private void updateQueueMetrics(LaneMetrics[] laneMetrics) {
+    private void updateQueueMetrics(ArrayList<LaneMetrics> laneMetrics) {
         avgQueue = 0;
 
-        for (int i = 0; i <= laneMetrics.length; i++){
-            avgQueue += laneMetrics[i].getAverageQueueLength();
+        for (int i = 0; i <= laneMetrics.size(); i++){
+            avgQueue += laneMetrics.get(i).getAverageQueueLength();
 
-            if (laneMetrics[i].getAverageQueueLength() > maxDelay){
-                maxQueue = laneMetrics[i].getAverageQueueLength();
+            if (laneMetrics.get(i).getAverageQueueLength() > maxDelay){
+                maxQueue = laneMetrics.get(i).getAverageQueueLength();
             }
         }
 
-        avgQueue /= laneMetrics.length;
+        avgQueue /= laneMetrics.size();
     }
 
     @Override

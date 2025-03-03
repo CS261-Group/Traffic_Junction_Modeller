@@ -12,4 +12,8 @@ public abstract class Lane {
     public Lane(Direction direction) {
         this.direction = direction;
     }
+
+    public Direction getDirection() {
+        return direction;
+    }
 }
