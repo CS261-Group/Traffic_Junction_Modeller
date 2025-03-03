@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
+import uk.ac.warwick.dcs.ui.util.WrappingLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,6 +37,7 @@ public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<Gro
         add(groupTimingsHeading);
 
         optimiseCheckbox = new JCheckBox("Optimise signal timings");
+        optimiseCheckbox.setFont(labelFont);
         optimiseCheckbox.addItemListener(e -> {
             // if we check the checkbox, we don't want to specify signal timings
             if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -47,12 +49,7 @@ public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<Gro
         add(optimiseCheckbox);
 
 
-        JTextArea desc = new JTextArea("All groups have some (maximum) active time in seconds");
-        desc.setWrapStyleWord(true);
-        desc.setLineWrap(true);
-        desc.setOpaque(false); // Make it look like a label
-        desc.setEditable(false);
-        desc.setFocusable(false);
+        WrappingLabel desc = new WrappingLabel("All groups have some (maximum) active time in seconds");
         desc.setFont(labelFont);
         add(desc);
 

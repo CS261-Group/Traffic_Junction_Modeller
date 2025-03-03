@@ -69,7 +69,6 @@ public class MainForm extends JFrame {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setAlignmentX(LEFT_ALIGNMENT);
 
         // Traffic Lights Section
         trafficLightPanel = new TrafficLightPanel(headingFont, labelFont);
@@ -107,15 +106,22 @@ public class MainForm extends JFrame {
         JScrollPane formContainer = new JScrollPane(mainPanel);
         formContainer.getVerticalScrollBar().setUnitIncrement(16);
         add(formContainer, BorderLayout.CENTER);
-        setVisible(true);
     }
 
     /**
-     * Action method for clicking the 'submit' button.
-     * Effectively fetches the data stored across the
-     * form and invokes the data service.
+     * We need this method for testing (package private access to
+     * changing errors).
+     * @param errors The errors to set.
      */
-    private void onSubmit() {
+    void setErrors(List<String> errors) {
+        errorsPanel.setErrors(errors);
+    }
+
+    /**
+     * Package private so we can test it.
+     * @return The configuration data aggregated from the form.
+     */
+    ConfigurationData getConfigDataFromForm() {
         // assemble required data
         DirectionData[] directionData = Arrays.stream(new DirectionPanel[]{
                 northboundPanel, eastboundPanel, southboundPanel, westboundPanel
@@ -128,14 +134,24 @@ public class MainForm extends JFrame {
         // TODO: should be part of submissionPanel.getValue()
         String configName = submissionPanel.getConfigurationName();
 
-        ConfigurationData configData = new ConfigurationData(configName, directionData, trafficLightData, showVisualisation);
+        return new ConfigurationData(configName, directionData, trafficLightData, showVisualisation);
+    }
+
+    /**
+     * Action method for clicking the 'submit' button.
+     * Effectively fetches the data stored across the
+     * form and invokes the data service.
+     */
+    private void onSubmit() {
+        // assemble required data
+        ConfigurationData configData = getConfigDataFromForm();
 
         // submit configuration collected from form through data service
         List<String> errors = dataService.submitEnteredConfiguration(configData);
         assert errors != null;
 
         // update errors in UI
-        errorsPanel.setErrors(errors);
+        setErrors(errors);
     }
 
     private void onLoad(){
@@ -154,7 +170,7 @@ public class MainForm extends JFrame {
             List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath(), showVisualisation);
 
             // update errors in UI
-            errorsPanel.setErrors(errors);
+            setErrors(errors);
         }
     }
 }

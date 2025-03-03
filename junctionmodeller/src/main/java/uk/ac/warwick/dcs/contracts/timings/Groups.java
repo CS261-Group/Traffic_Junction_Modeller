@@ -27,7 +27,6 @@ public class Groups implements Iterable<Group> {
 
     /**
      * Smallest number of groups possible.
-     * TODO: test for this when building groups
      */
     public static final int MIN_NUM_GROUPS = 2;
 

@@ -1,20 +1,29 @@
-package uk.ac.warwick.dcs.evaluation.junctiondata;
+package uk.ac.warwick.dcs.evaluation.junctionmetrics;
 
+import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
+import uk.ac.warwick.dcs.contracts.timings.Group;
+import uk.ac.warwick.dcs.contracts.timings.GroupTiming;
+import uk.ac.warwick.dcs.contracts.timings.Groups;
 
-public class LaneDataBuilder {
+import java.util.Iterator;
 
-    public static LaneData createLaneData(IncomingLane lane, Carriageway carriageway){
-        return new LaneData(
-                carriageway.getDirection(),
-                carriageway.getIncomingLaneNum(lane),
-                laneSaturationFlow(carriageway,lane),
-                laneArrivalFlow(carriageway)
-        );
+public class JunctionData {
+
+    public JunctionConfiguration junctionConfig;
+
+    /**
+     * Splits incoming flow equally among all lanes
+     * @param carriageway carriageway containing lanes
+     * @return the arrival flow rate
+     */
+    public static double getLaneArrivalFlow(Carriageway carriageway){
+        return (double) carriageway.getIncomingFlow() / carriageway.getNumIncomingLanes();
     }
+
     /**
      * The left direction is clockwise (the successor enum value)
      * @param dir The input direction
@@ -50,7 +59,7 @@ public class LaneDataBuilder {
      * @param lane A lane belonging to the carriageway
      * @return the saturation flow rate ascribed to the lane
      */
-    public static double laneSaturationFlow(Carriageway carriageway, IncomingLane lane){
+    public static double getLaneSaturationFlow(Carriageway carriageway, IncomingLane lane){
 
         Direction carriagewayDir = carriageway.getDirection();
         //null initialising instead of throwing InvalidPerm
@@ -75,13 +84,10 @@ public class LaneDataBuilder {
         }
     }
 
-    /**
-     * Splits incoming flow equally among all lanes
-     * @param carriageway carriageway containing lanes
-     * @return the arrival flow rate
-     */
-    public static double laneArrivalFlow(Carriageway carriageway){
-
-        return (double) carriageway.getIncomingFlow() / carriageway.getNumIncomingLanes();
+    public static int getLaneGreenTime(IncomingLane lane, Groups groups){
+        return groups.getLaneTiming(lane);
     }
+
+//    public static double
+
 }

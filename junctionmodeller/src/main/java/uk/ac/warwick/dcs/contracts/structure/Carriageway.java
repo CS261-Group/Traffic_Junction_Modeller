@@ -95,7 +95,6 @@ public class Carriageway{
      * @return True if the selected lane permits exiting from the <code>direction</code>
      *         given, false otherwise. If the <code>direction</code> specified
      *         matches the incoming direction, we return false.
-     * TODO: custom error for invalid lane number
      */
     public boolean getLaneAllowsDirection(int laneNum, Direction direction) {
         return incomingRoad.get(laneNum).allowsGoing(direction);
