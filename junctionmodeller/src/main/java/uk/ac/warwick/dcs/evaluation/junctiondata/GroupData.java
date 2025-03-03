@@ -7,12 +7,13 @@ import java.util.List;
 
 public class GroupData implements Iterable<LaneData>{
     public int groupNum;
-    public double greenTime;
+    public double greenTime; //gets optimised
     public List<LaneData> lanes;
 
-    public GroupData(int groupNum, double greenTime){
+    public GroupData(int groupNum, double greenTime, List<LaneData> laneData){
         this.groupNum = groupNum;
         this.greenTime = greenTime;
+        this.lanes = laneData;
     }
 
     @Override

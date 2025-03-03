@@ -45,6 +45,10 @@ public class Carriageway{
         return incomingRoad.getNumOf(lane);
     }
 
+    public boolean containsIncomingLane(IncomingLane lane){
+        return incomingRoad.containsLane(lane);
+    }
+
 
     /**
      *

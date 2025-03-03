@@ -32,4 +32,8 @@ public class Group {
     public boolean containsLane(IncomingLane lane) {
         return lanes.contains(lane);
     }
+
+    public List<IncomingLane> getLanes(){
+        return lanes;
+    }
 }
