@@ -75,6 +75,10 @@ public class Groups implements Iterable<Group> {
         cycleTime = (int) (sumTimings + this.cycleLostTime());
     }
 
+    public double getCycleTime(){
+        return cycleTime;
+    }
+
     public double cycleLostTime(){
         return TRANSITION_TIME * numGroups;
     }

@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.evaluation.junctionmetrics;
+package uk.ac.warwick.dcs.evaluation.junctiondata;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
@@ -7,13 +7,12 @@ import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 
 public class LaneDataBuilder {
 
-    public LaneData createLaneData(IncomingLane lane, Carriageway carriageway){
+    public static LaneData createLaneData(IncomingLane lane, Carriageway carriageway){
         return new LaneData(
                 carriageway.getDirection(),
-                carriageway.getLaneNum(lane),
-                laneSaturationFlow(carriageway, lane),
+                carriageway.getIncomingLaneNum(lane),
+                laneSaturationFlow(carriageway,lane),
                 laneArrivalFlow(carriageway)
-
         );
     }
     /**
@@ -81,7 +80,7 @@ public class LaneDataBuilder {
      * @param carriageway carriageway containing lanes
      * @return the arrival flow rate
      */
-    public double laneArrivalFlow(Carriageway carriageway){
+    public static double laneArrivalFlow(Carriageway carriageway){
 
         return (double) carriageway.getIncomingFlow() / carriageway.getNumIncomingLanes();
     }
