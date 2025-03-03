@@ -13,7 +13,7 @@ public interface IModelContainer {
      * Create and add a model instance based on some supplied junction configuration.
      * @param junctionConfiguration The configuration to start analysis for
      * @param visualisation The visualisation to send updates to.
-     * @return True if no errors, false otherwise. Usually the only reason for an
+     * @return The created model ID if no errors, -1 otherwise. Usually the only reason for an
      *         error is that we have reached the maximum number of concurrently running
      *         models.
      */
