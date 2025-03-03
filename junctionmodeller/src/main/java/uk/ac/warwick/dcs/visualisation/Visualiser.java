@@ -4,17 +4,17 @@ import javafx.application.Application;
 import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import uk.ac.warwick.dcs.visualisation.buttons.ConfigButton;
 import uk.ac.warwick.dcs.visualisation.buttons.InfoButton;
 import uk.ac.warwick.dcs.visualisation.buttons.TabsButton;
+import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationSubscriber;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,11 +39,15 @@ public class Visualiser extends Application {
 
     private StackPane root;
     private VisualisationTogglePane toggleSlot; // Holds the active pane
-    private final List<Pane> modelVisualisations; // TODO: change back to ModelVisualisation
+    private final List<ModelVisualisation> modelVisualisations;
+
+    // observers of event that new model is added
+    private final List<IModelVisualisationSubscriber> subscribers;
 
     public Visualiser() {
         super();
         modelVisualisations = new ArrayList<>(MAX_CONCURRENT_VISUALISATIONS);
+        subscribers = new LinkedList<>();
     }
 
     @Override
@@ -53,18 +57,15 @@ public class Visualiser extends Application {
 
         // initialise and set up the toggling visualisation pane
         toggleSlot = new VisualisationTogglePane(Constants.VISUALISATION_WIDTH, Constants.VISUALISATION_HEIGHT);
-        modelVisualisations.add(createPane(Color.RED));
-        modelVisualisations.add(createPane(Color.GREEN));
-        modelVisualisations.add(createPane(Color.BLUE));
 
         // buttons available
         ConfigButton configBtn = new ConfigButton();
         InfoButton infoBtn = new InfoButton();
-        TabsButton tabsBtn = new TabsButton();
+        TabsButton tabsBtn = new TabsButton(modelVisualisations);
 
         root.getChildren().addAll(toggleSlot, configBtn, infoBtn, tabsBtn);
 
-        // est alignments of UI buttons
+        // set alignments of UI buttons
         StackPane.setAlignment(configBtn, Pos.BOTTOM_RIGHT);
         StackPane.setAlignment(infoBtn, Pos.TOP_RIGHT);
         StackPane.setAlignment(tabsBtn, Pos.BOTTOM_LEFT);
@@ -86,13 +87,6 @@ public class Visualiser extends Application {
         // TODO: dropdown select of running panes
     }
 
-    // Creates a pane with a given background color
-    private Pane createPane(Color color) {
-        Pane pane = new Pane();
-        pane.setMinSize(200, 150);
-        return pane;
-    }
-
     /**
      * Launch the 'game', i.e., visualise the app.
      */
@@ -108,7 +102,13 @@ public class Visualiser extends Application {
         if (modelVisualisations.size() == MAX_CONCURRENT_VISUALISATIONS) {
             throw new RuntimeException("Cannot support more than " + MAX_CONCURRENT_VISUALISATIONS + " visualisations");
         }
+
         modelVisualisations.add(modelVisualisation);
+
+        // update components requiring update
+        for (IModelVisualisationSubscriber subscriber : subscribers) {
+            subscriber.notify(modelVisualisation);
+        }
     }
 
     /**

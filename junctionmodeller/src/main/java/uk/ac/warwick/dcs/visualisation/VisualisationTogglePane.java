@@ -3,7 +3,7 @@ package uk.ac.warwick.dcs.visualisation;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class VisualisationTogglePane extends StackPane {
+class VisualisationTogglePane extends StackPane {
     public VisualisationTogglePane(int width, int height) {
         setMaxWidth(width);
         setMaxHeight(height);

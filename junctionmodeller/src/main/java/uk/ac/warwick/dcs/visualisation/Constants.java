@@ -1,6 +1,6 @@
 package uk.ac.warwick.dcs.visualisation;
 
-public class Constants {
+class Constants {
     /**
      * Width of whole visualisation window.
      */
