@@ -14,10 +14,10 @@ public class Constants {
     /**
      * Width of single visualisation pane.
      */
-    public static final int VISUALISATION_WIDTH = 568;
+    public static final int VISUALISATION_WIDTH = 768;
 
     /**
      * Height of single visualisation pane.
      */
-    public static final int VISUALISATION_HEIGHT = 568;
+    public static final int VISUALISATION_HEIGHT = 768;
 }

@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.visualisation;
 
 import javafx.application.Application;
 import javafx.event.Event;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
@@ -35,8 +36,9 @@ public class Visualiser extends Application {
     private static final String WINDOW_TITLE = "Junction Visualiser";
 
     private StackPane root;
-    private StackPane toggleSlot; // Holds the active pane
+    private VisualisationTogglePane toggleSlot; // Holds the active pane
     private final List<Pane> modelVisualisations;
+    int curIdx=0; // TODO
 
     public Visualiser() {
         super();
@@ -44,33 +46,32 @@ public class Visualiser extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        stage.setTitle(WINDOW_TITLE);
-        stage.setWidth(Constants.VISUALISER_WIDTH);
-        stage.setHeight(Constants.VISUALISER_HEIGHT);
-        stage.setOnCloseRequest(Event::consume); // don't close on close event
-        stage.setResizable(false);
-
-        // remove border (with minimise, maximise, and close buttons)
-        stage.initStyle(StageStyle.UNDECORATED);
-
+    public void start(Stage stage) {
+        // create root pane
         root = new StackPane();
-        Scene rootScene = new Scene(root, Constants.VISUALISER_WIDTH, Constants.VISUALISER_HEIGHT);
 
         // initialise and set up the toggling visualisation pane
-        toggleSlot = new StackPane();
+        toggleSlot = new VisualisationTogglePane(Constants.VISUALISATION_WIDTH, Constants.VISUALISATION_HEIGHT);
         modelVisualisations.add(createPane(Color.RED));
         modelVisualisations.add(createPane(Color.GREEN));
         modelVisualisations.add(createPane(Color.BLUE));
 
         // toggle button
-        Button btn = new Button("Next Pane");
-        btn.setOnAction(event -> nextPane());
+        ConfigButton configBtn = new ConfigButton();
 
         // TODO: metrics
         // TODO: key button which, on hover, overwrites the pane
-        root.getChildren().addAll(toggleSlot, btn);
+        root.getChildren().addAll(toggleSlot, configBtn);
+        root.setAlignment(configBtn, Pos.BOTTOM_LEFT);
 
+        // create the root scene and stage sett
+        stage.setTitle(WINDOW_TITLE);
+        stage.setWidth(Constants.VISUALISER_WIDTH);
+        stage.setHeight(Constants.VISUALISER_HEIGHT);
+        stage.setOnCloseRequest(Event::consume); // don't close on close event
+        stage.setResizable(false);
+        stage.initStyle(StageStyle.UNDECORATED); // remove menu with close/minimise/maximise
+        Scene rootScene = new Scene(root, Constants.VISUALISER_WIDTH, Constants.VISUALISER_HEIGHT);
 
         stage.setScene(rootScene);
         stage.show();
@@ -80,22 +81,7 @@ public class Visualiser extends Application {
     private Pane createPane(Color color) {
         Pane pane = new Pane();
         pane.setMinSize(200, 150);
-        pane.setStyle("-fx-background-color: " + toRgbString(color) + ";");
         return pane;
-    }
-
-    // Converts JavaFX Color to CSS RGB String
-    private String toRgbString(Color color) {
-        return "rgb(" + (int) (color.getRed() * 255) + "," +
-                (int) (color.getGreen() * 255) + "," +
-                (int) (color.getBlue() * 255) + ")";
-    }
-
-    int curIdx=0;
-    private void nextPane() {
-        toggleSlot.getChildren().setAll(modelVisualisations.get(curIdx));
-        curIdx+=1;
-        curIdx%=modelVisualisations.size();
     }
 
     /**
@@ -110,6 +96,9 @@ public class Visualiser extends Application {
      * @param modelVisualisation Model visualisation to add to displayed models.
      */
     public void addModelVisualisation(ModelVisualisation modelVisualisation) {
+        if (modelVisualisations.size() == MAX_CONCURRENT_VISUALISATIONS) {
+            throw new RuntimeException("Cannot support more than " + MAX_CONCURRENT_VISUALISATIONS + " visualisations");
+        }
         modelVisualisations.add(modelVisualisation);
     }
 
