@@ -2,16 +2,21 @@ package uk.ac.warwick.dcs.visualisation;
 
 import javafx.application.Application;
 import javafx.event.Event;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import uk.ac.warwick.dcs.visualisation.buttons.ConfigButton;
+import uk.ac.warwick.dcs.visualisation.buttons.DeleteButton;
+import uk.ac.warwick.dcs.visualisation.buttons.InfoButton;
+import uk.ac.warwick.dcs.visualisation.buttons.TabsButton;
+import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationSubscriber;
+import uk.ac.warwick.dcs.visualisation.menus.TabsMenu;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -35,67 +40,68 @@ public class Visualiser extends Application {
     private static final String WINDOW_TITLE = "Junction Visualiser";
 
     private StackPane root;
-    private StackPane toggleSlot; // Holds the active pane
-    private final List<Pane> modelVisualisations;
+    private VisualisationTogglePane toggleSlot; // Holds the active pane
+    private final List<ModelVisualisation> modelVisualisations;
+
+    private TabsMenu tabsMenu;
+
+    // observers of event that new model is added
+    private final List<IModelVisualisationSubscriber> addSubscribers;
 
     public Visualiser() {
         super();
         modelVisualisations = new ArrayList<>(MAX_CONCURRENT_VISUALISATIONS);
+        addSubscribers = new LinkedList<>();
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
+        // for singleton, since launch()/start() creates its own
+        // internal instance -- I got this from ChatGPT
+        instance = this;
+
+        // create root pane
+        root = new StackPane();
+
+        // initialise and set up the toggling visualisation pane
+        toggleSlot = new VisualisationTogglePane(Constants.VISUALISATION_WIDTH, Constants.VISUALISATION_HEIGHT);
+
+        // popups available
+        tabsMenu = new TabsMenu(modelVisualisations, List.of(toggleSlot));
+
+        // buttons available
+        ConfigButton configBtn = new ConfigButton();
+        InfoButton infoBtn = new InfoButton();
+        TabsButton tabsBtn = new TabsButton(tabsMenu);
+        DeleteButton deleteBtn = new DeleteButton();
+
+        root.getChildren().addAll(toggleSlot, configBtn, infoBtn, tabsBtn, deleteBtn);
+
+        // set alignments of UI buttons
+        StackPane.setAlignment(configBtn, Pos.BOTTOM_RIGHT);
+        StackPane.setAlignment(infoBtn, Pos.TOP_RIGHT);
+        StackPane.setAlignment(tabsBtn, Pos.BOTTOM_LEFT);
+        StackPane.setAlignment(deleteBtn, Pos.TOP_LEFT);
+
+        // add subscribers
+        addSubscribers.add(tabsMenu);
+        addSubscribers.add(toggleSlot);
+
+        // create the root scene and stage sett
         stage.setTitle(WINDOW_TITLE);
         stage.setWidth(Constants.VISUALISER_WIDTH);
         stage.setHeight(Constants.VISUALISER_HEIGHT);
         stage.setOnCloseRequest(Event::consume); // don't close on close event
         stage.setResizable(false);
-
-        // remove border (with minimise, maximise, and close buttons)
-        stage.initStyle(StageStyle.UNDECORATED);
-
-        root = new StackPane();
+        stage.initStyle(StageStyle.DECORATED);
         Scene rootScene = new Scene(root, Constants.VISUALISER_WIDTH, Constants.VISUALISER_HEIGHT);
-
-        // initialise and set up the toggling visualisation pane
-        toggleSlot = new StackPane();
-        modelVisualisations.add(createPane(Color.RED));
-        modelVisualisations.add(createPane(Color.GREEN));
-        modelVisualisations.add(createPane(Color.BLUE));
-
-        // toggle button
-        Button btn = new Button("Next Pane");
-        btn.setOnAction(event -> nextPane());
-
-        // TODO: metrics
-        // TODO: key button which, on hover, overwrites the pane
-        root.getChildren().addAll(toggleSlot, btn);
-
 
         stage.setScene(rootScene);
         stage.show();
-    }
 
-    // Creates a pane with a given background color
-    private Pane createPane(Color color) {
-        Pane pane = new Pane();
-        pane.setMinSize(200, 150);
-        pane.setStyle("-fx-background-color: " + toRgbString(color) + ";");
-        return pane;
-    }
-
-    // Converts JavaFX Color to CSS RGB String
-    private String toRgbString(Color color) {
-        return "rgb(" + (int) (color.getRed() * 255) + "," +
-                (int) (color.getGreen() * 255) + "," +
-                (int) (color.getBlue() * 255) + ")";
-    }
-
-    int curIdx=0;
-    private void nextPane() {
-        toggleSlot.getChildren().setAll(modelVisualisations.get(curIdx));
-        curIdx+=1;
-        curIdx%=modelVisualisations.size();
+        // TODO: draw from junctionconfiguration
+        // TODO: hovering help
+        // TODO: dropdown select of running panes
     }
 
     /**
@@ -110,7 +116,16 @@ public class Visualiser extends Application {
      * @param modelVisualisation Model visualisation to add to displayed models.
      */
     public void addModelVisualisation(ModelVisualisation modelVisualisation) {
+        if (modelVisualisations.size() == MAX_CONCURRENT_VISUALISATIONS) {
+            throw new RuntimeException("Cannot support more than " + MAX_CONCURRENT_VISUALISATIONS + " visualisations");
+        }
+
         modelVisualisations.add(modelVisualisation);
+
+        // update components requiring update
+        for (IModelVisualisationSubscriber subscriber : addSubscribers) {
+            subscriber.notifyAdd(modelVisualisation);
+        }
     }
 
     /**
@@ -119,7 +134,7 @@ public class Visualiser extends Application {
      */
     public static Visualiser getInstance() {
         if (instance == null) {
-            instance = new Visualiser();
+            throw new IllegalStateException("Visualiser must be created before getInstance() called");
         }
         return instance;
     }

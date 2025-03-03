@@ -1,5 +1,6 @@
 package uk.ac.warwick.dcs.junctionmodeller;
 
+import javafx.application.Platform;
 import uk.ac.warwick.dcs.dataproc.DataServiceBuilder;
 import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.model.IModelContainer;
@@ -21,7 +22,8 @@ public class App {
         form.setVisible(true);
 
         // making the visualiser visible
-        Visualiser visualiser = Visualiser.getInstance();
+        // Run JavaFX code on the correct thread
+        Visualiser visualiser = new Visualiser();
         visualiser.run(args);
     }
 }

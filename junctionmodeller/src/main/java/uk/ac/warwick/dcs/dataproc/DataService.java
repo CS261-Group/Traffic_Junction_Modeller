@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.dataproc;
 
 import java.util.List;
 
+import javafx.application.Platform;
 import org.javatuples.Pair;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
@@ -59,7 +60,12 @@ class DataService implements IDataService {
         ModelVisualisation modelVisualisation;
         if (configData.showVisualisation()) {
             modelVisualisation = visualisationFactory.createVisualisation(configData.configName(), junctionConfig);
-            Visualiser.getInstance().addModelVisualisation(modelVisualisation);
+
+            // we wrap this action in Platform.runLater to avoid an issue with the threads
+            // that Swing and JavaFX are running in, as they are 2 full scale 'main' threads.
+            Platform.runLater(() -> {
+                Visualiser.getInstance().addModelVisualisation(modelVisualisation);
+            });
         } else {
             modelVisualisation = null;
         }
