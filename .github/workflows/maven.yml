@@ -23,5 +23,5 @@ jobs:
       - name: Build and Test with Maven
         # we are not testing ui stuff because no X11 display variable
         # in the GitHub Actions thingy
-        run: mvn -B clean verify -DexcludeTests="uk.ac.warwick.dcs.ui.**"
+        run: mvn -B clean verify -DexcludeTests="uk.ac.warwick.dcs.ui.MainFormTest"
         working-directory: junctionmodeller/
