@@ -1,13 +1,15 @@
 package uk.ac.warwick.dcs.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,6 +29,10 @@ import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
 /**
  * Main entrypoint object for program. Contains all the form data.
  */
+
+//TODO: ETHAN move directional objects (panels) to the left
+// so that there is no need to scroll horizontally
+// something to do with Layout
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
     private static final int MINIMUM_FONT_SIZE = 14;
@@ -62,16 +68,26 @@ public class MainForm extends JFrame {
 
     private void setUp() {
         setTitle("Traffic Junction Configuration");
-        setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        setResizable(true);
+        setSize(Constants.WINDOW_WIDTH+100, Constants.WINDOW_HEIGHT-100);
+        setResizable(false);
         setFont(labelFont);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setAlignmentX(LEFT_ALIGNMENT);
-
+        // mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        // mainPanel.setAlignmentX(LEFT_ALIGNMENT);
+        mainPanel.setPreferredSize(new Dimension(800,600));
+        mainPanel.setMinimumSize(new Dimension(400,300));
+        mainPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE));
+        mainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        gbc.gridx = 0;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+    
         // Traffic Lights Section
         trafficLightPanel = new TrafficLightPanel(headingFont, labelFont);
 
@@ -90,13 +106,14 @@ public class MainForm extends JFrame {
         loadingPanel = new LoadingPanel(headingFont,labelFont);
         loadingPanel.setSubmissionAction((e) -> onLoad());
         // add panels and create window
-        mainPanel.add(northboundPanel);
-        mainPanel.add(eastboundPanel);
-        mainPanel.add(southboundPanel);
-        mainPanel.add(westboundPanel);
-        mainPanel.add(trafficLightPanel);
-        mainPanel.add(submissionPanel);
-        mainPanel.add(loadingPanel);
+        mainPanel.add(northboundPanel,gbc);
+        mainPanel.add(eastboundPanel,gbc);
+        mainPanel.add(southboundPanel,gbc);
+        mainPanel.add(westboundPanel,gbc);
+        //just focus on direction panels first
+        //mainPanel.add(trafficLightPanel,gbc);
+        //mainPanel.add(submissionPanel,gbc);
+        //mainPanel.add(loadingPanel,gbc);
         // construct window by adding singular main panel to
         // scrollable pane
         JScrollPane formContainer = new JScrollPane(mainPanel);
