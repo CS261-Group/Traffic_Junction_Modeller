@@ -32,6 +32,7 @@ public class Groups implements Iterable<Group> {
 
     // time between amber in one group to green in another
     // TODO: source???
+    // for the above: https://youtu.be/r7l0Rq9E8MY?si=x3e0pQtyhxHcGQgi
     private static final double TRANSITION_TIME = 2.5;
 
     // 0 when being optimised

@@ -4,13 +4,15 @@ import javafx.application.Application;
 import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import uk.ac.warwick.dcs.visualisation.buttons.ConfigButton;
+import uk.ac.warwick.dcs.visualisation.buttons.InfoButton;
+import uk.ac.warwick.dcs.visualisation.buttons.TabsButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +39,7 @@ public class Visualiser extends Application {
 
     private StackPane root;
     private VisualisationTogglePane toggleSlot; // Holds the active pane
-    private final List<Pane> modelVisualisations;
-    int curIdx=0; // TODO
+    private final List<Pane> modelVisualisations; // TODO: change back to ModelVisualisation
 
     public Visualiser() {
         super();
@@ -56,13 +57,17 @@ public class Visualiser extends Application {
         modelVisualisations.add(createPane(Color.GREEN));
         modelVisualisations.add(createPane(Color.BLUE));
 
-        // toggle button
+        // buttons available
         ConfigButton configBtn = new ConfigButton();
+        InfoButton infoBtn = new InfoButton();
+        TabsButton tabsBtn = new TabsButton();
 
-        // TODO: metrics
-        // TODO: key button which, on hover, overwrites the pane
-        root.getChildren().addAll(toggleSlot, configBtn);
-        root.setAlignment(configBtn, Pos.BOTTOM_LEFT);
+        root.getChildren().addAll(toggleSlot, configBtn, infoBtn, tabsBtn);
+
+        // est alignments of UI buttons
+        StackPane.setAlignment(configBtn, Pos.BOTTOM_RIGHT);
+        StackPane.setAlignment(infoBtn, Pos.TOP_RIGHT);
+        StackPane.setAlignment(tabsBtn, Pos.BOTTOM_LEFT);
 
         // create the root scene and stage sett
         stage.setTitle(WINDOW_TITLE);
@@ -75,6 +80,10 @@ public class Visualiser extends Application {
 
         stage.setScene(rootScene);
         stage.show();
+
+        // TODO: draw from junctionconfiguration
+        // TODO: hovering help
+        // TODO: dropdown select of running panes
     }
 
     // Creates a pane with a given background color
