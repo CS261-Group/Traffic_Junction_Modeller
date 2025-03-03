@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.model;
 
 import uk.ac.warwick.dcs.evaluation.Evaluation;
+import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
 import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
 import uk.ac.warwick.dcs.optimisation.Optimiser;
@@ -33,11 +34,11 @@ class Model implements Runnable {
     public long getId() { return id; }
 
     /**
-     * Evaluate the model using a specific junction configuration.
-     * @return JunctionMetrics for the given junction configuration.
+     * Evaluate the model using its own junction configuration.
+     * @return JunctionMetrics for the junction configuration.
      */
     public JunctionMetrics evaluateModel() {
-        return evaluation.getEvaluation();
+        return evaluation.getEvaluation(new JunctionData(junctionConfig));
     }
 
     /**
