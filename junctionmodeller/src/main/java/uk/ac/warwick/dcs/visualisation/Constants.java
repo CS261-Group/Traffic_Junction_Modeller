@@ -1,6 +1,6 @@
 package uk.ac.warwick.dcs.visualisation;
 
-class Constants {
+public class Constants {
     /**
      * Width of whole visualisation window.
      */
@@ -20,4 +20,14 @@ class Constants {
      * Height of single visualisation pane.
      */
     public static final int VISUALISATION_HEIGHT = 768;
+
+    /**
+     * Width of all popup windows.
+     */
+    public static final int POPUP_WIDTH = 150;
+
+    /**
+     * Height of all popup windows.
+     */
+    public static final int POPUP_HEIGHT = 200;
 }

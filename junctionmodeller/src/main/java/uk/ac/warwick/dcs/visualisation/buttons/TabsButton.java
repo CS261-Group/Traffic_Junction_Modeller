@@ -1,32 +1,40 @@
 package uk.ac.warwick.dcs.visualisation.buttons;
 
-import uk.ac.warwick.dcs.visualisation.ModelVisualisation;
-import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationSubscriber;
+import javafx.stage.Stage;
+import uk.ac.warwick.dcs.visualisation.Constants;
 import uk.ac.warwick.dcs.visualisation.menus.TabsMenu;
 
-import java.util.List;
+public class TabsButton extends UiButton {
+    /**
+     * Empirical magic number to get the width of the popup menu just right.
+     */
+    private static final int WIDTH_OFFSET = -2;
 
-public class TabsButton extends UiButton implements IModelVisualisationSubscriber {
-    private final TabsMenu tabsMenu;
+    /**
+     * Empirical magic number to get the height of the popup menu just right.
+     */
+    private static final int HEIGHT_OFFSET = 78;
 
-    public TabsButton(List<ModelVisualisation> modelVisualisations) {
+
+    public TabsButton(TabsMenu tabsMenu) {
         super("/tab.png");
-
-        tabsMenu = new TabsMenu(modelVisualisations);
 
         // toggle tabs menu on click
         setOnAction(e -> {
-            // TODO: fix
             if (tabsMenu.isShowing()) {
                 tabsMenu.hide();
             } else {
-                tabsMenu.show(getScene().getWindow());
+                Stage stage = (Stage) getScene().getWindow();
+                if (stage != null) {
+                    // Get the window's position on the screen
+                    double windowX = stage.getX();
+                    double windowHeight = stage.getHeight();
+
+                    // Show the popup at the calculated position
+                    // I'll be so real these are magic numbers
+                    tabsMenu.show(stage, windowX + WIDTH_OFFSET, windowHeight - Constants.POPUP_HEIGHT + HEIGHT_OFFSET);
+                }
             }
         });
-    }
-
-    @Override
-    public void notify(ModelVisualisation visualisation) {
-        tabsMenu.notify(visualisation);
     }
 }

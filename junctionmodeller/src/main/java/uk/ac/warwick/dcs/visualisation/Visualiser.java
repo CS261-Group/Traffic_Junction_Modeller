@@ -9,9 +9,11 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import uk.ac.warwick.dcs.visualisation.buttons.ConfigButton;
+import uk.ac.warwick.dcs.visualisation.buttons.DeleteButton;
 import uk.ac.warwick.dcs.visualisation.buttons.InfoButton;
 import uk.ac.warwick.dcs.visualisation.buttons.TabsButton;
 import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationSubscriber;
+import uk.ac.warwick.dcs.visualisation.menus.TabsMenu;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -41,13 +43,15 @@ public class Visualiser extends Application {
     private VisualisationTogglePane toggleSlot; // Holds the active pane
     private final List<ModelVisualisation> modelVisualisations;
 
+    private TabsMenu tabsMenu;
+
     // observers of event that new model is added
-    private final List<IModelVisualisationSubscriber> subscribers;
+    private final List<IModelVisualisationSubscriber> addSubscribers;
 
     public Visualiser() {
         super();
         modelVisualisations = new ArrayList<>(MAX_CONCURRENT_VISUALISATIONS);
-        subscribers = new LinkedList<>();
+        addSubscribers = new LinkedList<>();
     }
 
     @Override
@@ -62,21 +66,26 @@ public class Visualiser extends Application {
         // initialise and set up the toggling visualisation pane
         toggleSlot = new VisualisationTogglePane(Constants.VISUALISATION_WIDTH, Constants.VISUALISATION_HEIGHT);
 
+        // popups available
+        tabsMenu = new TabsMenu(modelVisualisations, List.of(toggleSlot));
+
         // buttons available
         ConfigButton configBtn = new ConfigButton();
         InfoButton infoBtn = new InfoButton();
-        TabsButton tabsBtn = new TabsButton(modelVisualisations);
+        TabsButton tabsBtn = new TabsButton(tabsMenu);
+        DeleteButton deleteBtn = new DeleteButton();
 
-        root.getChildren().addAll(toggleSlot, configBtn, infoBtn, tabsBtn);
+        root.getChildren().addAll(toggleSlot, configBtn, infoBtn, tabsBtn, deleteBtn);
 
         // set alignments of UI buttons
         StackPane.setAlignment(configBtn, Pos.BOTTOM_RIGHT);
         StackPane.setAlignment(infoBtn, Pos.TOP_RIGHT);
         StackPane.setAlignment(tabsBtn, Pos.BOTTOM_LEFT);
+        StackPane.setAlignment(deleteBtn, Pos.TOP_LEFT);
 
         // add subscribers
-        subscribers.add(tabsBtn);
-        subscribers.add(toggleSlot);
+        addSubscribers.add(tabsMenu);
+        addSubscribers.add(toggleSlot);
 
         // create the root scene and stage sett
         stage.setTitle(WINDOW_TITLE);
@@ -84,7 +93,7 @@ public class Visualiser extends Application {
         stage.setHeight(Constants.VISUALISER_HEIGHT);
         stage.setOnCloseRequest(Event::consume); // don't close on close event
         stage.setResizable(false);
-        stage.initStyle(StageStyle.UNDECORATED); // remove menu with close/minimise/maximise
+        stage.initStyle(StageStyle.DECORATED);
         Scene rootScene = new Scene(root, Constants.VISUALISER_WIDTH, Constants.VISUALISER_HEIGHT);
 
         stage.setScene(rootScene);
@@ -114,8 +123,8 @@ public class Visualiser extends Application {
         modelVisualisations.add(modelVisualisation);
 
         // update components requiring update
-        for (IModelVisualisationSubscriber subscriber : subscribers) {
-            subscriber.notify(modelVisualisation);
+        for (IModelVisualisationSubscriber subscriber : addSubscribers) {
+            subscriber.notifyAdd(modelVisualisation);
         }
     }
 

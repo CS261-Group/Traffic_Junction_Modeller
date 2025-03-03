@@ -2,9 +2,10 @@ package uk.ac.warwick.dcs.visualisation;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationChangedSubscriber;
 import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationSubscriber;
 
-class VisualisationTogglePane extends StackPane implements IModelVisualisationSubscriber {
+class VisualisationTogglePane extends StackPane implements IModelVisualisationSubscriber, IModelVisualisationChangedSubscriber {
     public VisualisationTogglePane(int width, int height) {
         setMaxWidth(width);
         setMaxHeight(height);
@@ -15,7 +16,12 @@ class VisualisationTogglePane extends StackPane implements IModelVisualisationSu
     }
 
     @Override
-    public void notify(ModelVisualisation visualisation) {
+    public void notifyAdd(ModelVisualisation visualisation) {
+        changePane(visualisation);
+    }
+
+    @Override
+    public void notifyChanged(ModelVisualisation visualisation) {
         changePane(visualisation);
     }
 }
