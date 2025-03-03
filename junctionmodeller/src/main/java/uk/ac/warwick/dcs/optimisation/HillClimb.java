@@ -34,6 +34,6 @@ public class HillClimb {
     }
 
     private ArrayList<JunctionData> currentNeighbours(){
-        return null;
+        return FixedGroupTimingSearchSpace.neighbours(currentNode);
     }
 }
