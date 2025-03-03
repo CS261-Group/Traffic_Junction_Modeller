@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 class Seeds {
     private static JunctionConfiguration goodJunctionConfiguration = null;
@@ -44,10 +45,11 @@ class Seeds {
     static Groups goodGroups = null;
 
     static Groups getGoodGroups() {
+        List<IncomingLane> listMock = (List<IncomingLane>)mock(List.class);
         if (goodGroups == null) {
             List<Group> groups = List.of(
-                    new Group(1, any(List.class)),
-                    new Group(2, any(List.class))
+                    new Group(1, listMock),
+                    new Group(2, listMock)
             );
             goodGroups = new Groups(groups, true, null);
         }
