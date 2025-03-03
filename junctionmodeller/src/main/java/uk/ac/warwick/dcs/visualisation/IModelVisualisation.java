@@ -10,6 +10,14 @@ import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
  */
 public interface IModelVisualisation {
     /**
+     *
+     * @return The name of the configuration represented by the
+     *         <code>Model</code> object this object instance is
+     *         visualising.
+     */
+    String getModelName();
+
+    /**
      * Receive an update from the model
      * @param update The update received.
      */

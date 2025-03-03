@@ -10,8 +10,9 @@ import uk.ac.warwick.dcs.dataproc.saving.Saver;
 import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 import uk.ac.warwick.dcs.model.IModelContainer;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
-import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
 import uk.ac.warwick.dcs.visualisation.IVisualisationFactory;
+import uk.ac.warwick.dcs.visualisation.ModelVisualisation;
+import uk.ac.warwick.dcs.visualisation.Visualiser;
 
 /**
  * Concrete implementation of <code>IDataService</code> interface.
@@ -55,9 +56,10 @@ class DataService implements IDataService {
         saver.save(junctionConfig, configData.configName());
 
         // Create a model instance asynchronously
-        IModelVisualisation modelVisualisation;
+        ModelVisualisation modelVisualisation;
         if (configData.showVisualisation()) {
             modelVisualisation = visualisationFactory.createVisualisation(configData.configName(), junctionConfig);
+            Visualiser.getInstance().addModelVisualisation(modelVisualisation);
         } else {
             modelVisualisation = null;
         }
@@ -80,7 +82,7 @@ class DataService implements IDataService {
 
         // Create a model instance asynchronously
         // Create a model instance asynchronously
-        IModelVisualisation modelVisualisation;
+        ModelVisualisation modelVisualisation;
         if (showVisualisation) {
             // TODO: get config name from saved file
             modelVisualisation = visualisationFactory.createVisualisation("configname", junctionConfig);

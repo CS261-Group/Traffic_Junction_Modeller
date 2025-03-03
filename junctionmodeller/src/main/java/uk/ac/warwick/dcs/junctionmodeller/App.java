@@ -21,7 +21,7 @@ public class App {
         form.setVisible(true);
 
         // making the visualiser visible
-        Visualiser visualiser = new Visualiser();
+        Visualiser visualiser = Visualiser.getInstance();
         visualiser.run(args);
     }
 }
