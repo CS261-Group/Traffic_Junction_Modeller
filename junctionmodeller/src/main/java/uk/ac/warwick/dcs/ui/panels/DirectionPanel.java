@@ -1,11 +1,11 @@
 package uk.ac.warwick.dcs.ui.panels;
 
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.Constants;
@@ -36,7 +36,8 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
 
     @Override
     protected void setUp() {
-        setLayout(new FlowLayout());
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        
         setBorder(BorderFactory.createTitledBorder(Constants.DIRECTIONS[direction.ordinal()]));
 
         // custom panels required for each section
@@ -53,7 +54,6 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
 
         // first panel defines alignment for whole column, for some reason
         directionInputs = new DirectionInputsPanel(headingFont, labelFont, Constants.MAX_LANES, subscribers, direction);
-        directionInputs.setAlignmentX(LEFT_ALIGNMENT);
 
         add(directionInputs);
         add(flowsPanel);
@@ -69,8 +69,9 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
 //                laneArrivalFlows.getValue(),
                 laneDirections.getValue(),
 //                laneDepartures.getValue(),
-                directionInputData.busLane(),
-                directionInputData.pedestrianCrossing()
+//                directionInputData.busLane(),
+                directionInputData.pedestrianCrossing(),
+                directionInputData.numOutgoingLanes()
         );
     }
 }

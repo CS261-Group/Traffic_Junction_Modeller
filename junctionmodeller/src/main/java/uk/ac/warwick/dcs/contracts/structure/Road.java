@@ -25,4 +25,8 @@ abstract class Road<TLane extends Lane> implements Iterable<TLane> {
     public int numLanes() {
         return lanes.size();
     }
+
+    public boolean containsLane(TLane lane){
+        return lanes.contains(lane);
+    }
 }

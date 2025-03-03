@@ -8,7 +8,6 @@ import uk.ac.warwick.dcs.contracts.exceptions.InvalidFlowValueException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidPermittedDirectionsException;
 import uk.ac.warwick.dcs.contracts.structure.*;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,7 +33,6 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
     private final List<OutgoingLane> outgoingLanes;
     private final List<IncomingLane> incomingLanes;
     private boolean pedestrianCrossing;
-    private boolean busLane;
     private int incomingFlow;
     private final int[] outgoingFlows;
 
@@ -48,12 +46,6 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
         incomingFlow = UNASSIGNED_FLOW;
         outgoingFlows = new int[]{UNASSIGNED_FLOW, UNASSIGNED_FLOW, UNASSIGNED_FLOW, UNASSIGNED_FLOW};
         outgoingFlows[dir.ordinal()] = 0; // originating direction should have flow = 0
-    }
-
-    @Override
-    public ICarriagewayBuilder setBusLane(boolean bus) {
-        busLane = bus;
-        return this;
     }
 
     @Override
@@ -89,8 +81,8 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
     }
 
     @Override
-    public ICarriagewayBuilder addIncomingLane(VehicleType type, int queuingSpace, boolean[] directions) throws InvalidPermittedDirectionsException {
-        IncomingLane lane = laneFactory.createIncomingLane(type, queuingSpace, directions);
+    public ICarriagewayBuilder addIncomingLane(VehicleType type, boolean[] directions) throws InvalidPermittedDirectionsException {
+        IncomingLane lane = laneFactory.createIncomingLane(type, directions);
         incomingLanes.add(lane);
         return this;
     }
@@ -100,13 +92,8 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
             throw new IncompleteBuildSettingsException("Incoming Flow", "CarriagewayBuilder.setIncomingFlow");
         }
 
-        // sum of outflows should equal sum of inflows
-        if (Arrays.stream(outgoingFlows).sum() != incomingFlow) {
-            throw new IncompleteBuildSettingsException("Outgoing Flows", "CarriagewayBuilder.setOutgoingFlow");
-        }
-
         OutgoingRoad outgoingRoad = new OutgoingRoad(direction, outgoingLanes);
         IncomingRoad incomingRoad = new IncomingRoad(direction, incomingLanes, incomingFlow, outgoingFlows);
-        return new Carriageway(direction, outgoingRoad, incomingRoad, busLane, pedestrianCrossing);
+        return new Carriageway(direction, outgoingRoad, incomingRoad, pedestrianCrossing);
     }
 }

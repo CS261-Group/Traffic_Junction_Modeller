@@ -32,13 +32,15 @@ public class LaneDirectionSettingsPanel extends CustomPanel implements IReadable
         laneLbl.setFont(labelFont);
         add(laneLbl);
 
-        for (int i = 0; i < 4; i++) {
-            int directionIdx = i;
-            // since we can't go in the direction we are coming from
-            // we must skip the index of the given direction
-            if (directionIdx == direction.ordinal()) {
-                continue;
-            }
+        // we want the order of checkboxes to be: left, forward, right
+        // NORTH (0) -> order E,S,W (1,2,3)
+        // EAST  (1) -> order S,W,N (2,3,0)
+        // SOUTH (2) -> order W,N,E (3,0,1)
+        // WEST  (3) -> order N,E,S (0,1,2)
+        // i.e., start from .ordinal() + 1 and count 4 times modding by 4
+        for (int i = 1; i < 4; i++) {
+            int directionIdx = (i + direction.ordinal()) % 4;
+            assert directionIdx != direction.ordinal();
 
             // create checkbox
             JCheckBox directionCheckBox = new JCheckBox(Constants.DIRECTIONS[directionIdx]);

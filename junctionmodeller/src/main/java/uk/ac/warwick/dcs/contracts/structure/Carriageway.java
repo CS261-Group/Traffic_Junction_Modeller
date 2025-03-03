@@ -3,6 +3,8 @@ package uk.ac.warwick.dcs.contracts.structure;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 
+import java.util.Iterator;
+
 /**
  * A collection of data structures storing all the data
  * for the configurations of this single direction.
@@ -12,17 +14,15 @@ import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
  * - Existence of pedestrian crossing
  * - Cardinal direction of this carriageway from the junction.
  */
-public class Carriageway {
+public class Carriageway{
     private final OutgoingRoad outgoingRoad;
     private final IncomingRoad incomingRoad;
-    private final boolean busLane;
     private final boolean pedestrianCrossing;
     private final Direction direction;
 
-    public Carriageway(Direction d, OutgoingRoad or, IncomingRoad ir, boolean bus, boolean pedestrian) {
+    public Carriageway(Direction d, OutgoingRoad or, IncomingRoad ir, boolean pedestrian) {
         outgoingRoad = or;
         incomingRoad = ir;
-        busLane = bus;
         pedestrianCrossing = pedestrian;
         direction = d;
     }
@@ -38,9 +38,25 @@ public class Carriageway {
      * @param laneNum The number of the incoming lane we are getting. Lanes are
      *                counted 1 (leftmost) to <code>numLanes</code> (rightmost).
      * @return The incoming lane object with the corresponding number.
-     * TODO: custom error for invalid lane number
      */
     public IncomingLane getIncomingLane(int laneNum) { return incomingRoad.get(laneNum); }
+
+    public int getIncomingLaneNum(IncomingLane lane){
+        return incomingRoad.getNumOf(lane);
+    }
+
+    public boolean containsIncomingLane(IncomingLane lane){
+        return incomingRoad.containsLane(lane);
+    }
+
+
+    /**
+     *
+     * @return An iterator of all incomingLanes for the carriageway
+     */
+    public Iterator<IncomingLane> getIncomingLanes(){
+        return incomingRoad.iterator();
+    }
 
     /**
      *
@@ -79,19 +95,9 @@ public class Carriageway {
      * @return True if the selected lane permits exiting from the <code>direction</code>
      *         given, false otherwise. If the <code>direction</code> specified
      *         matches the incoming direction, we return false.
-     * TODO: custom error for invalid lane number
      */
     public boolean getLaneAllowsDirection(int laneNum, Direction direction) {
         return incomingRoad.get(laneNum).allowsGoing(direction);
-    }
-
-    /**
-     *
-     * @return True if there is a bus lane configured on this carriageway,
-     *         false otherwise.
-     */
-    public boolean isBusLane() {
-        return busLane;
     }
 
     /**
@@ -102,4 +108,5 @@ public class Carriageway {
     public boolean isPedestrianCrossing() {
         return pedestrianCrossing;
     }
+
 }

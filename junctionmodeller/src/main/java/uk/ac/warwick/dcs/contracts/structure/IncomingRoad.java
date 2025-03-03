@@ -2,10 +2,11 @@ package uk.ac.warwick.dcs.contracts.structure;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidLaneNumberException;
 
 import java.util.List;
 
-public class IncomingRoad extends Road<IncomingLane> {
+public class IncomingRoad extends Road<IncomingLane>{
     public static final int MINIMUM_INCOMING_FLOW = 20;
     public static final int MINIMUM_OUTGOING_FLOW = 0;
     private final int incomingFlow;
@@ -26,7 +27,14 @@ public class IncomingRoad extends Road<IncomingLane> {
      * @return The incoming lane object with the corresponding number.
      */
     public IncomingLane get(int laneNum) {
+        if (laneNum < 1 || laneNum > numLanes()) {
+            throw new InvalidLaneNumberException(laneNum, numLanes(), direction);
+        }
         return lanes.get(laneNum - 1); // -1 corrected for index
+    }
+
+    public int getNumOf(IncomingLane lane){
+        return lanes.indexOf(lane);
     }
 
     /**
@@ -50,4 +58,16 @@ public class IncomingRoad extends Road<IncomingLane> {
         }
         return outgoingFlows[direction.ordinal()];
     }
+
+    public double getMaxFlowRatio(){
+        int maxOutgoingFlow = 0;
+        for (int i = 0; i < 4; i++){
+            if (outgoingFlows[i] > maxOutgoingFlow) {
+                maxOutgoingFlow = outgoingFlows[i];
+            }
+        }
+
+        return (double) incomingFlow / maxOutgoingFlow;
+    }
+
 }

@@ -36,7 +36,6 @@ public class LaneArrivalFlowsPanel extends CustomPanel implements ILaneChangedSu
             while (lanes.size() != newLanes) {
                 // create lanes
                 LaneArrivalFlowsSettingsPanel setting = new LaneArrivalFlowsSettingsPanel(headingFont, labelFont, lanes.size() + 1);
-                setting.setAlignmentX(LEFT_ALIGNMENT);
                 add(setting);
                 lanes.add(setting);
             }

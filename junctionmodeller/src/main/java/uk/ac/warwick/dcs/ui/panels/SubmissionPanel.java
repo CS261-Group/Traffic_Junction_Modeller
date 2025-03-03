@@ -35,6 +35,7 @@ public class SubmissionPanel extends CustomPanel implements IReadablePanel<Boole
 
         // Show visualisation button
         showVisualisationCheckbox = new JCheckBox("Show visualisation");
+        showVisualisationCheckbox.setSelected(true);
         showVisualisationCheckbox.setFont(labelFont);
 
         JLabel configurationNameHeading = new JLabel("Configuration Name");

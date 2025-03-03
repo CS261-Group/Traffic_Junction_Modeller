@@ -16,6 +16,7 @@ import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 import uk.ac.warwick.dcs.model.IModelContainer;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
+import uk.ac.warwick.dcs.visualisation.IVisualisationFactory;
 
 public class DataServiceTest {
     @Mock
@@ -24,6 +25,8 @@ public class DataServiceTest {
     private IModelContainer modelContainer;
     @Mock
     private ILoaderService<ConfigurationData> formLoaderService;
+    @Mock
+    private IVisualisationFactory visualisationFactory;
 
     private DataService dataService;
 
@@ -32,18 +35,19 @@ public class DataServiceTest {
         validator = (IValidator<JunctionConfiguration>)mock(IValidator.class);
         modelContainer = mock(IModelContainer.class);
         formLoaderService = (ILoaderService<ConfigurationData>)mock(ILoaderService.class);
-        dataService = new DataService(validator, modelContainer, formLoaderService);
+        visualisationFactory = mock(IVisualisationFactory.class);
+        dataService = new DataService(validator, modelContainer, formLoaderService, visualisationFactory);
     }
 
     @Test
     public void submitEnteredConfiguration_ReturnsEmptyList_OnSuccess() {
         // Arrange
-        ConfigurationData configData = new ConfigurationData(null, null);
+        ConfigurationData configData = new ConfigurationData(null, null, null, false);
         when(validator.validate(any())).thenReturn(List.of());
         when(formLoaderService.load(any())).thenReturn(new Pair<>(any(), null));
 
         // Act
-        final List<String> actual = dataService.submitEnteredConfiguration(configData,"Testfile");
+        final List<String> actual = dataService.submitEnteredConfiguration(configData);
 
         // Assert
         assertEquals(0, actual.size());

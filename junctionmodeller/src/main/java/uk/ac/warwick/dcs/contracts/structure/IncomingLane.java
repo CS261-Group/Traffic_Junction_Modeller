@@ -5,13 +5,11 @@ import uk.ac.warwick.dcs.contracts.enums.VehicleType;
 
 public class IncomingLane extends Lane {
     private final VehicleType vehicleType;
-    private final int queueingSpace;
     private final boolean[] availableDirections;
 
-    public IncomingLane(Direction d, VehicleType vt, boolean[] directions, int qs) {
+    public IncomingLane(Direction d, VehicleType vt, boolean[] directions) {
         super(d);
         vehicleType = vt;
-        queueingSpace = qs;
         availableDirections = directions;
 
         assert directions.length == 4; // sanity check: one for each direction
@@ -26,15 +24,6 @@ public class IncomingLane extends Lane {
      */
     public VehicleType getVehicleType() {
         return vehicleType;
-    }
-
-    /**
-     *
-     * @return The queuing space of this lane (i.e., the space between
-     *         the cars).
-     */
-    public int getQueueingSpace() {
-        return queueingSpace;
     }
 
     /**

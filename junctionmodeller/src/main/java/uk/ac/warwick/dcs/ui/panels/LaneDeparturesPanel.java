@@ -28,7 +28,6 @@ public class LaneDeparturesPanel extends CustomPanel implements ILaneChangedSubs
 
         JLabel depFlowHeading = new JLabel("Lane departure flows (in vehicles/hour)");
         depFlowHeading.setFont(headingFont);
-        depFlowHeading.setAlignmentX(LEFT_ALIGNMENT);
         add(depFlowHeading);
     }
 
@@ -38,7 +37,6 @@ public class LaneDeparturesPanel extends CustomPanel implements ILaneChangedSubs
             while (lanes.size() != newLanes) {
                 // create lanes
                 LaneDepartureSettingsPanel setting = new LaneDepartureSettingsPanel(headingFont, labelFont, lanes.size() + 1);
-                setting.setAlignmentX(LEFT_ALIGNMENT);
                 add(setting);
                 lanes.add(setting);
             }

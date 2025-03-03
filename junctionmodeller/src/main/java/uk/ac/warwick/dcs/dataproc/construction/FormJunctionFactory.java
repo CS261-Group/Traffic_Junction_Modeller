@@ -98,19 +98,19 @@ public class FormJunctionFactory implements IJunctionFactory<ConfigurationData> 
         // unpack corresponding builder
         ICarriagewayBuilder builder = carriagewayBuilders[direction.ordinal()];
 
-        // pedestrian crossing and bus lane
-        builder.setBusLane(directionData.busLane());
+        // pedestrian crossing
         builder.setPedestrianCrossing(directionData.pedestrianCrossing());
 
-        // if there is a bus lane add an EXTRA
-        // TODO: determining queuing space
-        if (directionData.busLane()) {
-            builder.addIncomingLane(VehicleType.BUS, 15, new boolean[]{ true,true,true,true });
-        }
+//        builder.setBusLane(directionData.busLane());
+//        // if there is a bus lane add an EXTRA
+//        if (directionData.busLane()) {
+//            builder.addIncomingLane(VehicleType.BUS, new boolean[]{ true,true,true,true });
+//        }
 
         // construct outgoing road
-        // TODO: how do we determine the number of outgoing roads
-        builder.addOutgoingLane();
+        for (int i = 0; i < directionData.numOutgoingLanes(); i++) {
+            builder.addOutgoingLane();
+        }
 
         // construct incoming road
         for (AvailableDirections directions : availableDirections) {
@@ -119,8 +119,7 @@ public class FormJunctionFactory implements IJunctionFactory<ConfigurationData> 
             directionBools[Direction.EAST.ordinal()] = directions.getE();
             directionBools[Direction.SOUTH.ordinal()] = directions.getS();
             directionBools[Direction.WEST.ordinal()] = directions.getW();
-            // TODO: determining queuing space?
-            builder.addIncomingLane(VehicleType.CAR, 5, directionBools);
+            builder.addIncomingLane(VehicleType.CAR, directionBools);
         }
 
         // extract incoming flow and reset the corresponding value to 0
