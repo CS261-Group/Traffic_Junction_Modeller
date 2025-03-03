@@ -30,9 +30,15 @@ import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
  * Main entrypoint object for program. Contains all the form data.
  */
 
-//TODO: ETHAN move directional objects (panels) to the left
-// so that there is no need to scroll horizontally
-// something to do with Layout
+//TODO 
+//ai) change submission panel to return config name as part of the record in IReadablePanel<T>
+//aii) also change how its handled in Main Form
+//b) Make a FileLoaderService that is similar to FormLoaderService and hold a Singleton instance of it in DataServiceBuilder (example with FormLoaderService) 
+//ci) Ensure ConfigName can't be empty 
+//cii) Ensure ConfigName does not clash with existing files (corresponding ConfigNames)
+//Method listed in David notes photo
+//di) Implement FileSaverService (should have ISaverService interface) and inject into DataService (just like File and FormLoaderService objects)
+
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
     private static final int MINIMUM_FONT_SIZE = 14;
@@ -75,8 +81,8 @@ public class MainForm extends JFrame {
         setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
-        // mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        // mainPanel.setAlignmentX(LEFT_ALIGNMENT);
+        //mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setAlignmentX(LEFT_ALIGNMENT);
         mainPanel.setPreferredSize(new Dimension(800,600));
         mainPanel.setMinimumSize(new Dimension(400,300));
         mainPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE));
@@ -110,10 +116,10 @@ public class MainForm extends JFrame {
         mainPanel.add(eastboundPanel,gbc);
         mainPanel.add(southboundPanel,gbc);
         mainPanel.add(westboundPanel,gbc);
-        //just focus on direction panels first
-        //mainPanel.add(trafficLightPanel,gbc);
-        //mainPanel.add(submissionPanel,gbc);
-        //mainPanel.add(loadingPanel,gbc);
+
+        mainPanel.add(trafficLightPanel,gbc);
+        mainPanel.add(submissionPanel,gbc);
+        mainPanel.add(loadingPanel,gbc);
         // construct window by adding singular main panel to
         // scrollable pane
         JScrollPane formContainer = new JScrollPane(mainPanel);
