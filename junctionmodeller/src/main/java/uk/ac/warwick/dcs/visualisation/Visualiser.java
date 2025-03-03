@@ -52,6 +52,10 @@ public class Visualiser extends Application {
 
     @Override
     public void start(Stage stage) {
+        // for singleton, since launch()/start() creates its own
+        // internal instance -- I got this from ChatGPT
+        instance = this;
+
         // create root pane
         root = new StackPane();
 
@@ -69,6 +73,10 @@ public class Visualiser extends Application {
         StackPane.setAlignment(configBtn, Pos.BOTTOM_RIGHT);
         StackPane.setAlignment(infoBtn, Pos.TOP_RIGHT);
         StackPane.setAlignment(tabsBtn, Pos.BOTTOM_LEFT);
+
+        // add subscribers
+        subscribers.add(tabsBtn);
+        subscribers.add(toggleSlot);
 
         // create the root scene and stage sett
         stage.setTitle(WINDOW_TITLE);
@@ -117,7 +125,7 @@ public class Visualiser extends Application {
      */
     public static Visualiser getInstance() {
         if (instance == null) {
-            instance = new Visualiser();
+            throw new IllegalStateException("Visualiser must be created before getInstance() called");
         }
         return instance;
     }
