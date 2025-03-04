@@ -4,7 +4,7 @@ import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 
 import java.util.ArrayList;
 
-
+//
 public class HillClimb {
     final double STEP_SIZE = 1;
     // final double MOMENTUM = 1.2;
@@ -33,7 +33,19 @@ public class HillClimb {
         }
     }
 
+    //maintain cycle time
+    public JunctionData randomNeighbour(JunctionData node){
+        int group1 = (int) (Math.random() * node.getNumGroups());
+        int group2 = (int) (Math.random() * node.getNumGroups());
+
+        //make change
+        //currentNode.updateGroupTiming();
+
+        //either keep change or revert it somehow
+        return null;
+    }
+
     private ArrayList<JunctionData> currentNeighbours(){
-        return FixedGroupTimingSearchSpace.neighbours(currentNode);
+        return null;
     }
 }

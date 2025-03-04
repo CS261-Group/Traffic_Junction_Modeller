@@ -4,21 +4,22 @@ import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 
 import java.util.ArrayList;
 
+//vfor fixed timings currently
+// Used to get neighbours to visit next
 public class FixedGroupTimingSearchSpace {
-    static ArrayList<JunctionData> neighbours(JunctionData junctionData){
+    private final double INITIAL_STEP_SIZE = 1; // in seconds
+    double[] stepSize;
 
-//        ArrayList<> groupList = junctionData.getGroupData();
-
-//        for (int i = 0; i < groupList.size(); i++){
-//            for (int j = i+1; j < groupList.size(); j++){
-//                //get all pairs of groups
-//            }
-//        }
-
-        return null;
+    public FixedGroupTimingSearchSpace(int numGroups){
+        //initialise step size vector
+        stepSize = new double[numGroups];
+        for (int i = 0; i < numGroups; i++){
+            stepSize[i] = 1;
+        }
     }
 
-    static JunctionData randomNeighbour(){
+    static JunctionData randomNeighbour(JunctionData){
+
         return null;
     }
 

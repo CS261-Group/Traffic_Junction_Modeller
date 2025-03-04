@@ -29,6 +29,10 @@ public class JunctionData implements Iterable<GroupData>{
         return groupData.iterator();
     }
 
+    public int getNumGroups(){
+        return groupData.size();
+    }
+
     public double getCycleTime(){
         return cycleTime;
     }
