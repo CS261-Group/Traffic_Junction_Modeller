@@ -23,4 +23,9 @@ public class LaneData {
     public double getArrivalFlow(){
         return arrivalFlow;
     }
+
+    // arrival rate / saturation rate
+    public double getFlowRatio(){
+        return getArrivalFlow() / getSaturationFlow();
+    }
 }

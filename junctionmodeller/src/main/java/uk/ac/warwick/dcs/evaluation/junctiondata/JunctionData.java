@@ -32,4 +32,17 @@ public class JunctionData implements Iterable<GroupData>{
     public double getCycleTime(){
         return cycleTime;
     }
+
+    public double[] getMaxFlowRatioForEachGroup(){
+        double[] flowRatios = new double[groupData.size()];
+
+        for (int i = 0; i < groupData.size(); i++){
+            flowRatios[i] = groupData.get(i).getMaxFlowRatio();
+        }
+        return flowRatios;
+    }
+
+    public void setCycleTime(double cycleTime){
+        this.cycleTime = cycleTime;
+    }
 }

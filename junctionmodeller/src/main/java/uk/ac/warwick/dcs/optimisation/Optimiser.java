@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.optimisation;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 
 import java.util.Arrays;
 
@@ -16,12 +17,14 @@ public class Optimiser {
         this.fixedTimingsOptimiser = new FixedTimingsOptimiser();
 
         //initialise values
+        JunctionData junctionData;
+        initialiseCycleTime(junctionData);
     }
 
     // cycle optimiser is a one time use thing
     public void initialiseCycleTime(){
         var cycleTimeOptimiser = new CycleTimeOptimiser();
-        //cycleTimeOptimiser.getCycleTime();
+        cycleTimeOptimiser.setCycleTime(junctionData);
     }
 
     public int[] getMaxGroupTimings(TrafficLightType trafficLightType) {

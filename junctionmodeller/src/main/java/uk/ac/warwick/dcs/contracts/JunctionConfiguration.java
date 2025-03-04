@@ -55,6 +55,11 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
         return groups.getCycleTime();
     }
 
+    public double getCycleLostTime(){
+        return groups.cycleLostTime();
+    }
+
+
 
     /**
      * Getter for specific Carriageway by Direction (e.g., NORTH, SOUTH, EAST, WEST).
