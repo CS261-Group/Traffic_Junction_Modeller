@@ -15,12 +15,16 @@ import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
  * Class used to hold settings and configurations for a running
  * model instance being analysed.
  */
-class Model{
+class Model implements Runnable {
     private final long id;
     private final Evaluator evaluation;
     private final Optimiser optimiser;
     private final IModelVisualisation visualisation;
-    private final JunctionConfiguration junctionConfig; // is never updated
+    // Note: fields inside junction config are never updated,
+    // optimised junction values are held in junction data.
+    // TODO: if we want to be able to save optimised junction we
+    //  need a class to update junctionConfig with junctionData values
+    private final JunctionConfiguration junctionConfig;
     private final JunctionData junctionData; // holds optimised values
 
     public Model(long id, JunctionConfiguration junctionConfig, IModelVisualisation visualisation) {
@@ -44,16 +48,6 @@ class Model{
         this.visualisation = visualisation;
     }
 
-    public void runOnce(){
-        if (optimiser != null){
-            optimiser.optimiseAll();
-        }
-        evaluation.getEvaluation(junctionData);
-        // update visualisation with new values
-    }
-
-
-
     /**
      * @return The ID of this model instance.
      */
@@ -69,7 +63,7 @@ class Model{
 
     /**
      * Optimise the model, finding the best values that minimise the evaluation function.
-     * @return can ignore, passes a referance to its internal data
+     * @return can ignore, returns a reference to internal model data
      */
     public JunctionData optimiseModel() {
         optimiser.optimiseAll();
@@ -78,4 +72,22 @@ class Model{
 
     @Override
     public int hashCode() { return (int)id; }
+
+    /**
+     * Goes through several iterations of optimisation if applicable
+     * then updates its evaluation
+     */
+    public void runOnce(){
+        if (optimiser != null){
+            optimiser.optimiseAll();
+        }
+        evaluation.getEvaluation(junctionData);
+        // update visualisation with new values
+    }
+
+    // should do something more useful
+    @Override
+    public void run() {
+        runOnce();
+    }
 }
