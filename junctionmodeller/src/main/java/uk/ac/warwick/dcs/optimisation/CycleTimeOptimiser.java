@@ -7,8 +7,9 @@ package uk.ac.warwick.dcs.optimisation;
  */
 public class CycleTimeOptimiser {
     /**
-     * 5.3 in Chow, Ampountolas
-     * L is the total lost time
+     * See 5.3 in Chow, Ampountolas
+     * L is the total lost time for the cycle
+     * Y is the sum of max group flow ratios
      */
     public double cycleTime(double L, double Y){
         return (1.5*L + 5) / (1 - Y);

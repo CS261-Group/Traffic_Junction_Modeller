@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.contracts.timings;
 
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
+import uk.ac.warwick.dcs.contracts.exceptions.NoValueExistsException;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
 
@@ -128,14 +129,13 @@ public class Groups implements Iterable<Group> {
      * @return The GroupTiming timing value corresponding to the group number.
      * Or zero if none exists
      */
-    public int getGroupTimingValue(int groupNum){
+    public int getGroupTimingValue(int groupNum) throws NoValueExistsException {
         for(GroupTiming groupTiming : this.timings){
             if (groupTiming.getGroupNum() == groupNum) {
                 return groupTiming.getTiming();
             }
         }
-
-        return 0;
+        throw new NoValueExistsException("GroupTimings");
     }
 
 
