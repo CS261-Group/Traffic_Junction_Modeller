@@ -9,5 +9,13 @@ public enum Direction {
     NORTH,
     EAST,
     SOUTH,
-    WEST
+    WEST;
+
+    public boolean isVertical() {
+        return this == NORTH || this == SOUTH;
+    }
+
+    public boolean isHorizontal() {
+        return this == EAST || this == WEST;
+    }
 }

@@ -13,8 +13,8 @@ public class ModelVisualisation extends Pane implements IModelVisualisation {
     public ModelVisualisation(String modelName, JunctionPane junctionPane) {
         super();
         this.modelName = modelName;
-        setWidth(Constants.VISUALISATION_WIDTH);
-        setHeight(Constants.VISUALISATION_HEIGHT);
+        setWidth(Constants.VISUALISER_WIDTH);
+        setHeight(Constants.VISUALISER_HEIGHT);
 
         getChildren().setAll(junctionPane);
     }

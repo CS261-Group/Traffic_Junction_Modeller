@@ -32,11 +32,6 @@ public class Visualiser extends Application {
     private static Visualiser instance;
 
     /**
-     * Maximum number of panes that can be running simultaneously
-     */
-    private static final int MAX_CONCURRENT_VISUALISATIONS = 8;
-
-    /**
      * Window title.
      */
     private static final String WINDOW_TITLE = "Junction Visualiser";
@@ -45,6 +40,7 @@ public class Visualiser extends Application {
     private VisualisationTogglePane toggleSlot; // Holds the active pane
     private final List<ModelVisualisation> modelVisualisations;
 
+    // popup menus
     private TabsMenu tabsMenu;
     private InfoMenu infoMenu;
     private ConfigMenu configMenu;
@@ -54,7 +50,7 @@ public class Visualiser extends Application {
 
     public Visualiser() {
         super();
-        modelVisualisations = new ArrayList<>(MAX_CONCURRENT_VISUALISATIONS);
+        modelVisualisations = new ArrayList<>(8);
         addSubscribers = new LinkedList<>();
     }
 
@@ -68,7 +64,7 @@ public class Visualiser extends Application {
         root = new StackPane();
 
         // initialise and set up the toggling visualisation pane
-        toggleSlot = new VisualisationTogglePane(Constants.VISUALISATION_WIDTH, Constants.VISUALISATION_HEIGHT);
+        toggleSlot = new VisualisationTogglePane(Constants.VISUALISER_WIDTH, Constants.VISUALISER_HEIGHT);
 
         // popups available
         tabsMenu = new TabsMenu(modelVisualisations, List.of(toggleSlot));
@@ -104,10 +100,6 @@ public class Visualiser extends Application {
 
         stage.setScene(rootScene);
         stage.show();
-
-        // TODO: draw from junctionconfiguration
-        // TODO: hovering help
-        // TODO: dropdown select of running panes
     }
 
     /**
@@ -122,10 +114,6 @@ public class Visualiser extends Application {
      * @param modelVisualisation Model visualisation to add to displayed models.
      */
     public void addModelVisualisation(ModelVisualisation modelVisualisation) {
-        if (modelVisualisations.size() == MAX_CONCURRENT_VISUALISATIONS) {
-            throw new RuntimeException("Cannot support more than " + MAX_CONCURRENT_VISUALISATIONS + " visualisations");
-        }
-
         modelVisualisations.add(modelVisualisation);
 
         // update components requiring update
