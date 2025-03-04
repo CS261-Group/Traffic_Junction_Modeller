@@ -17,6 +17,7 @@ import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
+import uk.ac.warwick.dcs.ui.formdata.SubmissionInputData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
@@ -141,10 +142,11 @@ public class MainForm extends JFrame {
 
         TrafficLightData trafficLightData = trafficLightPanel.getValue();
 
-        // read config name from panel
-        boolean showVisualisation = submissionPanel.getValue();
+        SubmissionInputData submissionInputData = submissionPanel.getValue();
+        boolean showVisualisation = submissionInputData.checkBox();
         // TODO: should be part of submissionPanel.getValue()
-        String configName = submissionPanel.getConfigurationName();
+        String configName = submissionInputData.configName();
+
 
         return new ConfigurationData(configName, directionData, trafficLightData, showVisualisation);
     }
@@ -178,7 +180,7 @@ public class MainForm extends JFrame {
             fileChooser.setFileHidingEnabled(false);
             File selectedFile = fileChooser.getSelectedFile();
             // TODO: get showVisualisation instead of hard-coding false
-            boolean showVisualisation = submissionPanel.getValue();
+            boolean showVisualisation = submissionPanel.getValue().checkBox();
             List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath(), showVisualisation);
 
             // update errors in UI
