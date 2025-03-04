@@ -24,10 +24,10 @@ public class Constants {
     /**
      * Width of all popup windows.
      */
-    public static final int POPUP_WIDTH = 150;
+    public static final int POPUP_WIDTH = 200;
 
     /**
      * Height of all popup windows.
      */
-    public static final int POPUP_HEIGHT = 200;
+    public static final int POPUP_HEIGHT = 300;
 }
