@@ -22,7 +22,14 @@ class Model implements Runnable {
     public Model(long id, JunctionConfiguration junctionConfig, IModelVisualisation visualisation) {
         this.id = id;
         this.junctionConfig = junctionConfig;
-        this.optimiser = new Optimiser(junctionConfig);
+
+        // optimiser initialises values
+        if (junctionConfig.getOptimising()) {
+            this.optimiser = new Optimiser(junctionConfig);
+        } else {
+            this.optimiser = null;
+        }
+
         this.evaluation = new Evaluation(junctionConfig);
         this.visualisation = visualisation;
     }
