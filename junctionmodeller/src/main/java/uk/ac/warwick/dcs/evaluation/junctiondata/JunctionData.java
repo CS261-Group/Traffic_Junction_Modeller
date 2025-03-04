@@ -14,7 +14,7 @@ public class JunctionData implements Iterable<GroupData>{
     ArrayList<GroupData> groupData;
 
     public JunctionData(JunctionConfiguration junctionConfiguration) {
-        cycleTime = junctionConfiguration.getCycleTime();
+        cycleTime = junctionConfiguration.getCycleTime(); // should be 0 when optimising
 
         groupData = new ArrayList<>(junctionConfiguration.getNumberOfGroups());
 

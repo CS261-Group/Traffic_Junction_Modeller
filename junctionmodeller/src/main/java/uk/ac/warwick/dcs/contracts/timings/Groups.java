@@ -123,6 +123,22 @@ public class Groups implements Iterable<Group> {
         return null;
     }
 
+    /**
+     * @param groupNum Group number
+     * @return The GroupTiming timing value corresponding to the group number.
+     * Or zero if none exists
+     */
+    public int getGroupTimingValue(int groupNum){
+        for(GroupTiming groupTiming : this.timings){
+            if (groupTiming.getGroupNum() == groupNum) {
+                return groupTiming.getTiming();
+            }
+        }
+
+        return 0;
+    }
+
+
     @Override
     public Iterator<Group> iterator() {
         return groups.iterator();

@@ -24,8 +24,9 @@ public class GroupDataBuilder {
             );
         }
 
+        // timing value is 0 if optimising
         return new GroupData(groupNum,
-                junctionConfiguration.getGroups().getGroupTiming(groupNum).getTiming(),
+                junctionConfiguration.getGroups().getGroupTimingValue(groupNum),
                 groupLanes);
     }
 }
