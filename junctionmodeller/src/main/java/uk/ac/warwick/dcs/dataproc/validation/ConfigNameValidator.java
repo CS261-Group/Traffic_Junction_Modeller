@@ -10,7 +10,7 @@ public class ConfigNameValidator extends Validator<String>{
     public List<String> validateConfigNameNotEmpty(String configName){
         List<String> errors = new LinkedList<>();
     
-        if(configName == ""){
+        if(configName.isEmpty()){
             errors.add(diagFactory.createEmptyConfigNameMessage());
         }
     

@@ -40,12 +40,13 @@ class DataService implements IDataService {
         Pair<JunctionConfiguration, List<String>> loadResult = formLoaderService.load(configData);
         JunctionConfiguration junctionConfig = loadResult.getValue0();
         List<String> errors = loadResult.getValue1();
-
+       
         if (errors != null) {
             assert junctionConfig == null;
             return errors;
         } else {
             errors = validator.validate(junctionConfig);
+            errors.addAll(configNameValidator.validate(configData.configName()));
             assert errors != null;
 
             // If errors are found, return them before advancing
@@ -55,8 +56,7 @@ class DataService implements IDataService {
         }
 
         // Save to a file containing JunctionConfiguration
-        saver = new Saver(validator);
-        configNameValidator.validate(configData.configName());
+        saver = new Saver(validator);  
         saver.save(junctionConfig, configData.configName());
 
         // Create a model instance asynchronously

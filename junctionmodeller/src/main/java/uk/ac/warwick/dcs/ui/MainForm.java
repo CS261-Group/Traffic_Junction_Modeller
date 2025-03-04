@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -80,7 +81,7 @@ public class MainForm extends JFrame {
         setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
-
+        mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
         // Traffic Lights Section
         trafficLightPanel = new TrafficLightPanel(headingFont, labelFont);
 
@@ -161,7 +162,7 @@ public class MainForm extends JFrame {
         // submit configuration collected from form through data service
         List<String> errors = dataService.submitEnteredConfiguration(configData);
         assert errors != null;
-
+        
         // update errors in UI
         setErrors(errors);
     }
