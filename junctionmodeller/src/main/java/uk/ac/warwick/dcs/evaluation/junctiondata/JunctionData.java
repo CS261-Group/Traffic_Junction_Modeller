@@ -29,6 +29,19 @@ public class JunctionData implements Iterable<GroupData>{
         return groupData.iterator();
     }
 
+    public int getNumGroups(){
+        return groupData.size();
+    }
+
+    // index does not have to == group num
+    public double getGroupGreenTime(int groupIndex){
+        return groupData.get(groupIndex).greenTime;
+    }
+
+    public void modifyGroupTiming(int groupIndex, double changeBy){
+        groupData.get(groupIndex).modifyTiming(changeBy);
+    }
+
     public double getCycleTime(){
         return cycleTime;
     }
