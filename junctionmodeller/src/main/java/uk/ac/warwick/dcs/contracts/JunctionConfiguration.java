@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.contracts.exceptions.NoValueExistsException;
 import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import uk.ac.warwick.dcs.contracts.timings.Group;
@@ -51,9 +52,22 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
      */
     public Groups getGroups() { return groups; }
 
+    public int getGroupTimingValue(int groupNum) throws NoValueExistsException {
+        try {
+            return groups.getGroupTimingValue(groupNum);
+        } catch (NoValueExistsException e) {
+            throw new NoValueExistsException(e.getMessage());
+        }
+    }
+
     public double getCycleTime(){
         return groups.getCycleTime();
     }
+
+    public double getCycleLostTime(){
+        return groups.cycleLostTime();
+    }
+
 
 
     /**

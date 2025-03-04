@@ -6,24 +6,12 @@ package uk.ac.warwick.dcs.optimisation;
  * See <a href="https://www.sciencedirect.com/science/article/pii/B9780128153024000030">Chow, Ampountolas</a>
  */
 public class CycleTimeOptimiser {
-    public CycleTimeOptimiser(){};
-
     /**
-     * y is an array of flow ratios, one for each group
+     * See 5.3 in Chow, Ampountolas
+     * L is the total lost time for the cycle
+     * Y is the sum of max group flow ratios
      */
-    private double getSumFlowRatios(double[] y){
-        double Y = 0;
-            for (int i = 0; i < y.length; i++){
-                Y += y[i];
-            }
-        return Y;
-    }
-
-    /**
-     * 5.3 in Chow, Ampountolas
-     * L is the total lost time
-     */
-    public double getCycleTime(double L, double[] y){
-        return (1.5*L + 5) / (1 - getSumFlowRatios(y));
+    public double cycleTime(double L, double Y){
+        return (1.5*L + 5) / (1 - Y);
     }
 }
