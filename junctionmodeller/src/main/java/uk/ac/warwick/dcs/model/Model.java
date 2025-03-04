@@ -18,14 +18,17 @@ class Model implements Runnable {
     private final Optimiser optimiser;
     private final IModelVisualisation visualisation;
     private final JunctionConfiguration junctionConfig;
+    private final JunctionData junctionData;
 
     public Model(long id, JunctionConfiguration junctionConfig, IModelVisualisation visualisation) {
         this.id = id;
         this.junctionConfig = junctionConfig;
 
+        this.junctionData = new JunctionData(junctionConfig);
+
         // optimiser initialises values
         if (junctionConfig.getOptimising()) {
-            this.optimiser = new Optimiser(junctionConfig);
+            this.optimiser = new Optimiser(junctionConfig, junctionData);
         } else {
             this.optimiser = null;
         }

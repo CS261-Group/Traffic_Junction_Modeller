@@ -8,24 +8,21 @@ import java.util.Arrays;
 
 public class Optimiser {
     private final JunctionConfiguration junctionConfig;
+    private final JunctionData junctionData;
     private ActuatedTimingsOptimiser actuatedTimingsOptimiser;
     private FixedTimingsOptimiser fixedTimingsOptimiser;
 
-    public Optimiser(JunctionConfiguration junctionConfig) {
+    public Optimiser(JunctionConfiguration junctionConfig, JunctionData junctionData) {
         this.junctionConfig = junctionConfig;
+        this.junctionData = junctionData;
+
         this.actuatedTimingsOptimiser = new ActuatedTimingsOptimiser();
         this.fixedTimingsOptimiser = new FixedTimingsOptimiser();
 
-        //initialise values
-        JunctionData junctionData;
-        initialiseCycleTime(junctionData);
+        // junctions being optimised need initial data
+        new CycleAndGreenTimeInitialiser(junctionData, junctionConfig.getCycleLostTime());
     }
 
-    // cycle optimiser is a one time use thing
-    public void initialiseCycleTime(){
-        var cycleTimeOptimiser = new CycleTimeOptimiser();
-        cycleTimeOptimiser.setCycleTime(junctionData);
-    }
 
     public int[] getMaxGroupTimings(TrafficLightType trafficLightType) {
         if (trafficLightType == TrafficLightType.ACTUATION) {
