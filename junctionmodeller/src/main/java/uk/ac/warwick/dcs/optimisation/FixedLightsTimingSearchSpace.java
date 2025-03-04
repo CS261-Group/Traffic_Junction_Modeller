@@ -12,6 +12,7 @@ public class FixedLightsTimingSearchSpace implements ISearchSpace{
     private final double INITIAL_STEP_SIZE = 1; // in seconds
     private double[] stepSize; // vector allows for momentum (not used rn)
     private int[] lastChanged;
+    private Random randomNumGen;
 
     public FixedLightsTimingSearchSpace(int numGroups){
         //initialise step size vector
@@ -21,10 +22,11 @@ public class FixedLightsTimingSearchSpace implements ISearchSpace{
         }
 
         lastChanged = new int[] {-1,-1};
+        randomNumGen = new Random();
+
     }
 
     public boolean goToRandomNeighbour(JunctionData junctionData){
-        Random random = new Random();
         int upperBound = junctionData.getNumGroups();
         int r1;
         double newGreenValue1;
@@ -39,7 +41,7 @@ public class FixedLightsTimingSearchSpace implements ISearchSpace{
             if (timeout++ > TIME_OUT_CONST){
                 return false;
             }
-            r1 = random.nextInt(upperBound);
+            r1 = randomNumGen.nextInt(upperBound);
             newGreenValue1 = junctionData.getGroupGreenTime(r1) - stepSize[r1];
         } while (newGreenValue1 < GroupTiming.MIN_GROUP_TIMING);
         timeout = 0;
@@ -51,7 +53,7 @@ public class FixedLightsTimingSearchSpace implements ISearchSpace{
                 return false;
             }
             do {
-                r2 = random.nextInt(upperBound);
+                r2 = randomNumGen.nextInt(upperBound);
             } while (r1 == r2);
             // must be the same step size as the previous change to keep cycle time fixed
             newGreenValue2 = junctionData.getGroupGreenTime(r2) + stepSize[r1];
