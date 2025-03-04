@@ -24,8 +24,8 @@ public class InfoButton extends UiButton {
                     // I'll be so real these are magic numbers
                     infoMenu.show(
                             stage,
-                            windowX + (windowWidth - Constants.INFO_POPUP_WIDTH) / 2D,
-                            windowY + (windowHeight - Constants.INFO_POPUP_HEIGHT) / 2D
+                            windowX + (windowWidth - Constants.CENTRE_POPUP_WIDTH) / 2D,
+                            windowY + (windowHeight - Constants.CENTRE_POPUP_HEIGHT) / 2D
                     );
                 }
             }

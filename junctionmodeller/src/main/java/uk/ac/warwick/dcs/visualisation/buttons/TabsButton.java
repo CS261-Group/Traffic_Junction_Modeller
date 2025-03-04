@@ -35,7 +35,7 @@ public class TabsButton extends UiButton {
                     tabsMenu.show(
                             stage,
                             windowX + WIDTH_OFFSET,
-                            windowHeight - Constants.POPUP_HEIGHT + HEIGHT_OFFSET
+                            windowHeight - Constants.SIDE_POPUP_HEIGHT + HEIGHT_OFFSET
                     );
                 }
             }

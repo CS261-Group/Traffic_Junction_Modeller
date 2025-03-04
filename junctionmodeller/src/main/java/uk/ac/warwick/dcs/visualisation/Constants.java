@@ -22,22 +22,22 @@ public class Constants {
     public static final int VISUALISATION_HEIGHT = 768;
 
     /**
-     * Width of all popup windows.
+     * Width of side popup windows.
      */
-    public static final int POPUP_WIDTH = 200;
+    public static final int SIDE_POPUP_WIDTH = 200;
 
     /**
-     * Height of all popup windows.
+     * Height of side popup windows.
      */
-    public static final int POPUP_HEIGHT = 300;
+    public static final int SIDE_POPUP_HEIGHT = 300;
 
     /**
-     * Width of the help button popup. It's larger than regular popups.
+     * Width of central popups. It's larger than regular popups.
      */
-    public static final int INFO_POPUP_WIDTH = 500;
+    public static final int CENTRE_POPUP_WIDTH = 500;
 
     /**
-     * Height of the help button popup. It's larger than regular popups.
+     * Height of central popups. It's larger than regular popups.
      */
-    public static final int INFO_POPUP_HEIGHT = 500;
+    public static final int CENTRE_POPUP_HEIGHT = 500;
 }
