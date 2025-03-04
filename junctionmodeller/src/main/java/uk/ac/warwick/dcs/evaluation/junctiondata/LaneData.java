@@ -23,4 +23,10 @@ public class LaneData {
     public double getArrivalFlow(){
         return arrivalFlow;
     }
+
+    // arrival rate / saturation rate
+    public double getFlowRatio(){
+        assert getSaturationFlow() != 0; // should never be 0;
+        return getArrivalFlow() / getSaturationFlow();
+    }
 }

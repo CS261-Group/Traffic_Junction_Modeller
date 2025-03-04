@@ -14,7 +14,7 @@ public class JunctionData implements Iterable<GroupData>{
     ArrayList<GroupData> groupData;
 
     public JunctionData(JunctionConfiguration junctionConfiguration) {
-        cycleTime = junctionConfiguration.getCycleTime();
+        cycleTime = junctionConfiguration.getCycleTime(); // should be 0 when optimising
 
         groupData = new ArrayList<>(junctionConfiguration.getNumberOfGroups());
 
@@ -31,5 +31,18 @@ public class JunctionData implements Iterable<GroupData>{
 
     public double getCycleTime(){
         return cycleTime;
+    }
+
+    public double[] getMaxFlowRatioForEachGroup(){
+        double[] flowRatios = new double[groupData.size()];
+
+        for (int i = 0; i < groupData.size(); i++){
+            flowRatios[i] = groupData.get(i).getMaxFlowRatio();
+        }
+        return flowRatios;
+    }
+
+    public void setCycleTime(double cycleTime){
+        this.cycleTime = cycleTime;
     }
 }

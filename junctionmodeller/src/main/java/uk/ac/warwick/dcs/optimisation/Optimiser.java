@@ -2,27 +2,27 @@ package uk.ac.warwick.dcs.optimisation;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 
 import java.util.Arrays;
 
 public class Optimiser {
     private final JunctionConfiguration junctionConfig;
+    private final JunctionData junctionData;
     private ActuatedTimingsOptimiser actuatedTimingsOptimiser;
     private FixedTimingsOptimiser fixedTimingsOptimiser;
 
-    public Optimiser(JunctionConfiguration junctionConfig) {
+    public Optimiser(JunctionConfiguration junctionConfig, JunctionData junctionData) {
         this.junctionConfig = junctionConfig;
+        this.junctionData = junctionData;
+
         this.actuatedTimingsOptimiser = new ActuatedTimingsOptimiser();
         this.fixedTimingsOptimiser = new FixedTimingsOptimiser();
 
-        //initialise values
+        // junctions being optimised need initial data
+        new CycleAndGreenTimeInitialiser(junctionData, junctionConfig.getCycleLostTime());
     }
 
-    // cycle optimiser is a one time use thing
-    public void initialiseCycleTime(){
-        var cycleTimeOptimiser = new CycleTimeOptimiser();
-        //cycleTimeOptimiser.getCycleTime();
-    }
 
     public int[] getMaxGroupTimings(TrafficLightType trafficLightType) {
         if (trafficLightType == TrafficLightType.ACTUATION) {
