@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.optimisation;
+package uk.ac.warwick.dcs.optimisation.gradientdescent;
 
 import org.ejml.simple.SimpleMatrix;
 
@@ -11,6 +11,7 @@ import org.ejml.simple.SimpleMatrix;
  *
  * @param <F>   differentiated evaluation function
  */
+@Deprecated
 public class GradientDescent<F extends IGradientFunction> {
 
     /** number of iterations the algorithm makes */
