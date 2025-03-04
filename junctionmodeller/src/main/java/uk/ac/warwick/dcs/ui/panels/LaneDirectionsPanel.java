@@ -30,7 +30,6 @@ public class LaneDirectionsPanel extends CustomPanel implements ILaneChangedSubs
 
         JLabel laneDirectionsHeading = new JLabel("Lane directions");
         laneDirectionsHeading.setFont(headingFont);
-        laneDirectionsHeading.setAlignmentX(LEFT_ALIGNMENT);
         add(laneDirectionsHeading);
 
         // lanes should be generated from initial notification method call
@@ -42,7 +41,6 @@ public class LaneDirectionsPanel extends CustomPanel implements ILaneChangedSubs
             while (lanes.size() != newLanes) {
                 // create lanes
                 LaneDirectionSettingsPanel setting = new LaneDirectionSettingsPanel(headingFont, labelFont, direction, lanes.size() + 1);
-                setting.setAlignmentX(LEFT_ALIGNMENT);
 
                 add(setting);
                 lanes.add(setting);

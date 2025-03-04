@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.model;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
+import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
 import uk.ac.warwick.dcs.model.exceptions.NoSuchModelException;
 import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
 
@@ -20,9 +21,9 @@ public interface IModelContainer {
 
     /**
      *
-     * @param modelId ID of the model to stop.
-     * @throws NoSuchModelException Thrown if the supplied model ID doesn't belong to
-     *                              any running model.
+     * @param modelId ID of the model to evaluate.
+     * @return <code>JunctionMetrics</code> object containing mathematically
+     *         evaluated metrics.
      */
-    void stopModel(long modelId) throws NoSuchModelException;
+    JunctionMetrics evaluateModel(long modelId) throws NoSuchModelException;
 }

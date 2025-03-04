@@ -7,8 +7,13 @@ import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
 // instantiated to be able to evaluate a specific junction
 // (with a correct number of actuated and fixed time metric calculators)
 public class Evaluation {
+    private final JunctionConfiguration junctionConfig;
 
-    public JunctionMetrics getEvaluation(JunctionConfiguration junction){
+    public Evaluation(JunctionConfiguration junctionConfig) {
+        this.junctionConfig = junctionConfig;
+    }
+
+    public JunctionMetrics getEvaluation() {
         return null;
     }
 }

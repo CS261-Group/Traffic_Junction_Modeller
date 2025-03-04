@@ -20,10 +20,7 @@ import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
-import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
-import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
-import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
-import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
+import uk.ac.warwick.dcs.ui.panels.*;
 
 /**
  * Main entrypoint object for program. Contains all the form data.
@@ -45,6 +42,7 @@ public class MainForm extends JFrame {
     private TrafficLightPanel trafficLightPanel;
     private SubmissionPanel submissionPanel;
     private LoadingPanel loadingPanel;
+    private ErrorsPanel errorsPanel;
 
     // data service to submit data to next layer
     private final IDataService dataService;
@@ -71,7 +69,6 @@ public class MainForm extends JFrame {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setAlignmentX(LEFT_ALIGNMENT);
 
         // Traffic Lights Section
         trafficLightPanel = new TrafficLightPanel(headingFont, labelFont);
@@ -90,6 +87,10 @@ public class MainForm extends JFrame {
 
         loadingPanel = new LoadingPanel(headingFont,labelFont);
         loadingPanel.setSubmissionAction((e) -> onLoad());
+
+        // Error section
+        errorsPanel = new ErrorsPanel(headingFont, labelFont);
+
         // add panels and create window
         mainPanel.add(northboundPanel);
         mainPanel.add(eastboundPanel);
@@ -98,13 +99,14 @@ public class MainForm extends JFrame {
         mainPanel.add(trafficLightPanel);
         mainPanel.add(submissionPanel);
         mainPanel.add(loadingPanel);
+        mainPanel.add(errorsPanel);
+
         // construct window by adding singular main panel to
         // scrollable pane
         JScrollPane formContainer = new JScrollPane(mainPanel);
         formContainer.getVerticalScrollBar().setUnitIncrement(16);
         add(formContainer, BorderLayout.CENTER);
         setVisible(true);
-        
     }
 
     /**
@@ -131,10 +133,8 @@ public class MainForm extends JFrame {
         List<String> errors = dataService.submitEnteredConfiguration(configData);
         assert errors != null;
 
-        // TODO: handle errors in UI, show to user
-        for (String error : errors) {
-            System.out.println(error);
-        }
+        // update errors in UI
+        errorsPanel.setErrors(errors);
     }
 
     private void onLoad(){
@@ -149,12 +149,11 @@ public class MainForm extends JFrame {
             fileChooser.setFileHidingEnabled(false);
             File selectedFile = fileChooser.getSelectedFile();
             // TODO: get showVisualisation instead of hard-coding false
-            List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath(), false);
+            boolean showVisualisation = submissionPanel.getValue();
+            List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath(), showVisualisation);
 
-            // TODO: handle errors in UI, show to user
-            for (String error : errors) {
-                System.out.println(error);
-            }
+            // update errors in UI
+            errorsPanel.setErrors(errors);
         }
     }
 }

@@ -10,11 +10,10 @@ import uk.ac.warwick.dcs.contracts.exceptions.UnknownTrafficLightStateException;
  */
 public abstract class TrafficLight {
     private final TrafficLightType trafficLightType;
-    private TrafficLightState state;
+    //private TrafficLightState state;
 
     public TrafficLight(TrafficLightType tlt) {
         trafficLightType = tlt;
-        state = TrafficLightState.RED;
     }
 
     /**
@@ -23,37 +22,5 @@ public abstract class TrafficLight {
      */
     public TrafficLightType getTrafficLightType() {
         return trafficLightType;
-    }
-
-    /**
-     *
-     * @return The current state of the traffic light.
-     */
-    public TrafficLightState getState() {
-        return state;
-    }
-
-    /**
-     * Move traffic light into next available state in the cycle.
-     * NOTE: might need to skip <code>AMBER</code> and <code>REDAMBER</code>
-     * states.
-     */
-    public void nextState() {
-        switch (state) {
-            case RED:
-                state = TrafficLightState.REDAMBER;
-                return;
-            case REDAMBER:
-                state = TrafficLightState.GREEN;
-                return;
-            case GREEN:
-                state = TrafficLightState.AMBER;
-                return;
-            case AMBER:
-                state = TrafficLightState.RED;
-                return;
-            default:
-                throw new UnknownTrafficLightStateException(state);
-        }
     }
 }

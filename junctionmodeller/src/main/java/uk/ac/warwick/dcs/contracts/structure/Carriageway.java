@@ -3,6 +3,8 @@ package uk.ac.warwick.dcs.contracts.structure;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 
+import java.util.Iterator;
+
 /**
  * A collection of data structures storing all the data
  * for the configurations of this single direction.
@@ -12,7 +14,7 @@ import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
  * - Existence of pedestrian crossing
  * - Cardinal direction of this carriageway from the junction.
  */
-public class Carriageway {
+public class Carriageway{
     private final OutgoingRoad outgoingRoad;
     private final IncomingRoad incomingRoad;
     private final boolean pedestrianCrossing;
@@ -38,6 +40,14 @@ public class Carriageway {
      * @return The incoming lane object with the corresponding number.
      */
     public IncomingLane getIncomingLane(int laneNum) { return incomingRoad.get(laneNum); }
+
+    /**
+     *
+     * @return An iterator of all incomingLanes for the carriageway
+     */
+    public Iterator<IncomingLane> getIncomingLanes(){
+        return incomingRoad.iterator();
+    }
 
     /**
      *
@@ -76,7 +86,6 @@ public class Carriageway {
      * @return True if the selected lane permits exiting from the <code>direction</code>
      *         given, false otherwise. If the <code>direction</code> specified
      *         matches the incoming direction, we return false.
-     * TODO: custom error for invalid lane number
      */
     public boolean getLaneAllowsDirection(int laneNum, Direction direction) {
         return incomingRoad.get(laneNum).allowsGoing(direction);
@@ -90,4 +99,5 @@ public class Carriageway {
     public boolean isPedestrianCrossing() {
         return pedestrianCrossing;
     }
+
 }

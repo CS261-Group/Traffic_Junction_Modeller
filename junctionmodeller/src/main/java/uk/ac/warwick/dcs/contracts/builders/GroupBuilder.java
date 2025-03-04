@@ -103,7 +103,7 @@ public class GroupBuilder implements IGroupBuilder {
 
             // no lanes assigned to a group
             if (groupLanes[i].isEmpty()) {
-                throw new IncompleteBuildSettingsException("Empty group (no lanes) for group " + groupNum, "GroupBuilder.addLaneToGroup");
+                throw new IncompleteBuildSettingsException("group " + groupNum, "GroupBuilder.addLaneToGroup");
             }
         }
 

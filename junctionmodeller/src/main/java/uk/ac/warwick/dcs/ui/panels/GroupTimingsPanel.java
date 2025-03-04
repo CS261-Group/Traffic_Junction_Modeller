@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
+import uk.ac.warwick.dcs.ui.util.WrappingLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +19,7 @@ public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<Gro
     private final List<GroupTimingSettingPanel> timingFields;
     private int numGroups;
     private JCheckBox optimiseCheckbox;
+    private JPanel groupTimingsContainer;
 
     public GroupTimingsPanel(Font headingFont, Font labelFont, int numGroups) {
         super(headingFont, labelFont);
@@ -46,14 +48,13 @@ public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<Gro
         add(optimiseCheckbox);
 
 
-        JTextArea desc = new JTextArea("All groups have some (maximum) active time in seconds");
-        desc.setWrapStyleWord(true);
-        desc.setLineWrap(true);
-        desc.setOpaque(false); // Make it look like a label
-        desc.setEditable(false);
-        desc.setFocusable(false);
+        WrappingLabel desc = new WrappingLabel("All groups have some (maximum) active time in seconds");
         desc.setFont(labelFont);
         add(desc);
+
+        groupTimingsContainer = new JPanel();
+        groupTimingsContainer.setLayout(new BoxLayout(groupTimingsContainer, BoxLayout.Y_AXIS));
+        add(groupTimingsContainer);
 
         // initially create correct number of groups
         assert timingFields.isEmpty(); // i.e., size() == 0
@@ -69,21 +70,19 @@ public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<Gro
         if (oldNumGroups < newNumGroups) {
             while (timingFields.size() != newNumGroups) {
                 GroupTimingSettingPanel setting = new GroupTimingSettingPanel(headingFont, labelFont, timingFields.size() + 1);
-                add(setting);
+                groupTimingsContainer.add(setting);
                 timingFields.add(setting);
             }
         } else {
             while (timingFields.size() != newNumGroups) {
                 GroupTimingSettingPanel removedSetting = timingFields.remove(timingFields.size() - 1);
-                remove(removedSetting);
+                groupTimingsContainer.remove(removedSetting);
             }
         }
     }
 
     private void setTimingsVisibility(boolean visible) {
-        for (GroupTimingSettingPanel setting : timingFields) {
-            setting.setVisible(visible);
-        }
+        groupTimingsContainer.setVisible(visible);
     }
 
     @Override

@@ -21,7 +21,7 @@ import java.util.Arrays;
  */
 public class TrafficLightPanel extends CustomPanel implements IReadablePanel<TrafficLightData>, ILaneChangedSubscriber {
     private final static int MAX_NUM_GROUPS = Groups.MAX_GROUP_NUM;
-    private final static int MIN_NUM_GROUPS = Groups.MIN_GROUP_NUM; // there must be at least 2 groups in any case
+    private final static int MIN_NUM_GROUPS = Groups.MIN_NUM_GROUPS;
     private final static int DEFAULT_NUM_GROUPS = Groups.MIN_NUM_GROUPS;
 
     private JComboBox<TrafficLightType> lightTypeCombo;
@@ -85,7 +85,6 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         comboBoxContainer.add(groupsCombo);
         add(comboBoxContainer);
         for (LaneGroupPanel laneGroupPanel : laneGroupsPanels) {
-            laneGroupPanel.setAlignmentX(LEFT_ALIGNMENT);
             add(laneGroupPanel);
         }
         add(groupTimingsPanel);

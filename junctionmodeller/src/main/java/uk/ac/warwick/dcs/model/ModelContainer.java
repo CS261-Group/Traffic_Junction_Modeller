@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
+import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
 import uk.ac.warwick.dcs.model.exceptions.NoSuchModelException;
 import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
 
@@ -50,60 +51,13 @@ class ModelContainer implements IModelContainer {
         return true; // successfully created
     }
 
-    @Override
-    public void stopModel(long modelId) throws NoSuchModelException {
-        if (!models.containsKey(modelId)) {
+    public JunctionMetrics evaluateModel(long modelId) throws NoSuchModelException {
+        Model model = models.get(modelId);
+        if (model == null) {
             throw new NoSuchModelException(modelId);
         }
 
-        // remove from model set
-        Model removedModel = models.remove(modelId);
-
-        // stop the running model which we just removed
-        removedModel.stop();
-    }
-
-    /**
-     * Evaluate all models concurrently and return a Future set of models.
-     * 
-     * @param junctionConfiguration The configuration for evaluation
-     * @return A set of Future objects representing the models that are being evaluated
-     */
-    public Set<Future<Model>> evaluateModelsConcurrently(JunctionConfiguration junctionConfiguration) {
-        Set<Future<Model>> futures = new HashSet<>();
-        
-        for (Model model : models.values()) {
-            Callable<Model> task = () -> {
-                model.evaluateModel(junctionConfiguration);  // Evaluate the model
-                return model;
-            };
-            Future<Model> future = executorService.submit(task);
-            futures.add(future);
-        }
-        
-        return futures;
-    }
-
-    /**
-     * Optimise all models concurrently using the given junction configuration.
-     * 
-     * @param junctionConfiguration The configuration for the junction to be optimised
-     * @return A set of Future objects representing the models that are being optimised
-     */
-    public Set<Future<Model>> optimiseModelsConcurrently(JunctionConfiguration junctionConfiguration) {
-        Set<Future<Model>> futures = new HashSet<>();
-        
-        // Submit tasks for each model to optimize them concurrently
-        for (Model model : models.values()) {
-            Callable<Model> task = () -> {
-                model.optimiseModel(junctionConfiguration);  // Optimise the model (method to be implemented)
-                return model;
-            };
-            Future<Model> future = executorService.submit(task);
-            futures.add(future);
-        }
-        
-        return futures;
+        return model.evaluateModel();
     }
 
     /**
