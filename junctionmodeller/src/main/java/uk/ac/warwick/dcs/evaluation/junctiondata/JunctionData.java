@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public class JunctionData implements Iterable<GroupData>{
-
+    // max cycle time constant (for use in actuated signals)
     double cycleTime;
     ArrayList<GroupData> groupData;
 
