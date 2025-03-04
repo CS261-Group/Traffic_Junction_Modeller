@@ -16,6 +16,10 @@ public class GroupData implements Iterable<LaneData>{
         this.lanes = laneData;
     }
 
+    public void modifyTiming(double changeBy){
+        this.greenTime += changeBy;
+    }
+
     @Override
     public Iterator<LaneData> iterator() {
         return lanes.iterator();
