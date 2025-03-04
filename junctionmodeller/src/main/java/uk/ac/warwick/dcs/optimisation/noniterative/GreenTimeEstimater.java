@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.optimisation;
+package uk.ac.warwick.dcs.optimisation.noniterative;
 
 public class GreenTimeEstimater {
     /**

@@ -1,8 +1,6 @@
-package uk.ac.warwick.dcs.optimisation;
+package uk.ac.warwick.dcs.optimisation.localsearch;
 
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
-
-import java.util.ArrayList;
 
 public class HillClimb<S extends ISearchSpace> {
     final double STEP_SIZE = 1;

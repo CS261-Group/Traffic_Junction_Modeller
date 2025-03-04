@@ -1,44 +1,60 @@
 package uk.ac.warwick.dcs.model;
 
-import uk.ac.warwick.dcs.evaluation.Evaluation;
+import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.evaluation.Evaluator;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
-import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
+import uk.ac.warwick.dcs.optimisation.ActuatedTimingsOptimiser;
+import uk.ac.warwick.dcs.optimisation.FixedTimingsOptimiser;
 import uk.ac.warwick.dcs.optimisation.Optimiser;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
 
+//NOTE: no longer runnable
 /**
  * Class used to hold settings and configurations for a running
  * model instance being analysed.
  */
-class Model implements Runnable {
+class Model{
     private final long id;
-    private final Evaluation evaluation;
+    private final Evaluator evaluation;
     private final Optimiser optimiser;
     private final IModelVisualisation visualisation;
-    private final JunctionConfiguration junctionConfig;
-    private final JunctionData junctionData;
+    private final JunctionConfiguration junctionConfig; // is never updated
+    private final JunctionData junctionData; // holds optimised values
 
     public Model(long id, JunctionConfiguration junctionConfig, IModelVisualisation visualisation) {
         this.id = id;
         this.junctionConfig = junctionConfig;
-
         this.junctionData = new JunctionData(junctionConfig);
+        this.evaluation = new Evaluator(junctionConfig); // does not evaluate yet, just creates class
 
         // optimiser initialises values
         if (junctionConfig.getOptimising()) {
-            this.optimiser = new Optimiser(junctionConfig, junctionData);
+            if (junctionConfig.getTrafficLightType() == TrafficLightType.FIXEDCYCLE) {
+                this.optimiser = new FixedTimingsOptimiser(junctionConfig, junctionData, evaluation);
+            }
+            else {
+                this.optimiser = new ActuatedTimingsOptimiser(junctionConfig, junctionData, evaluation);
+            }
         } else {
             this.optimiser = null;
         }
 
-        this.evaluation = new Evaluation(junctionConfig);
         this.visualisation = visualisation;
     }
 
+    public void runOnce(){
+        if (optimiser != null){
+            optimiser.optimiseAll();
+        }
+        evaluation.getEvaluation(junctionData);
+        // update visualisation with new values
+    }
+
+
+
     /**
-     *
      * @return The ID of this model instance.
      */
     public long getId() { return id; }
@@ -48,22 +64,18 @@ class Model implements Runnable {
      * @return JunctionMetrics for the junction configuration.
      */
     public JunctionMetrics evaluateModel() {
-        return evaluation.getEvaluation(new JunctionData(junctionConfig));
+        return evaluation.getEvaluation(junctionData);
     }
 
     /**
-     * Optimise the model using a specific junction configuration.
-     * @param junctionConfiguration The configuration for the junction to be evaluated.
+     * Optimise the model, finding the best values that minimise the evaluation function.
+     * @return can ignore, passes a referance to its internal data
      */
-    public void optimiseModel(JunctionConfiguration junctionConfiguration) {
-        // TODO: implement this
+    public JunctionData optimiseModel() {
+        optimiser.optimiseAll();
+        return junctionData;
     }
 
     @Override
     public int hashCode() { return (int)id; }
-
-    @Override
-    public void run() {
-        // TODO: SGD updates
-    }
 }
