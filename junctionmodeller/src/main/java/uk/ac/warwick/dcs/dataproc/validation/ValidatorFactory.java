@@ -23,7 +23,7 @@ public class ValidatorFactory {
     private static IValidator<TrafficLight> trafficLightValidator = null;
     private static IValidator<Groups> groupsValidator = null;
     private static IValidator<JunctionConfiguration> laneAssignmentValidator = null;
-
+    private static IValidator<String> configNameValidator = null;
     /**
      *
      * @return Singleton instance of <code>DiagnosticFactory</code> object.
@@ -93,5 +93,15 @@ public class ValidatorFactory {
             laneAssignmentValidator = new LaneAssignmentValidator(getDiagnosticFactory());
         }
         return laneAssignmentValidator;
+    }
+    /**
+     *
+     * @return Singleton instance of contained <code>GroupsValidator</code> object.
+     */
+    public static IValidator<String> getConfigNameValidator() {
+        if (configNameValidator == null) {
+            configNameValidator = new ConfigNameValidator(getDiagnosticFactory());
+        }
+        return configNameValidator;
     }
 }

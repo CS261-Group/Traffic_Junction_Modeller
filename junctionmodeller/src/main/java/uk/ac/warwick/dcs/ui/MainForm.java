@@ -31,13 +31,11 @@ import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
  */
 
 //TODO 
-//ai) change submission panel to return config name as part of the record in IReadablePanel<T>
-//aii) also change how its handled in Main Form
-//b) Make a FileLoaderService that is similar to FormLoaderService and hold a Singleton instance of it in DataServiceBuilder (example with FormLoaderService) 
-//ci) Ensure ConfigName can't be empty 
-//cii) Ensure ConfigName does not clash with existing files (corresponding ConfigNames)
+
+//ciii) write unit tests for the new DiagnosticFactory methods in DiagnosticFactoryTest
 //Method listed in David notes photo
 //di) Implement FileSaverService (should have ISaverService interface) and inject into DataService (just like File and FormLoaderService objects)
+
 
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;

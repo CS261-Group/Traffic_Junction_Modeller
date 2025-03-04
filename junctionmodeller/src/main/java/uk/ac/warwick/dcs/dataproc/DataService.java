@@ -2,9 +2,9 @@ package uk.ac.warwick.dcs.dataproc;
 
 import java.util.List;
 
-import javafx.application.Platform;
 import org.javatuples.Pair;
 
+import javafx.application.Platform;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.dataproc.loading.FileLoader;
 import uk.ac.warwick.dcs.dataproc.saving.Saver;
@@ -20,17 +20,19 @@ import uk.ac.warwick.dcs.visualisation.Visualiser;
  */
 class DataService implements IDataService {
     private final IValidator<JunctionConfiguration> validator;
+    private final IValidator<String> configNameValidator;
     private final IModelContainer modelContainer;
     private final ILoaderService<ConfigurationData> formLoaderService;
     private final IVisualisationFactory visualisationFactory;
     private Saver saver;
     private FileLoader loader;
 
-    public DataService(IValidator<JunctionConfiguration> validator, IModelContainer modelContainer, ILoaderService<ConfigurationData> formLoaderService, IVisualisationFactory visualisationFactory) {
+    public DataService(IValidator<JunctionConfiguration> validator,IValidator<String> configNameValidator, IModelContainer modelContainer, ILoaderService<ConfigurationData> formLoaderService, IVisualisationFactory visualisationFactory) {
         this.validator = validator;
         this.modelContainer = modelContainer;
         this.formLoaderService = formLoaderService;
         this.visualisationFactory = visualisationFactory;
+        this.configNameValidator = configNameValidator;
     }
 
     @Override
@@ -54,6 +56,7 @@ class DataService implements IDataService {
 
         // Save to a file containing JunctionConfiguration
         saver = new Saver(validator);
+        configNameValidator.validate(configData.configName());
         saver.save(junctionConfig, configData.configName());
 
         // Create a model instance asynchronously
