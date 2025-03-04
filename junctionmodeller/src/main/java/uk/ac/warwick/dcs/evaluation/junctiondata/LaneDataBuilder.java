@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.evaluation.junctionmetrics;
+package uk.ac.warwick.dcs.evaluation.junctiondata;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
@@ -11,10 +11,15 @@ import uk.ac.warwick.dcs.contracts.timings.Groups;
 
 import java.util.Iterator;
 
-public class JunctionData {
+public class LaneDataBuilder {
 
-    public JunctionConfiguration junctionConfig;
-
+    public static LaneData createLaneData(IncomingLane lane, Carriageway carriageway){
+        return new LaneData(lane.getDirection(),
+                carriageway.getIncomingLaneNum(lane),
+                getLaneSaturationFlow(carriageway, lane),
+                getLaneArrivalFlow(carriageway)
+        );
+    }
     /**
      * Splits incoming flow equally among all lanes
      * @param carriageway carriageway containing lanes

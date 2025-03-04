@@ -10,7 +10,6 @@ import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
 public class Evaluation {
     JunctionConfiguration junctionConfig;
 
-
     public Evaluation(JunctionConfiguration junctionConfig) {
         this.junctionConfig = junctionConfig;
     }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.Arguments;
+import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.contracts.timings.Group;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
 
@@ -12,6 +13,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 public class GroupsValidatorTest {
     private final GroupsValidator groupsValidator;
@@ -99,12 +101,14 @@ public class GroupsValidatorTest {
     }
 
     private static Stream<Arguments> validateGroupNumsErrorsSeed() {
+        List<IncomingLane> someListOfLanes = (List<IncomingLane>)mock(List.class);
+
         return Stream.of(
                 Arguments.of(
                         new Groups(List.of(
-                                new Group(1, any()),
-                                new Group(2, any()),
-                                new Group(2, any())
+                                new Group(1, someListOfLanes),
+                                new Group(2, someListOfLanes),
+                                new Group(2, someListOfLanes)
                         ), true, null),
                         List.of(
                                 "Multiple groups have group number: 2"
@@ -112,11 +116,11 @@ public class GroupsValidatorTest {
                 ),
                 Arguments.of(
                         new Groups(List.of(
-                                new Group(1, any()),
-                                new Group(2, any()),
-                                new Group(2, any()),
-                                new Group(3, any()),
-                                new Group(3, any())
+                                new Group(1, someListOfLanes),
+                                new Group(2, someListOfLanes),
+                                new Group(2, someListOfLanes),
+                                new Group(3, someListOfLanes),
+                                new Group(3, someListOfLanes)
                                 ), true, null),
                         List.of(
                                 "Multiple groups have group number: 2",
@@ -137,13 +141,15 @@ public class GroupsValidatorTest {
     }
 
     private static Stream<Arguments> validateGroupNumsMultipleErrorsSeed() {
+        List<IncomingLane> someListOfLanes = (List<IncomingLane>)mock(List.class);
+
         return Stream.of(
                 Arguments.of(
                         new Groups(List.of(
-                                new Group(1, any()),
-                                new Group(2, any()),
-                                new Group(2, any()),
-                                new Group(2, any())
+                                new Group(1, someListOfLanes),
+                                new Group(2, someListOfLanes),
+                                new Group(2, someListOfLanes),
+                                new Group(2, someListOfLanes)
                         ), true, null),
                         List.of(
                                 "Multiple groups have group number: 2",
@@ -152,12 +158,12 @@ public class GroupsValidatorTest {
                 ),
                 Arguments.of(
                         new Groups(List.of(
-                                new Group(1, any()),
-                                new Group(1, any()),
-                                new Group(1, any()),
-                                new Group(2, any()),
-                                new Group(2, any()),
-                                new Group(2, any())
+                                new Group(1, someListOfLanes),
+                                new Group(1, someListOfLanes),
+                                new Group(1, someListOfLanes),
+                                new Group(2, someListOfLanes),
+                                new Group(2, someListOfLanes),
+                                new Group(2, someListOfLanes)
                                 ), true, null),
                         List.of(
                                 "Multiple groups have group number: 1",

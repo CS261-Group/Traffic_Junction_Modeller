@@ -1,0 +1,27 @@
+name: Maven Build & Test
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 23
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'
+          cache: 'maven'
+
+      - name: Build and Test with Maven
+        # we are not testing ui stuff because no X11 display variable
+        # in the GitHub Actions thingy
+        run: mvn -B clean verify -Dtest='!*uk.ac.warwick.dcs.ui.MainFormTest'
+        working-directory: junctionmodeller/

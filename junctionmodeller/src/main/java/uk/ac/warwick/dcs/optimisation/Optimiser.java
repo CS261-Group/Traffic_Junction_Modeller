@@ -9,13 +9,19 @@ public class Optimiser {
     private final JunctionConfiguration junctionConfig;
     private ActuatedTimingsOptimiser actuatedTimingsOptimiser;
     private FixedTimingsOptimiser fixedTimingsOptimiser;
-    private CycleTimeOptimiser cycleTimeOptimiser;
 
     public Optimiser(JunctionConfiguration junctionConfig) {
         this.junctionConfig = junctionConfig;
         this.actuatedTimingsOptimiser = new ActuatedTimingsOptimiser();
         this.fixedTimingsOptimiser = new FixedTimingsOptimiser();
-        this.cycleTimeOptimiser = new CycleTimeOptimiser();
+
+        //initialise values
+    }
+
+    // cycle optimiser is a one time use thing
+    public void initialiseCycleTime(){
+        var cycleTimeOptimiser = new CycleTimeOptimiser();
+        //cycleTimeOptimiser.getCycleTime();
     }
 
     public int[] getMaxGroupTimings(TrafficLightType trafficLightType) {
@@ -36,7 +42,7 @@ public class Optimiser {
     }
 
     public double getCycleTime() {
-//        return cycleTimeOptimiser.getCycleTime();
+//      return cycleTimeOptimiser.getCycleTime();
         return 0.0D;
     }
 
