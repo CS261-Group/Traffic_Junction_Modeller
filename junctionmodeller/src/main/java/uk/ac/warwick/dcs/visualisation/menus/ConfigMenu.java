@@ -9,10 +9,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import uk.ac.warwick.dcs.visualisation.Constants;
 
-public class InfoMenu extends Popup {
+public class ConfigMenu extends Popup {
     private final StackPane contentPane;
 
-    public InfoMenu() {
+    public ConfigMenu() {
         contentPane = new StackPane();
 
         // style content window
@@ -20,10 +20,9 @@ public class InfoMenu extends Popup {
         contentPane.setMaxWidth(Constants.CENTRE_POPUP_WIDTH);
         contentPane.setMaxHeight(Constants.CENTRE_POPUP_HEIGHT);
         contentPane.setMinHeight(Constants.CENTRE_POPUP_HEIGHT);
-        contentPane.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        contentPane.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
 
         // add content
-        // TODO: what to add, different colours of lanes, lane directions, groups (numbered)
 
         // content to popup
         getContent().setAll(contentPane);

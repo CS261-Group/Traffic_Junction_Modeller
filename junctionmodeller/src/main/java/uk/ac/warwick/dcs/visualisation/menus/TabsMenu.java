@@ -26,8 +26,8 @@ public class TabsMenu extends Popup implements IModelVisualisationSubscriber {
         subscribers = changeSubscribers;
 
         // affix popup dimensions
-        setWidth(Constants.POPUP_HEIGHT);
-        setHeight(Constants.POPUP_WIDTH);
+        setWidth(Constants.SIDE_POPUP_HEIGHT);
+        setHeight(Constants.SIDE_POPUP_WIDTH);
 
         // root content pane
         contentPane = new StackPane();
@@ -49,10 +49,10 @@ public class TabsMenu extends Popup implements IModelVisualisationSubscriber {
         menu.getChildren().addAll(closeBtn);
 
         // affix content pane dimensions
-        contentPane.setMinWidth(Constants.POPUP_WIDTH);
-        contentPane.setMinHeight(Constants.POPUP_HEIGHT);
-        contentPane.setMaxWidth(Constants.POPUP_WIDTH);
-        contentPane.setMaxHeight(Constants.POPUP_HEIGHT);
+        contentPane.setMinWidth(Constants.SIDE_POPUP_WIDTH);
+        contentPane.setMinHeight(Constants.SIDE_POPUP_HEIGHT);
+        contentPane.setMaxWidth(Constants.SIDE_POPUP_WIDTH);
+        contentPane.setMaxHeight(Constants.SIDE_POPUP_HEIGHT);
 
         // add menu to content pane
         contentPane.getChildren().addAll(menu);
@@ -75,8 +75,8 @@ public class TabsMenu extends Popup implements IModelVisualisationSubscriber {
             Button menuItem = new Button(modelVisualisation.getModelName());
 
             // fill width space
-            menuItem.setMinWidth(Constants.POPUP_WIDTH);
-            menuItem.setMaxWidth(Constants.POPUP_WIDTH);
+            menuItem.setMinWidth(Constants.SIDE_POPUP_WIDTH);
+            menuItem.setMaxWidth(Constants.SIDE_POPUP_WIDTH);
 
             //
             menuItem.setOnAction(e -> {
