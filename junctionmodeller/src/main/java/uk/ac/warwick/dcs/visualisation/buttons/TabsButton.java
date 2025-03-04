@@ -32,7 +32,11 @@ public class TabsButton extends UiButton {
 
                     // Show the popup at the calculated position
                     // I'll be so real these are magic numbers
-                    tabsMenu.show(stage, windowX + WIDTH_OFFSET, windowHeight - Constants.POPUP_HEIGHT + HEIGHT_OFFSET);
+                    tabsMenu.show(
+                            stage,
+                            windowX + WIDTH_OFFSET,
+                            windowHeight - Constants.POPUP_HEIGHT + HEIGHT_OFFSET
+                    );
                 }
             }
         });

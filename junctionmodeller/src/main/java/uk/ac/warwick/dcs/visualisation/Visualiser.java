@@ -13,6 +13,7 @@ import uk.ac.warwick.dcs.visualisation.buttons.DeleteButton;
 import uk.ac.warwick.dcs.visualisation.buttons.InfoButton;
 import uk.ac.warwick.dcs.visualisation.buttons.TabsButton;
 import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationSubscriber;
+import uk.ac.warwick.dcs.visualisation.menus.InfoMenu;
 import uk.ac.warwick.dcs.visualisation.menus.TabsMenu;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class Visualiser extends Application {
     private final List<ModelVisualisation> modelVisualisations;
 
     private TabsMenu tabsMenu;
+    private InfoMenu infoMenu;
 
     // observers of event that new model is added
     private final List<IModelVisualisationSubscriber> addSubscribers;
@@ -68,11 +70,12 @@ public class Visualiser extends Application {
 
         // popups available
         tabsMenu = new TabsMenu(modelVisualisations, List.of(toggleSlot));
+        infoMenu = new InfoMenu();
 
         // buttons available
         ConfigButton configBtn = new ConfigButton();
-        InfoButton infoBtn = new InfoButton();
         TabsButton tabsBtn = new TabsButton(tabsMenu);
+        InfoButton infoBtn = new InfoButton(infoMenu);
         DeleteButton deleteBtn = new DeleteButton();
 
         root.getChildren().addAll(toggleSlot, configBtn, infoBtn, tabsBtn, deleteBtn);

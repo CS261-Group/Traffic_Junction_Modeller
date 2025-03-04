@@ -30,4 +30,14 @@ public class Constants {
      * Height of all popup windows.
      */
     public static final int POPUP_HEIGHT = 300;
+
+    /**
+     * Width of the help button popup. It's larger than regular popups.
+     */
+    public static final int INFO_POPUP_WIDTH = 500;
+
+    /**
+     * Height of the help button popup. It's larger than regular popups.
+     */
+    public static final int INFO_POPUP_HEIGHT = 500;
 }
