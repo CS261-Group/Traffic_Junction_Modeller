@@ -11,7 +11,7 @@ public class CycleTimeOptimiser {
     /**
      * y is an array of flow ratios, one for each group
      */
-    private static double getSumFlowRatios(double[] y){
+    private double getSumFlowRatios(double[] y){
         double Y = 0;
             for (int i = 0; i < y.length; i++){
                 Y += y[i];
@@ -23,7 +23,7 @@ public class CycleTimeOptimiser {
      * 5.3 in Chow, Ampountolas
      * L is the total lost time
      */
-    public static double getCycleTime(double L, double[] y){
-        return (1.5*L + 5) / 1 - getSumFlowRatios(y);
+    public double getCycleTime(double L, double[] y){
+        return (1.5*L + 5) / (1 - getSumFlowRatios(y));
     }
 }

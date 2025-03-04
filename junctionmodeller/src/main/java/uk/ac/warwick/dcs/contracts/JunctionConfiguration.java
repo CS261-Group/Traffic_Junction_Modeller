@@ -132,6 +132,10 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
         return cw.getNumIncomingLanes() + cw.getNumOutgoingLanes();
     }
 
+    public boolean getOptimising(){
+        return groups.getOptimising();
+    }
+
     @Override
     public Iterator<Carriageway> iterator() {
         return Arrays.stream(carriageways).iterator();
