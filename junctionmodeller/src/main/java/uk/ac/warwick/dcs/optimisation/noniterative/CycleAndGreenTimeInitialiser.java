@@ -9,7 +9,7 @@ public class CycleAndGreenTimeInitialiser {
 
     public CycleAndGreenTimeInitialiser(JunctionData junctionData, double cycleLostTime){
         CycleTimeOptimiser cycleTimeOptimiser = new CycleTimeOptimiser();
-        GreenTimeEstimater greenTimeEstimator = new GreenTimeEstimater();
+        GreenTimeEstimator greenTimeEstimator = new GreenTimeEstimator();
 
         double[] maxFlowRatios = junctionData.getMaxFlowRatioForEachGroup();
         double sumFlowRatios = getSumFlowRatios(maxFlowRatios);

@@ -1,6 +1,6 @@
 package uk.ac.warwick.dcs.optimisation.noniterative;
 
-public class GreenTimeEstimater {
+public class GreenTimeEstimator {
     /**
      * 5.4 in Chow, Ampountolas
      * L is the total lost time
