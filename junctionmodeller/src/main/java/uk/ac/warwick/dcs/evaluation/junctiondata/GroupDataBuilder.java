@@ -29,8 +29,8 @@ public class GroupDataBuilder {
         try {
             return new GroupData(groupNum, junctionConfiguration.getGroupTimingValue(groupNum), groupLanes);
         } catch (NoValueExistsException e) {
-            // no value exists for group timings, so initilise with 0
-            // (will be overwritten immediatly)
+            // no value exists for group timings, so initialise with 0
+            // (will be overwritten immediately)
             return new GroupData(groupNum, 0, groupLanes);
         }
     }
