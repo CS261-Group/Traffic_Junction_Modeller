@@ -90,7 +90,7 @@ public class Saver implements ISaver{
             }
         }
         
-        if(configName == ""){
+        if(configName.isEmpty()){
             path = path + "configuration_" + String.valueOf(fileCount)+".json";  
             ++fileCount;
             updateFileCount();

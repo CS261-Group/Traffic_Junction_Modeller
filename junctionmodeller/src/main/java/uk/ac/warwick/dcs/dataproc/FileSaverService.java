@@ -9,6 +9,10 @@ class FileSaverService implements ISaverService{
     public List<String> save(JunctionConfiguration junctionConfig, String configName){
         Saver saver = new Saver();
         saver.save(junctionConfig, configName);
-        return List.of(saver.getSaveErrors());
+        if (saver.getSaveErrors() != null) {
+            return List.of(saver.getSaveErrors());
+        } else {
+            return null;
+        }
     }
 }

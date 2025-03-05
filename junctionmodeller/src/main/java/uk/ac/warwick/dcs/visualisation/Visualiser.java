@@ -8,6 +8,10 @@ import javafx.scene.layout.StackPane;
 
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import uk.ac.warwick.dcs.model.messaging.EvaluationUpdate;
+import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
+import uk.ac.warwick.dcs.model.messaging.ModelUpdateType;
+import uk.ac.warwick.dcs.ui.MainForm;
 import uk.ac.warwick.dcs.visualisation.buttons.ConfigButton;
 import uk.ac.warwick.dcs.visualisation.buttons.DeleteButton;
 import uk.ac.warwick.dcs.visualisation.buttons.InfoButton;
@@ -47,6 +51,9 @@ public class Visualiser extends Application {
 
     // observers of event that new model is added
     private final List<IModelVisualisationSubscriber> addSubscribers;
+
+    // main form for alerting
+    private MainForm form;
 
     public Visualiser() {
         super();
@@ -105,7 +112,8 @@ public class Visualiser extends Application {
     /**
      * Launch the 'game', i.e., visualise the app.
      */
-    public void run(String[] args) {
+    public void run(String[] args, MainForm mainForm) {
+        form = mainForm;
         launch(args);
     }
 
@@ -120,6 +128,14 @@ public class Visualiser extends Application {
         for (IModelVisualisationSubscriber subscriber : addSubscribers) {
             subscriber.notifyAdd(modelVisualisation);
         }
+    }
+
+    /**
+     * The
+     * @param modelUpdate The update object.
+     */
+    public void notifyUpdate(EvaluationUpdate modelUpdate) {
+        form.addMetricToHistory(modelUpdate.getMetrics());
     }
 
     /**
