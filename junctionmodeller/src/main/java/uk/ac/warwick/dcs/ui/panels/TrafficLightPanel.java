@@ -1,19 +1,24 @@
 package uk.ac.warwick.dcs.ui.panels;
 
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.util.Arrays;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
 import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
 import uk.ac.warwick.dcs.ui.formdata.LaneGroups;
-import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
+import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
-
-import javax.swing.*;
-import java.awt.GridLayout;
-import java.awt.Font;
-import java.awt.event.ItemEvent;
-import java.util.Arrays;
 
 /**
  * Panel to choose the type of traffic light and the number of groups.
@@ -45,7 +50,7 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         JLabel lightTypeLbl = new JLabel("Traffic light type:");
         lightTypeLbl.setFont(labelFont);
 
-        JPanel comboBoxContainer = new JPanel(new GridLayout(0, 2));
+        JPanel comboBoxContainer = new JPanel(new GridLayout(0, 1));
         lightTypeCombo = new JComboBox<>();
         lightTypeCombo.addItem(TrafficLightType.FIXEDCYCLE);
         lightTypeCombo.addItem(TrafficLightType.ACTUATION);
