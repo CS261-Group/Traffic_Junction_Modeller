@@ -22,11 +22,7 @@ import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.formdata.SubmissionInputData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
-import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
-import uk.ac.warwick.dcs.ui.panels.ErrorsPanel;
-import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
-import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
-import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
+import uk.ac.warwick.dcs.ui.panels.*;
 
 /**
  * Main entrypoint object for program. Contains all the form data.
@@ -56,6 +52,7 @@ public class MainForm extends JFrame {
     private SubmissionPanel submissionPanel;
     private LoadingPanel loadingPanel;
     private ErrorsPanel errorsPanel;
+    private HistoryPanel historyPanel;
 
     // data service to submit data to next layer
     private final IDataService dataService;
@@ -103,6 +100,9 @@ public class MainForm extends JFrame {
         // Error section
         errorsPanel = new ErrorsPanel(headingFont, labelFont);
 
+        //History / Metrics Section
+        historyPanel = new HistoryPanel(headingFont, labelFont);
+
         // add panels and create window
         mainPanel.add(northboundPanel);
         mainPanel.add(eastboundPanel);
@@ -112,6 +112,7 @@ public class MainForm extends JFrame {
         mainPanel.add(submissionPanel);
         mainPanel.add(loadingPanel);
         mainPanel.add(errorsPanel);
+        mainPanel.add(historyPanel);
 
         // construct window by adding singular main panel to
         // scrollable pane
@@ -186,9 +187,13 @@ public class MainForm extends JFrame {
             setErrors(errors);
         }
     }
-
-    public void addMetricToHistory(JunctionMetrics metrics){
-        //historyPanel
-        return;
+  
+    /**
+     * Adds a row to the metrics history table
+     * @param modelName Name of the model
+     * @param metrics metrics to display
+     */
+    public void addMetricToHistory(String modelName, JunctionMetrics metrics){
+        historyPanel.addRow(modelName, metrics.getAverageDelay(), metrics.getAverageQueue(), metrics.getMaxQueue());
     }
 }
