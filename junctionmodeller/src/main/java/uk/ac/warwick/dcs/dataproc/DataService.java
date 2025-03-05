@@ -27,10 +27,8 @@ class DataService implements IDataService {
     private final ISaverService fileSaverService;
     
     private final IVisualisationFactory visualisationFactory;
-    private Saver saver;
-    private FileLoader loader;
 
-    public DataService(IValidator<JunctionConfiguration> validator,IValidator<String> configNameValidator, IModelContainer modelContainer, ILoaderService<ConfigurationData> formLoaderService, ILoaderService fileLoaderService, ISaverService fileSaverService, IVisualisationFactory visualisationFactory) {
+    public DataService(IValidator<JunctionConfiguration> validator,IValidator<String> configNameValidator, IModelContainer modelContainer, ILoaderService<ConfigurationData> formLoaderService, ILoaderService<String> fileLoaderService, ISaverService fileSaverService, IVisualisationFactory visualisationFactory) {
         this.validator = validator;
         this.modelContainer = modelContainer;
         this.formLoaderService = formLoaderService;
@@ -45,35 +43,28 @@ class DataService implements IDataService {
         Pair<JunctionConfiguration, List<String>> loadResult = formLoaderService.load(configData);
         JunctionConfiguration junctionConfig = loadResult.getValue0();
         List<String> errors = loadResult.getValue1();
-        
+
+        // errors are present
         if (errors != null) {
             assert junctionConfig == null;
             return errors;
-        } else {
-            errors = validator.validate(junctionConfig);
-            errors.addAll(configNameValidator.validate(configData.configName()));
-            assert errors != null;
-
-            // If errors are found, return them before advancing
-            if (!errors.isEmpty()) {
-                return errors;
-            }
         }
+
+        errors = validator.validate(junctionConfig);
+        errors.addAll(configNameValidator.validate(configData.configName()));
+
+        // If errors are found, return them before advancing
+        if (!errors.isEmpty()) {
+            return errors;
+        }
+
         // Save to a file containing JunctionConfiguration
         errors = fileSaverService.save(junctionConfig,configData.configName());
 
         if (errors != null) {
             assert junctionConfig == null;
             return errors;
-        } else {
-            assert errors != null;
-
-            // If errors are found, return them before advancing
-            if (!errors.isEmpty()) {
-                return errors;
-            }
         }
-
 
         // Create a model instance asynchronously
         ModelVisualisation modelVisualisation;

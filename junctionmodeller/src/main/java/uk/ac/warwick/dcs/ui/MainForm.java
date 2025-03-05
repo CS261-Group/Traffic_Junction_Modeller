@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.dataproc.IDataService;
+import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.formdata.SubmissionInputData;
@@ -184,5 +185,10 @@ public class MainForm extends JFrame {
             // update errors in UI
             setErrors(errors);
         }
+    }
+
+    public void addMetricToHistory(JunctionMetrics metrics){
+        //historyPanel
+        return;
     }
 }
