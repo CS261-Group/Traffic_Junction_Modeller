@@ -22,11 +22,7 @@ import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.formdata.SubmissionInputData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
-import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
-import uk.ac.warwick.dcs.ui.panels.ErrorsPanel;
-import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
-import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
-import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
+import uk.ac.warwick.dcs.ui.panels.*;
 
 /**
  * Main entrypoint object for program. Contains all the form data.
