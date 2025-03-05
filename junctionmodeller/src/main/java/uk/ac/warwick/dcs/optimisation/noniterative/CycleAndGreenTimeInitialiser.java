@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.optimisation;
+package uk.ac.warwick.dcs.optimisation.noniterative;
 
 import uk.ac.warwick.dcs.evaluation.junctiondata.GroupData;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;

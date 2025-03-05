@@ -19,13 +19,25 @@ import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
+import uk.ac.warwick.dcs.ui.formdata.SubmissionInputData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
-import uk.ac.warwick.dcs.ui.panels.*;
+import uk.ac.warwick.dcs.ui.panels.DirectionPanel;
+import uk.ac.warwick.dcs.ui.panels.ErrorsPanel;
+import uk.ac.warwick.dcs.ui.panels.LoadingPanel;
+import uk.ac.warwick.dcs.ui.panels.SubmissionPanel;
+import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
 
 /**
  * Main entrypoint object for program. Contains all the form data.
  */
+
+
+//TODO
+//a) Lane directions wonky UI
+
+
+
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
     private static final int MINIMUM_FONT_SIZE = 14;
@@ -63,15 +75,14 @@ public class MainForm extends JFrame {
 
     private void setUp() {
         setTitle("Traffic Junction Configuration");
-        setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        setResizable(true);
+        setSize(Constants.WINDOW_WIDTH+100, Constants.WINDOW_HEIGHT-100);
+        setResizable(false);
         setFont(labelFont);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-
+        mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
         // Traffic Lights Section
         trafficLightPanel = new TrafficLightPanel(headingFont, labelFont);
 
@@ -135,10 +146,11 @@ public class MainForm extends JFrame {
 
         TrafficLightData trafficLightData = trafficLightPanel.getValue();
 
-        // read config name from panel
-        boolean showVisualisation = submissionPanel.getValue();
+        SubmissionInputData submissionInputData = submissionPanel.getValue();
+        boolean showVisualisation = submissionInputData.checkBox();
         // TODO: should be part of submissionPanel.getValue()
-        String configName = submissionPanel.getConfigurationName();
+        String configName = submissionInputData.configName();
+
 
         return new ConfigurationData(configName, directionData, trafficLightData, showVisualisation);
     }
@@ -155,7 +167,7 @@ public class MainForm extends JFrame {
         // submit configuration collected from form through data service
         List<String> errors = dataService.submitEnteredConfiguration(configData);
         assert errors != null;
-
+        
         // update errors in UI
         setErrors(errors);
     }
@@ -172,14 +184,14 @@ public class MainForm extends JFrame {
             fileChooser.setFileHidingEnabled(false);
             File selectedFile = fileChooser.getSelectedFile();
             // TODO: get showVisualisation instead of hard-coding false
-            boolean showVisualisation = submissionPanel.getValue();
+            boolean showVisualisation = submissionPanel.getValue().checkBox();
             List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath(), showVisualisation);
 
             // update errors in UI
             setErrors(errors);
         }
     }
-
+  
     /**
      * Adds a row to the metrics history table
      * @param modelName Name of the model

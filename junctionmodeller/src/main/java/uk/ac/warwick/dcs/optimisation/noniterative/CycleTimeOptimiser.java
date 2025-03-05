@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.optimisation;
+package uk.ac.warwick.dcs.optimisation.noniterative;
 
 /**
  * Static (Does not do any kind of iterative optimisation)

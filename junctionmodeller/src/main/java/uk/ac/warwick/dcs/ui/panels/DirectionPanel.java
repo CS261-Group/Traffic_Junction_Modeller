@@ -1,16 +1,18 @@
 package uk.ac.warwick.dcs.ui.panels;
 
-import uk.ac.warwick.dcs.contracts.enums.Direction;
-import uk.ac.warwick.dcs.ui.Constants;
-import uk.ac.warwick.dcs.ui.formdata.DirectionInputData;
-import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
-import uk.ac.warwick.dcs.ui.formdata.DirectionData;
-import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Font;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+
+import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.ui.Constants;
+import uk.ac.warwick.dcs.ui.formdata.DirectionData;
+import uk.ac.warwick.dcs.ui.formdata.DirectionInputData;
+import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 
 /**
  * Panel used to get all relevant carriageway (structural) data from
@@ -35,11 +37,14 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
     @Override
     protected void setUp() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        
         setBorder(BorderFactory.createTitledBorder(Constants.DIRECTIONS[direction.ordinal()]));
 
         // custom panels required for each section
         flowsPanel = new FlowsPanel(headingFont, labelFont, direction);
+
         laneDirections = new LaneDirectionsPanel(headingFont, labelFont);
+
 
         // although this is first, it needs to be instantiated last so all the other
         // objects (which are subscribers) can be registered
@@ -65,7 +70,7 @@ public class DirectionPanel extends CustomPanel implements IReadablePanel<Direct
                 laneDirections.getValue(),
 //                laneDepartures.getValue(),
 //                directionInputData.busLane(),
-                directionInputData.pedestrianCrossing(),
+//                directionInputData.pedestrianCrossing(),
                 directionInputData.numOutgoingLanes()
         );
     }

@@ -6,20 +6,43 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.visualisation.Constants;
 
-import java.util.Random;
-
 public class JunctionPane extends Pane {
-    static final Random rand = new Random();
+    public JunctionPane(int[] outgoingLaneCounts, int[] incomingLaneCounts, boolean[][][] incomingDirections, int[][] incomingLaneGroupNums) {
+        assert outgoingLaneCounts.length == 4;
+        assert incomingLaneCounts.length == 4;
+        assert incomingDirections.length == 4;
+        assert incomingLaneGroupNums.length == 4;
 
-    public JunctionPane() {
         setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
-        setMinWidth(Constants.VISUALISATION_WIDTH);
-        setMinHeight(Constants.VISUALISATION_HEIGHT);
-        setMaxWidth(Constants.VISUALISATION_WIDTH);
-        setMaxHeight(Constants.VISUALISATION_HEIGHT);
+        setMinWidth(Constants.VISUALISER_WIDTH);
+        setMinHeight(Constants.VISUALISER_HEIGHT);
+        setMaxWidth(Constants.VISUALISER_WIDTH);
+        setMaxHeight(Constants.VISUALISER_HEIGHT);
 
-        getChildren().setAll();
+        // draw static junction components
+        Intersection intersection = new Intersection();
+
+        // draw for each direction: outgoing lanes, incoming lanes
+        for (Direction direction : Direction.values()) {
+            int numOutgoing = outgoingLaneCounts[direction.ordinal()];
+            for (int i = 0; i < numOutgoing; i++) {
+                getChildren().add(new OutgoingLane(direction, i));
+            }
+
+            int numIncoming = incomingLaneCounts[direction.ordinal()];
+            for (int i = 0; i < numIncoming; i++) { // iterate backwards
+                getChildren().add(new IncomingLane(
+                        direction,
+                        i,
+                        incomingDirections[direction.ordinal()][i],
+                        incomingLaneGroupNums[direction.ordinal()][i]
+                ));
+            }
+        }
+
+        getChildren().add(intersection);
     }
 }

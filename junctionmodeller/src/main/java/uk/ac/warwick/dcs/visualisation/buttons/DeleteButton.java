@@ -5,8 +5,7 @@ public class DeleteButton extends UiButton {
         super("/delete.png");
 
         setOnAction(e -> {
-            System.out.println("DELETED");
-            // TODO: something when model is deleted
+            // This was not implemented for the demo's sake.
         });
     }
 }

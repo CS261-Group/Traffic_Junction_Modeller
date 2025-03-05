@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.optimisation;
+package uk.ac.warwick.dcs.optimisation.localsearch;
 
 import uk.ac.warwick.dcs.contracts.timings.GroupTiming;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
@@ -7,7 +7,7 @@ import java.util.Random;
 
 //vfor fixed timings currently
 // Used to get neighbours to visit next
-public class FixedLightsTimingSearchSpace implements ISearchSpace{
+public class FixedLightsTimingSearchSpace implements ISearchSpace {
     private final int TIME_OUT_CONST = 10;
     private final double INITIAL_STEP_SIZE = 1; // in seconds
     private double[] stepSize; // vector allows for momentum (not used rn)

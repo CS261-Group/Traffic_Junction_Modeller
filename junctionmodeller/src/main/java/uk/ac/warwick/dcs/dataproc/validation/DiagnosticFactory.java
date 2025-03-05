@@ -116,4 +116,12 @@ class DiagnosticFactory implements IDiagnosticFactory {
     public String createInvalidLaneAssignmentMessage() {
         return "Not all of the junction's incoming lanes are assigned to a group.";
     }
+    @Override
+    public String createEmptyConfigNameMessage(){
+        return "Configuration name cannot be empty";
+    }
+    @Override
+    public String createConfigNameClashMessage(String configName){
+        return "Configuration name "+ configName + " clashes with the configuration name of a pre existing configuration";
+    }
 }

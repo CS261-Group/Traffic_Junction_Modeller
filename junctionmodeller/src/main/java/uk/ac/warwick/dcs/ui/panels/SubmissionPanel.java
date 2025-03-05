@@ -10,13 +10,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import uk.ac.warwick.dcs.ui.formdata.SubmissionInputData;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
-
 /**
  * Panel containing the submit button and a checkbox for whether the user
  * wants to show the visualisation.
  */
-public class SubmissionPanel extends CustomPanel implements IReadablePanel<Boolean> {
+public class SubmissionPanel extends CustomPanel implements IReadablePanel<SubmissionInputData> {
     private JCheckBox showVisualisationCheckbox;
     private JButton submitButton;
     private JTextField configurationName;
@@ -62,12 +62,7 @@ public class SubmissionPanel extends CustomPanel implements IReadablePanel<Boole
     }
 
     @Override
-    public Boolean getValue() {
-        return showVisualisationCheckbox.isSelected();
-    }
-    
-    public String getConfigurationName(){
-        //will return "" if left blank
-        return configurationName.getText().trim();
+    public SubmissionInputData getValue() {
+        return new SubmissionInputData(showVisualisationCheckbox.isSelected(),configurationName.getText().trim());
     }
 }

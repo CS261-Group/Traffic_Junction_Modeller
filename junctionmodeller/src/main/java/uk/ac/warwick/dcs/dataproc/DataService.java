@@ -2,9 +2,9 @@ package uk.ac.warwick.dcs.dataproc;
 
 import java.util.List;
 
-import javafx.application.Platform;
 import org.javatuples.Pair;
 
+import javafx.application.Platform;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.dataproc.loading.FileLoader;
 import uk.ac.warwick.dcs.dataproc.saving.Saver;
@@ -20,17 +20,22 @@ import uk.ac.warwick.dcs.visualisation.Visualiser;
  */
 class DataService implements IDataService {
     private final IValidator<JunctionConfiguration> validator;
+    private final IValidator<String> configNameValidator;
     private final IModelContainer modelContainer;
     private final ILoaderService<ConfigurationData> formLoaderService;
+    private final ILoaderService<String> fileLoaderService;
+    private final ISaverService fileSaverService;
+    
     private final IVisualisationFactory visualisationFactory;
-    private Saver saver;
-    private FileLoader loader;
 
-    public DataService(IValidator<JunctionConfiguration> validator, IModelContainer modelContainer, ILoaderService<ConfigurationData> formLoaderService, IVisualisationFactory visualisationFactory) {
+    public DataService(IValidator<JunctionConfiguration> validator,IValidator<String> configNameValidator, IModelContainer modelContainer, ILoaderService<ConfigurationData> formLoaderService, ILoaderService<String> fileLoaderService, ISaverService fileSaverService, IVisualisationFactory visualisationFactory) {
         this.validator = validator;
         this.modelContainer = modelContainer;
         this.formLoaderService = formLoaderService;
+        this.fileLoaderService = fileLoaderService;
+        this.fileSaverService = fileSaverService;
         this.visualisationFactory = visualisationFactory;
+        this.configNameValidator = configNameValidator;
     }
 
     @Override
@@ -39,22 +44,27 @@ class DataService implements IDataService {
         JunctionConfiguration junctionConfig = loadResult.getValue0();
         List<String> errors = loadResult.getValue1();
 
+        // errors are present
         if (errors != null) {
             assert junctionConfig == null;
             return errors;
-        } else {
-            errors = validator.validate(junctionConfig);
-            assert errors != null;
+        }
 
-            // If errors are found, return them before advancing
-            if (!errors.isEmpty()) {
-                return errors;
-            }
+        errors = validator.validate(junctionConfig);
+        errors.addAll(configNameValidator.validate(configData.configName()));
+
+        // If errors are found, return them before advancing
+        if (!errors.isEmpty()) {
+            return errors;
         }
 
         // Save to a file containing JunctionConfiguration
-        saver = new Saver(validator);
-        saver.save(junctionConfig, configData.configName());
+        errors = fileSaverService.save(junctionConfig,configData.configName());
+
+        if (errors != null) {
+            assert junctionConfig == null;
+            return errors;
+        }
 
         // Create a model instance asynchronously
         ModelVisualisation modelVisualisation;
@@ -77,21 +87,43 @@ class DataService implements IDataService {
         // If no errors, return an empty list
         return List.of();
     }
+    public String getConfigName(String filePath){
+        int start = filePath.lastIndexOf("/")+1;
+        int end = filePath.lastIndexOf(".json");
+        if (start > 0 && end > start) {
+            return filePath.substring(start, end);
+        } else {
+            return ""; // Return empty if not found
+        }
+    }
 
     @Override
     public List<String> submitFileConfiguration(String filePath, boolean showVisualisation) {
-        loader = new FileLoader(filePath);
-        JunctionConfiguration junctionConfig = loader.load();
+        Pair<JunctionConfiguration, List<String>> loadResult  = fileLoaderService.load(filePath);
+        JunctionConfiguration junctionConfig = loadResult.getValue0();
         
         // Handle errors using the error handling logic from the form loader service
-        // TODO: Implement the error handling from FormLoaderService.load to get an error list
+        // Implemented the error handling from FormLoaderService.load to get an error list
+        List<String> errors = loadResult.getValue1();
+       
+        if (errors != null) {
+            assert junctionConfig == null;
+            return errors;
+        } else {
+            errors = validator.validate(junctionConfig);
+            assert errors != null;
 
+            // If errors are found, return them before advancing
+            if (!errors.isEmpty()) {
+                return errors;
+            }
+        }
         // Create a model instance asynchronously
         // Create a model instance asynchronously
         ModelVisualisation modelVisualisation;
         if (showVisualisation) {
             // TODO: get config name from saved file
-            modelVisualisation = visualisationFactory.createVisualisation("configname", junctionConfig);
+            modelVisualisation = visualisationFactory.createVisualisation(getConfigName(filePath), junctionConfig);
         } else {
             modelVisualisation = null;
         }
