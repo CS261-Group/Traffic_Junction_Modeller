@@ -83,7 +83,6 @@ public class DiagnosticFactoryTest {
         // Assert
         assertEquals(expected, actual);
     }
-
     private static Stream<Arguments> invalidNumLanesInputsAndOutputs() {
         return Stream.of(
                 Arguments.of(

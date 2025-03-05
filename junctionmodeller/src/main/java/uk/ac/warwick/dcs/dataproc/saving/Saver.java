@@ -12,16 +12,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
-import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 
 public class Saver implements ISaver{
-    protected final IValidator validator;
+   
+    private String error;
     //so we don't get overalapping file names
     int fileCount;
 
 
-    public Saver(IValidator validator) {
-        this.validator = validator;
+    public Saver() {
         fileCount = readFileCount();
     }
   
@@ -62,7 +61,7 @@ public class Saver implements ISaver{
         }
 
     }
-
+    
     @Override
     public void save(JunctionConfiguration junctionConfig, String configName){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -104,9 +103,13 @@ public class Saver implements ISaver{
             System.out.println("JSON file saved to "+path);
         } catch (IOException e) {
             e.printStackTrace();
+            error = e.getMessage();
         }
-        
 
         //changed to use JunctionConfiguration      
+     }
+     @Override
+     public String getSaveErrors(){
+        return error;
      }
 }

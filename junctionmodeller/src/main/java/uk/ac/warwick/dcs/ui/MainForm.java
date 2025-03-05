@@ -31,11 +31,10 @@ import uk.ac.warwick.dcs.ui.panels.TrafficLightPanel;
  * Main entrypoint object for program. Contains all the form data.
  */
 
-//TODO 
 
-//ciii) write unit tests for the new DiagnosticFactory methods in DiagnosticFactoryTest
-//Method listed in David notes photo
-//di) Implement FileSaverService (should have ISaverService interface) and inject into DataService (just like File and FormLoaderService objects)
+//TODO
+//a) Lane directions wonky UI
+
 
 
 public class MainForm extends JFrame {
