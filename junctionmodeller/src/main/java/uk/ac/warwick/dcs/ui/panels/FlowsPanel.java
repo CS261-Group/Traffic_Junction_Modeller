@@ -48,19 +48,7 @@ public class FlowsPanel extends CustomPanel implements IReadablePanel<FlowData> 
 
     @Override
     public FlowData getValue() {
-        int[] flows = Arrays.stream(textFields)
-                            .mapToInt(field -> {
-                                String text = field.getText().trim();
-                                if (text.isEmpty()) {
-                                    return 0; 
-                                }
-                                try {
-                                    return Integer.parseInt(text); 
-                                } catch (NumberFormatException e) {
-                                    return 0; 
-                                }
-                            })
-                            .toArray();
+        int[] flows = Arrays.stream(textFields).mapToInt(IntegerTextField::getIntegerValue).toArray();
         return new FlowData(flows);
     }
 }
