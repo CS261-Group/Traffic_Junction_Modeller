@@ -1,6 +1,5 @@
 package uk.ac.warwick.dcs.ui.panels;
 
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
@@ -89,11 +88,9 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         comboBoxContainer.add(lightTypeCombo);
         comboBoxContainer.add(numGroupsLbl);
         comboBoxContainer.add(groupsCombo);
-        // add(comboBoxContainer);
-        // JPanel laneGroupsContainer = new JPanel(new FlowLayout(Flow));
-        // laneGroupsContainer.
+        add(comboBoxContainer);
         for (LaneGroupPanel laneGroupPanel : laneGroupsPanels) {
-            laneGroupsContainer.add(laneGroupPanel);
+            add(laneGroupPanel);
         }
         add(groupTimingsPanel);
 
