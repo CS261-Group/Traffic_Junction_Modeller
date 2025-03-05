@@ -180,8 +180,12 @@ public class MainForm extends JFrame {
         }
     }
 
-    public void addMetricToHistory(JunctionMetrics metrics){
-        //historyPanel
-        return;
+    /**
+     * Adds a row to the metrics history table
+     * @param modelName Name of the model
+     * @param metrics metrics to display
+     */
+    public void addMetricToHistory(String modelName, JunctionMetrics metrics){
+        historyPanel.addRow(modelName, metrics.getAverageDelay(), metrics.getAverageQueue(), metrics.getMaxQueue());
     }
 }
