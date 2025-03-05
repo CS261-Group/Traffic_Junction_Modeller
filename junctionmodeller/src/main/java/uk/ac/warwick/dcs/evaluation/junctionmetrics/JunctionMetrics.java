@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.evaluation.junctionmetrics;
 
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.evaluation.junctiondata.ActuatedGroupData;
 import uk.ac.warwick.dcs.evaluation.junctiondata.GroupData;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.evaluation.junctiondata.LaneData;
@@ -39,13 +40,28 @@ public class JunctionMetrics implements IJunctionMetrics {
         //create lane metrics (evaluate each lane)
         ArrayList<LaneMetrics> laneMetricsList = new ArrayList<>();
 
-        for (GroupData group : data){
-            for (LaneData lane : group){
-                laneMetricsList.add(new LaneMetrics(calculator,
-                        lane.getSaturationFlow(),
-                        data.getCycleTime(),
-                        lane.getArrivalFlow(),
-                        group.greenTime));
+        if (type == TrafficLightType.ACTUATION) {
+            for (GroupData group : data) {
+                group.setGreenTimeAndDegOfSat(data.getCycleTime());
+
+                for (LaneData lane : group) {
+                    laneMetricsList.add(new LaneMetrics(calculator,
+                            lane.getSaturationFlow(),
+                            data.getCycleTime(),
+                            lane.getArrivalFlow(),
+                            group.getGreenTime(),
+                            group.getDegOfSaturation()));
+                }
+            }
+        } else {
+            for (GroupData group : data){
+                for (LaneData lane : group){
+                    laneMetricsList.add(new LaneMetrics(calculator,
+                            lane.getSaturationFlow(),
+                            data.getCycleTime(),
+                            lane.getArrivalFlow(),
+                            group.getGreenTime()));
+                }
             }
         }
 
