@@ -12,6 +12,9 @@ import javafx.scene.text.TextAlignment;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.visualisation.Constants;
 
+/**
+ * This class is largely ChatGPT'd because I don't know how to use JavaFX.
+ */
 class IncomingLane extends Lane {
     private final Pane contentPane;
 
@@ -52,6 +55,7 @@ class IncomingLane extends Lane {
         Text groupNumText = new Text(Integer.toString(groupNum));
         groupNumText.setTextAlignment(TextAlignment.CENTER);
         groupNumText.setFill(Color.WHITE);
+        groupNumText.setWrappingWidth(20); // some padding
 
         // add arrow and group number
         if (direction == Direction.SOUTH || direction == Direction.WEST) {
