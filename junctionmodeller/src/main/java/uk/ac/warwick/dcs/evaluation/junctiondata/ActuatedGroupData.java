@@ -5,6 +5,7 @@ import java.util.List;
 public class ActuatedGroupData extends GroupData{
     public double extensionHeadway;
     public double maxGreenTime;
+    public double targetDegOfSaturation; // for use instead of derived degOfSat
 
     public ActuatedGroupData(int groupNum, double greenTime, double extensionHeadway, double maxGreenTime, List<LaneData> laneData){
         super(groupNum, greenTime, laneData);
