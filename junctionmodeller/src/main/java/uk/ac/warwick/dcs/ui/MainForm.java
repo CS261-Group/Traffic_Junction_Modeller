@@ -16,6 +16,7 @@ import javax.swing.JScrollPane;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.dataproc.IDataService;
+import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
@@ -43,6 +44,7 @@ public class MainForm extends JFrame {
     private SubmissionPanel submissionPanel;
     private LoadingPanel loadingPanel;
     private ErrorsPanel errorsPanel;
+    private HistoryPanel historyPanel;
 
     // data service to submit data to next layer
     private final IDataService dataService;
@@ -91,6 +93,9 @@ public class MainForm extends JFrame {
         // Error section
         errorsPanel = new ErrorsPanel(headingFont, labelFont);
 
+        //History / Metrics Section
+        historyPanel = new HistoryPanel(headingFont, labelFont);
+
         // add panels and create window
         mainPanel.add(northboundPanel);
         mainPanel.add(eastboundPanel);
@@ -100,6 +105,7 @@ public class MainForm extends JFrame {
         mainPanel.add(submissionPanel);
         mainPanel.add(loadingPanel);
         mainPanel.add(errorsPanel);
+        mainPanel.add(historyPanel);
 
         // construct window by adding singular main panel to
         // scrollable pane
@@ -172,5 +178,10 @@ public class MainForm extends JFrame {
             // update errors in UI
             setErrors(errors);
         }
+    }
+
+    public void addMetricToHistory(JunctionMetrics metrics){
+        //historyPanel
+        return;
     }
 }
