@@ -99,6 +99,7 @@ public class Groups implements Iterable<Group> {
     /**
      * @param lane Input lane
      * @return The timing of a lane, or 0 if no such lane.
+     * @throws NoValueExistsException No such timing exists
      */
     public int getLaneTiming(IncomingLane lane) throws NoValueExistsException{
         for (Group group : this) {
@@ -113,6 +114,7 @@ public class Groups implements Iterable<Group> {
     /**
      * @param groupNum Group number
      * @return The GroupTiming object corresponding to the group number.
+     * @throws NoValueExistsException No such timing exists
      */
     public GroupTiming getGroupTiming(int groupNum) throws NoValueExistsException{
         for(GroupTiming groupTiming : this.timings){
@@ -127,6 +129,7 @@ public class Groups implements Iterable<Group> {
      * @param groupNum Group number
      * @return The GroupTiming timing value corresponding to the group number.
      * Or zero if none exists
+     * @throws NoValueExistsException No such timing exists
      */
     public int getGroupTimingValue(int groupNum) throws NoValueExistsException {
         for(GroupTiming groupTiming : this.timings){
