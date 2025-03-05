@@ -29,7 +29,7 @@ public class ModelVisualisation extends Pane implements IModelVisualisation {
         // evaluation updates get updated in the main form, so
         // they are passed through the Visualiser
         if (update.getType() == ModelUpdateType.EVALUATION) {
-            Visualiser.getInstance().notifyUpdate((EvaluationUpdate)update);
+            Visualiser.getInstance().notifyUpdate(modelName, (EvaluationUpdate)update);
         }
 
         // TODO: update junction panel

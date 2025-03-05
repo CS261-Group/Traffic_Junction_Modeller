@@ -134,8 +134,8 @@ public class Visualiser extends Application {
      * The
      * @param modelUpdate The update object.
      */
-    public void notifyUpdate(EvaluationUpdate modelUpdate) {
-        form.addMetricToHistory(modelUpdate.getMetrics());
+    public void notifyUpdate(String configName, EvaluationUpdate modelUpdate) {
+        form.addMetricToHistory(configName, modelUpdate.getMetrics());
     }
 
     /**
