@@ -7,7 +7,6 @@ import uk.ac.warwick.dcs.optimisation.localsearch.EvaluationFunction;
 import uk.ac.warwick.dcs.optimisation.noniterative.FixedCycleAndGreenTimeInitialiser;
 
 public abstract class Optimiser {
-    protected final int ITERATIONS = 100;
     protected final JunctionConfiguration junctionConfig;
     protected final JunctionData junctionData;
     protected final EvaluationFunction evaluationFunction;
@@ -20,6 +19,6 @@ public abstract class Optimiser {
         this.evaluationFunction = new EvaluationFunction(evaluation);
     }
 
-    public abstract void optimiseAll();
+    public abstract void optimiseAll(int numIterations);
 
 }
