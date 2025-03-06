@@ -23,12 +23,12 @@ import java.util.Objects;
 class IncomingLane extends Lane {
     private final Pane contentPane;
     // Arrow file names
-    private final static String forwardArrowPath = "/forward-arrow.png";
-    private final static String leftForwardArrowPath = "/forward-arrow.png";
+    private final static String forwardArrowPath = "/arrows/forward.png";
+    private final static String leftForwardArrowPath = "/arrows/left-forward.png";
     private final static String leftRightForwardArrowPath = "/arrows/left-right-forward.png";
-    private final static String rightForwardArrowPath = "/forward-arrow.png";
-    private final static String rightArrowPath = "/forward-arrow.png";
-    private final static String leftArrowPath = "/forward-arrow.png";
+    private final static String rightForwardArrowPath = "/arrows/right-forward.png";
+    private final static String rightArrowPath = "/arrows/right.png";
+    private final static String leftArrowPath = "/arrows/left.png";
 
     protected IncomingLane(Direction direction, int laneNum, boolean[] availableDirections, int groupNum) {
         super(direction, laneNum, true);
@@ -101,13 +101,11 @@ class IncomingLane extends Lane {
         arrow.setAlignment(Pos.CENTER);
         arrow.setMinHeight(Constants.LANE_WIDTH);
 
-        // Ensure it resizes within contentPane
+        arrow.setPrefWidth(Constants.LANE_WIDTH);
         arrow.setPrefHeight(Constants.LANE_WIDTH);
-        arrow.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-        // Scale the image properly
+        imageView.fitHeightProperty().bind(arrow.heightProperty().multiply(0.8));
         imageView.fitWidthProperty().bind(arrow.widthProperty());
-        imageView.fitHeightProperty().bind(arrow.heightProperty());
 
         arrow.getChildren().add(imageView);
         return arrow;
@@ -117,14 +115,13 @@ class IncomingLane extends Lane {
         VBox arrow = new VBox();
         arrow.setAlignment(Pos.CENTER);
         arrow.setMinWidth(Constants.LANE_WIDTH);
+        arrow.setMinHeight(Constants.LANE_WIDTH);
 
-        // Ensure it resizes within contentPane
         arrow.setPrefWidth(Constants.LANE_WIDTH);
-        arrow.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        arrow.setPrefHeight(Constants.LANE_WIDTH);
 
-        // Scale the image properly
-        imageView.fitWidthProperty().bind(arrow.widthProperty());
         imageView.fitHeightProperty().bind(arrow.heightProperty());
+        imageView.fitWidthProperty().bind(arrow.widthProperty());;
 
         arrow.getChildren().add(imageView);
         return arrow;
@@ -219,11 +216,11 @@ class IncomingLane extends Lane {
             if (availableDirections[LaneDataBuilder.aheadOf(direction).ordinal()]){
                 //lane goes right
                 if (availableDirections[LaneDataBuilder.rightOf(direction).ordinal()]){
-                    return createArrowImageView(forwardArrowPath);
+                    return createArrowImageView(rightForwardArrowPath);
                 }
                 // lane does not go right
                 else{
-                    return createArrowImageView(rightForwardArrowPath);
+                    return createArrowImageView(forwardArrowPath);
                 }
             }
             //lane does not go forward
