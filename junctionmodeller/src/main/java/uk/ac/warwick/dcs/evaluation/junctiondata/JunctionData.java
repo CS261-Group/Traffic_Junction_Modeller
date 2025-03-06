@@ -4,10 +4,15 @@ import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.contracts.timings.Group;
+import uk.ac.warwick.dcs.model.messaging.ActuatedTiming;
+import uk.ac.warwick.dcs.model.messaging.ActuationVisualisationData;
+import uk.ac.warwick.dcs.model.messaging.FixedCycleVisualisationData;
+import uk.ac.warwick.dcs.model.messaging.FixedTiming;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 public class JunctionData {
     public final double MIN_CYCLE_TIME = 30; // in seconds
@@ -107,5 +112,18 @@ public class JunctionData {
 
     public void setCycleTime(double cycleTime){
         this.cycleTime = cycleTime;
+    }
+
+    public FixedCycleVisualisationData getFixedCycleVisualisationData() {
+        return new FixedCycleVisualisationData(
+                groupDataF.stream().map(x -> new FixedTiming((int)Math.round(x.greenTime))).toList()
+        );
+    }
+
+    public ActuationVisualisationData getActuationVisualisationData() {
+        return new ActuationVisualisationData(
+                groupDataA.stream().map(x ->
+                        new ActuatedTiming((int)Math.round(x.greenTime), (int)Math.round(x.maxGreenTime))).toList()
+        );
     }
 }

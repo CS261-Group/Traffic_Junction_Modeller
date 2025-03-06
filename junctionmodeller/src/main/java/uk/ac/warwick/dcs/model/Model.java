@@ -5,6 +5,7 @@ import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 import uk.ac.warwick.dcs.evaluation.Evaluator;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
+import uk.ac.warwick.dcs.model.messaging.EvaluationType;
 import uk.ac.warwick.dcs.model.messaging.EvaluationUpdate;
 import uk.ac.warwick.dcs.model.messaging.OptimisationUpdate;
 import uk.ac.warwick.dcs.optimisation.ActuatedTimingsOptimiser;
@@ -19,7 +20,7 @@ import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
  * model instance being analysed.
  */
 class Model implements Runnable {
-    private static int NUM_ITERATIONS = 10000;
+    private static final int NUM_ITERATIONS = 100;
 
     private final long id;
     private final Evaluator evaluation;
@@ -102,9 +103,16 @@ class Model implements Runnable {
         } else {
             Platform.runLater(() -> {
                 optimiser.optimiseAll(NUM_ITERATIONS);
-                // TODO: visualiser data to avoid race condition
                 JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
-                visualisation.notify(new OptimisationUpdate(junctionData));
+
+                if (optimiser instanceof FixedTimingsOptimiser) { // optimising fixed timings
+                    visualisation.notify(new OptimisationUpdate<>(junctionData.getFixedCycleVisualisationData()));
+
+                } else { // optimising actuation
+                    assert optimiser instanceof ActuatedTimingsOptimiser;
+                    visualisation.notify(new OptimisationUpdate<>(junctionData.getActuationVisualisationData()));
+                }
+
                 visualisation.notify(new EvaluationUpdate(metrics));
             });
         }
