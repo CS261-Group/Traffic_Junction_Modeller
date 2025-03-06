@@ -23,6 +23,6 @@ public class App {
         // making the visualiser visible
         // Run JavaFX code on the correct thread
         Visualiser visualiser = new Visualiser();
-        visualiser.run(args, form);
+        visualiser.run(args, form, dataService);
     }
 }

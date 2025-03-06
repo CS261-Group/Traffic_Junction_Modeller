@@ -8,6 +8,7 @@ import javafx.stage.Popup;
 import uk.ac.warwick.dcs.visualisation.Constants;
 import uk.ac.warwick.dcs.visualisation.ModelVisualisation;
 import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationChangedSubscriber;
+import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationDeletedSubscriber;
 import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationSubscriber;
 
 import java.util.List;
@@ -63,7 +64,7 @@ public class TabsMenu extends Popup implements IModelVisualisationSubscriber {
         updateMenu();
     }
 
-    private void updateMenu() {
+    public void updateMenu() {
         // clear children to reset the menu
         menu.getChildren().clear();
 
@@ -94,5 +95,9 @@ public class TabsMenu extends Popup implements IModelVisualisationSubscriber {
     @Override
     public void notifyAdd(ModelVisualisation visualisation) {
         updateMenu();
+
+        for (IModelVisualisationChangedSubscriber subscriber : subscribers) {
+            subscriber.notifyChanged(visualisation);
+        }
     }
 }
