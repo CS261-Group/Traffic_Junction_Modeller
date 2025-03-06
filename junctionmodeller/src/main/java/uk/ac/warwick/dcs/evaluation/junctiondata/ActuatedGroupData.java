@@ -7,7 +7,6 @@ public class ActuatedGroupData extends GroupData{
     public double maxGreenTime;
     public double targetDegOfSaturation; // for use instead of derived degOfSat
 
-
     public ActuatedGroupData(int groupNum, double greenTime, double extensionHeadway, double maxGreenTime, List<LaneData> laneData){
         super(groupNum, greenTime, laneData);
         this.extensionHeadway = extensionHeadway;
@@ -25,9 +24,7 @@ public class ActuatedGroupData extends GroupData{
         this.greenTime = (cycleTime * maxFlowRatio) / targetDegOfSaturation;
     }
 
-    public double getTargetDegOfSaturation(){
+    public double getDegOfSaturation() {
         return targetDegOfSaturation;
     }
-
-
 }
