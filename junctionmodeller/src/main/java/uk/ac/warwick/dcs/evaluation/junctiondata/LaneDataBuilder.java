@@ -91,4 +91,12 @@ public class LaneDataBuilder {
         }
     }
 
+    public static int getLaneGreenTime(IncomingLane lane, Groups groups){
+        try{
+            return groups.getLaneTiming(lane);
+        } // no lane timing exists
+        catch (NoValueExistsException e) {
+            return 0;
+        }
+    }
 }
