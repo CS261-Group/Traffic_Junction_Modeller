@@ -27,7 +27,7 @@ public class GroupData implements Iterable<LaneData>{
         return lanes.iterator();
     }
 
-    public double maxFlowRatio(){
+    private double maxFlowRatio(){
         double maxFlowRatio = 0;
         for (LaneData lane : lanes){
             if (lane.getFlowRatio() > maxFlowRatio){
