@@ -21,4 +21,5 @@ public abstract class Optimiser {
     }
 
     public abstract void optimiseAll();
+
 }

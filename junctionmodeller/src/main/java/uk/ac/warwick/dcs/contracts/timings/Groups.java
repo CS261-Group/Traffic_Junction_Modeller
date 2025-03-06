@@ -65,6 +65,10 @@ public class Groups implements Iterable<Group> {
 
     }
 
+    public int getMaxGroupTiming(){
+        return GroupTiming.MAX_GROUP_TIMING;
+    }
+
     private void setCycleTime(){
         int sumTimings = 0;
 

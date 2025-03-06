@@ -31,4 +31,8 @@ public class ActuatedGroupData extends GroupData{
     public double getExtensionHeadway() {
         return extensionHeadway;
     }
+
+    public double getMaxGreenTime() {
+        return maxGreenTime;
+    }
 }

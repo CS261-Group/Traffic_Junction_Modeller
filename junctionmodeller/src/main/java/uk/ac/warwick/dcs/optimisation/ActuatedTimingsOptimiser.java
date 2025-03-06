@@ -3,16 +3,25 @@ package uk.ac.warwick.dcs.optimisation;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.evaluation.Evaluator;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
+import uk.ac.warwick.dcs.optimisation.localsearch.CycleTimeSearchSpace;
+import uk.ac.warwick.dcs.optimisation.localsearch.FixedLightsTimingSearchSpace;
+import uk.ac.warwick.dcs.optimisation.localsearch.HillClimb;
 import uk.ac.warwick.dcs.optimisation.noniterative.ActuatedCycleAndGreenTimeInitialiser;
 import uk.ac.warwick.dcs.optimisation.noniterative.FixedCycleAndGreenTimeInitialiser;
 
 public class ActuatedTimingsOptimiser extends Optimiser {
+    double junctionCycleLostTime; // used for re-initialising
+    HillClimb<CycleTimeSearchSpace> localSearch;
 
     public ActuatedTimingsOptimiser(JunctionConfiguration junctionConfiguration, JunctionData junctionData, Evaluator evaluation){
         super(junctionConfiguration, junctionData, evaluation);
+        this.junctionCycleLostTime = junctionConfig.getCycleLostTime();
 
         // junctions being optimised need initial data
-        new ActuatedCycleAndGreenTimeInitialiser(junctionData, junctionConfig.getCycleLostTime());
+        new ActuatedCycleAndGreenTimeInitialiser(junctionData, junctionCycleLostTime);
+
+        CycleTimeSearchSpace searchSpace = new CycleTimeSearchSpace(junctionCycleLostTime, junctionData.getTotalMaxGreenTimes());
+        localSearch = new HillClimb<>(junctionData, evaluationFunction, searchSpace);
     }
 
     @Override

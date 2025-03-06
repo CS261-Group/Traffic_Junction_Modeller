@@ -10,10 +10,12 @@ import java.util.ArrayList;
 
 public class GroupDataBuilder {
     public static final double EXTENSION_HEADWAY_DEFAULT = 2.5;
+    public static double maxGreenTimeDefault;
     public JunctionConfiguration junctionConfiguration;
 
     public GroupDataBuilder(JunctionConfiguration junctionConfiguration){
         this.junctionConfiguration = junctionConfiguration;
+        maxGreenTimeDefault = junctionConfiguration.getMaxGroupTimings();
     }
 
     public ActuatedGroupData buildActuatedGroupData(Group group){
@@ -27,7 +29,7 @@ public class GroupDataBuilder {
         }
 
         // as below, maxGreenTime will be overwritten
-        return new ActuatedGroupData(groupNum, 0, EXTENSION_HEADWAY_DEFAULT, 0, groupLanes);
+        return new ActuatedGroupData(groupNum, 0, EXTENSION_HEADWAY_DEFAULT, maxGreenTimeDefault, groupLanes);
     }
 
 
