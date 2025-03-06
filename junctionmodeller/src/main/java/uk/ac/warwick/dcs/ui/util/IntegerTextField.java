@@ -37,10 +37,18 @@ public class IntegerTextField extends JTextField {
      * @return The integer entered in the text field.
      */
     public int getIntegerValue() {
+    
+        String text = getText().trim();  
+        if (text.isEmpty()) {
+            setText("0");  
+            return 0;     
+        }
+    
         try {
-            return Integer.parseInt(getText());
+            return Integer.parseInt(text);  
         } catch (NumberFormatException ex) {
-            return defaultValue;
+            setText("0");  
+            return 0;     
         }
     }
 }

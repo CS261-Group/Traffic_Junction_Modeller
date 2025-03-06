@@ -2,8 +2,12 @@ package uk.ac.warwick.dcs.contracts;
 
 import java.util.Arrays;
 import java.util.Iterator;
+
+import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.contracts.exceptions.NoValueExistsException;
 import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
+import uk.ac.warwick.dcs.contracts.timings.Group;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
@@ -38,11 +42,36 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
      */
     public TrafficLight getTrafficLights() { return trafficLights; }
 
+    public TrafficLightType getTrafficLightType(){
+        return trafficLights.getTrafficLightType();
+    }
+
     /**
      * Getter for <code>Groups</code> object.
      * @return The contained <code>Groups</code> object.
      */
     public Groups getGroups() { return groups; }
+
+    public int getGroupTimingValue(int groupNum) throws NoValueExistsException {
+        try {
+            return groups.getGroupTimingValue(groupNum);
+        } catch (Exception e) {
+            if (e instanceof NoValueExistsException){
+                throw new NoValueExistsException(e.getMessage());
+            }
+            else{
+                throw new RuntimeException();
+            }
+        }
+    }
+
+    public double getCycleTime(){
+        return groups.getCycleTime();
+    }
+
+    public double getCycleLostTime(){
+        return groups.cycleLostTime();
+    }
 
 
 
@@ -70,7 +99,6 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
     public int getNumberOfGroups() {
         return groups.getNumGroups();
     }
-
 
     /**
      * Getter for total number of incoming lanes across all carriageways.
@@ -130,6 +158,10 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
     public int getNumLanes(Direction direction) {
         Carriageway cw = getCarriageway(direction);
         return cw.getNumIncomingLanes() + cw.getNumOutgoingLanes();
+    }
+
+    public int getMaxGroupTimings(){
+        return groups.getMaxGroupTiming();
     }
 
     public boolean getOptimising(){

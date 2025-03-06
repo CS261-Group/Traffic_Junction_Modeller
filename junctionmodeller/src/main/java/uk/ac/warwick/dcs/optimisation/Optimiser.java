@@ -1,61 +1,25 @@
 package uk.ac.warwick.dcs.optimisation;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
-import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
+import uk.ac.warwick.dcs.evaluation.Evaluator;
+import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
+import uk.ac.warwick.dcs.optimisation.localsearch.EvaluationFunction;
+import uk.ac.warwick.dcs.optimisation.noniterative.FixedCycleAndGreenTimeInitialiser;
 
-import java.util.Arrays;
+public abstract class Optimiser {
+    protected final int ITERATIONS = 100;
+    protected final JunctionConfiguration junctionConfig;
+    protected final JunctionData junctionData;
+    protected final EvaluationFunction evaluationFunction;
 
-public class Optimiser {
-    private final JunctionConfiguration junctionConfig;
-    private ActuatedTimingsOptimiser actuatedTimingsOptimiser;
-    private FixedTimingsOptimiser fixedTimingsOptimiser;
-
-    public Optimiser(JunctionConfiguration junctionConfig) {
+    public Optimiser(JunctionConfiguration junctionConfig, JunctionData junctionData, Evaluator evaluation) {
         this.junctionConfig = junctionConfig;
-        this.actuatedTimingsOptimiser = new ActuatedTimingsOptimiser();
-        this.fixedTimingsOptimiser = new FixedTimingsOptimiser();
+        this.junctionData = junctionData;
 
-        //initialise values
+        // create evaluation function
+        this.evaluationFunction = new EvaluationFunction(evaluation);
     }
 
-    // cycle optimiser is a one time use thing
-    public void initialiseCycleTime(){
-        var cycleTimeOptimiser = new CycleTimeOptimiser();
-        //cycleTimeOptimiser.getCycleTime();
-    }
+    public abstract void optimiseAll();
 
-    public int[] getMaxGroupTimings(TrafficLightType trafficLightType) {
-        if (trafficLightType == TrafficLightType.ACTUATION) {
-            return actuatedTimingsOptimiser.getMaxGroupTimings();
-        } else if (trafficLightType == TrafficLightType.FIXEDCYCLE) {
-            return fixedTimingsOptimiser.getMaxGroupTimings();
-        }
-        return new int[0]; //if lights r invalid, shouldn't ever really get to this 
-    }
-
-
-    public int[] getMinGroupTimings(TrafficLightType trafficLightType) {
-        if (trafficLightType == TrafficLightType.ACTUATION) {
-            return actuatedTimingsOptimiser.getMinGroupTimings();
-        }
-        return new int[0]; 
-    }
-
-    public double getCycleTime() {
-//      return cycleTimeOptimiser.getCycleTime();
-        return 0.0D;
-    }
-
-    public void optimiseTrafficLights() {
-        TrafficLightType trafficLightType = TrafficLightType.ACTUATION;
-        int[] maxTimings = getMaxGroupTimings(trafficLightType);
-        int[] minTimings = getMinGroupTimings(trafficLightType);
-        double cycleTime = getCycleTime();
-
-   // this is just for debugging, dont acc need this in the end  
-        System.out.println("Optimising traffic lights of type: " + trafficLightType);
-        System.out.println("Max Timings: " + Arrays.toString(maxTimings));
-        System.out.println("Min Timings: " + Arrays.toString(minTimings));
-        System.out.println("Cycle Time: " + cycleTime);
-    }
 }

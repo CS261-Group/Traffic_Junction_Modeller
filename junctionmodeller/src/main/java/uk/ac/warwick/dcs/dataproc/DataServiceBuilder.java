@@ -1,6 +1,6 @@
 package uk.ac.warwick.dcs.dataproc;
 
-import uk.ac.warwick.dcs.dataproc.validation.*;
+import uk.ac.warwick.dcs.dataproc.validation.ValidatorFactory;
 import uk.ac.warwick.dcs.model.IModelContainer;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.visualisation.VisualisationFactoryBuilder;
@@ -18,15 +18,16 @@ public class DataServiceBuilder {
      * Singleton for form loader to be injected into data service.
      */
     private static ILoaderService<ConfigurationData> formLoaderService = null;
-
+    private static ILoaderService<String> fileLoaderService = null;
+    private static ISaverService fileSaverService = null;
     /**
      *
      * @param modelContainer Model container for service to use.
      * @return Singleton instance of data service.
      */
     public static IDataService buildService(IModelContainer modelContainer) {
-        return new DataService(ValidatorFactory.getJunctionValidator(), modelContainer,
-                getFormLoaderService(), VisualisationFactoryBuilder.getVisualisationFactory());
+        return new DataService(ValidatorFactory.getJunctionValidator(),ValidatorFactory.getConfigNameValidator(), modelContainer,
+                getFormLoaderService(),getFileLoaderService(),getFileSaverService(), VisualisationFactoryBuilder.getVisualisationFactory());
     }
 
     /**
@@ -39,4 +40,22 @@ public class DataServiceBuilder {
         }
         return formLoaderService;
     }
+    /**
+     *
+     * @return Singleton instance of file loader service.
+     */
+    static ILoaderService<String> getFileLoaderService() {
+        if (fileLoaderService == null) {
+            fileLoaderService = new FileLoaderService();
+        }
+        return fileLoaderService;
+    }
+    
+    static ISaverService getFileSaverService(){
+        if(fileSaverService == null){
+            fileSaverService = new FileSaverService();
+        }
+        return fileSaverService;
+    }
+
 }

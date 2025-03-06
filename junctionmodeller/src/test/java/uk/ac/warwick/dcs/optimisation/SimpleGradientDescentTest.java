@@ -1,8 +1,9 @@
 package uk.ac.warwick.dcs.optimisation;
 
 import org.ejml.simple.SimpleMatrix;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import uk.ac.warwick.dcs.optimisation.gradientdescent.GradientDescent;
+import uk.ac.warwick.dcs.optimisation.gradientdescent.IGradientFunction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,7 +46,7 @@ class SimpleGradientDescentTest {
 
 // F = x^2 + 2y^2
 // Del F = [2x + 2y^2, x^2 + 4y]
-class SimpleGradientFunction implements IGradientFunction{
+class SimpleGradientFunction implements IGradientFunction {
 
     public SimpleGradientFunction(){}
 

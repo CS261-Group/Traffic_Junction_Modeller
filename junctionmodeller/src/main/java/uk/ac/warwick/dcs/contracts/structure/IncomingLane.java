@@ -22,6 +22,7 @@ public class IncomingLane extends Lane {
      *         permits. If <code>CAR</code> type is permitted, <code>BUS</code>
      *         (and <code>CYCLE</code>) vehicle types are also permitted.
      */
+    @Deprecated
     public VehicleType getVehicleType() {
         return vehicleType;
     }

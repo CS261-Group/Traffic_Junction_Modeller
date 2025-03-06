@@ -1,8 +1,10 @@
-package uk.ac.warwick.dcs.evaluation.junctionmetrics;
+package uk.ac.warwick.dcs.evaluation.junctiondata;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidLaneNumberException;
+import uk.ac.warwick.dcs.contracts.exceptions.NoValueExistsException;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.contracts.timings.Group;
@@ -11,10 +13,15 @@ import uk.ac.warwick.dcs.contracts.timings.Groups;
 
 import java.util.Iterator;
 
-public class JunctionData {
+public class LaneDataBuilder {
 
-    public JunctionConfiguration junctionConfig;
-
+    public static LaneData createLaneData(IncomingLane lane, Carriageway carriageway){
+        return new LaneData(lane.getDirection(),
+                carriageway.getIncomingLaneNum(lane),
+                getLaneSaturationFlow(carriageway, lane),
+                getLaneArrivalFlow(carriageway)
+        );
+    }
     /**
      * Splits incoming flow equally among all lanes
      * @param carriageway carriageway containing lanes
@@ -39,7 +46,7 @@ public class JunctionData {
      * @return The direction of the right turn from the input direction
      */
     public static Direction rightOf(Direction dir){
-        return Direction.values()[(dir.ordinal() - 1) % 4];
+        return Direction.values()[(dir.ordinal() + 3) % 4];
     }
 
     /**
@@ -85,9 +92,11 @@ public class JunctionData {
     }
 
     public static int getLaneGreenTime(IncomingLane lane, Groups groups){
-        return groups.getLaneTiming(lane);
+        try{
+            return groups.getLaneTiming(lane);
+        } // no lane timing exists
+        catch (NoValueExistsException e) {
+            return 0;
+        }
     }
-
-    public static double
-
 }

@@ -16,8 +16,10 @@ import javax.swing.JScrollPane;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.dataproc.IDataService;
+import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.ui.formdata.DirectionData;
+import uk.ac.warwick.dcs.ui.formdata.SubmissionInputData;
 import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.panels.*;
@@ -25,6 +27,13 @@ import uk.ac.warwick.dcs.ui.panels.*;
 /**
  * Main entrypoint object for program. Contains all the form data.
  */
+
+
+//TODO
+//a) Lane directions wonky UI
+
+
+
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
     private static final int MINIMUM_FONT_SIZE = 14;
@@ -43,6 +52,7 @@ public class MainForm extends JFrame {
     private SubmissionPanel submissionPanel;
     private LoadingPanel loadingPanel;
     private ErrorsPanel errorsPanel;
+    private HistoryPanel historyPanel;
 
     // data service to submit data to next layer
     private final IDataService dataService;
@@ -61,15 +71,14 @@ public class MainForm extends JFrame {
 
     private void setUp() {
         setTitle("Traffic Junction Configuration");
-        setSize(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
-        setResizable(true);
+        setSize(Constants.WINDOW_WIDTH+100, Constants.WINDOW_HEIGHT-100);
+        setResizable(false);
         setFont(labelFont);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-
+        mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
         // Traffic Lights Section
         trafficLightPanel = new TrafficLightPanel(headingFont, labelFont);
 
@@ -91,6 +100,9 @@ public class MainForm extends JFrame {
         // Error section
         errorsPanel = new ErrorsPanel(headingFont, labelFont);
 
+        //History / Metrics Section
+        historyPanel = new HistoryPanel(headingFont, labelFont);
+
         // add panels and create window
         mainPanel.add(northboundPanel);
         mainPanel.add(eastboundPanel);
@@ -100,13 +112,43 @@ public class MainForm extends JFrame {
         mainPanel.add(submissionPanel);
         mainPanel.add(loadingPanel);
         mainPanel.add(errorsPanel);
+        mainPanel.add(historyPanel);
 
         // construct window by adding singular main panel to
         // scrollable pane
         JScrollPane formContainer = new JScrollPane(mainPanel);
         formContainer.getVerticalScrollBar().setUnitIncrement(16);
         add(formContainer, BorderLayout.CENTER);
-        setVisible(true);
+    }
+
+    /**
+     * We need this method for testing (package private access to
+     * changing errors).
+     * @param errors The errors to set.
+     */
+    void setErrors(List<String> errors) {
+        errorsPanel.setErrors(errors);
+    }
+
+    /**
+     * Package private so we can test it.
+     * @return The configuration data aggregated from the form.
+     */
+    ConfigurationData getConfigDataFromForm() {
+        // assemble required data
+        DirectionData[] directionData = Arrays.stream(new DirectionPanel[]{
+                northboundPanel, eastboundPanel, southboundPanel, westboundPanel
+        }).map(DirectionPanel::getValue).toArray(DirectionData[]::new);
+
+        TrafficLightData trafficLightData = trafficLightPanel.getValue();
+
+        SubmissionInputData submissionInputData = submissionPanel.getValue();
+        boolean showVisualisation = submissionInputData.checkBox();
+        // TODO: should be part of submissionPanel.getValue()
+        String configName = submissionInputData.configName();
+
+
+        return new ConfigurationData(configName, directionData, trafficLightData, showVisualisation);
     }
 
     /**
@@ -116,25 +158,14 @@ public class MainForm extends JFrame {
      */
     private void onSubmit() {
         // assemble required data
-        DirectionData[] directionData = Arrays.stream(new DirectionPanel[]{
-                northboundPanel, eastboundPanel, southboundPanel, westboundPanel
-        }).map(DirectionPanel::getValue).toArray(DirectionData[]::new);
-
-        TrafficLightData trafficLightData = trafficLightPanel.getValue();
-
-        // read config name from panel
-        boolean showVisualisation = submissionPanel.getValue();
-        // TODO: should be part of submissionPanel.getValue()
-        String configName = submissionPanel.getConfigurationName();
-
-        ConfigurationData configData = new ConfigurationData(configName, directionData, trafficLightData, showVisualisation);
+        ConfigurationData configData = getConfigDataFromForm();
 
         // submit configuration collected from form through data service
         List<String> errors = dataService.submitEnteredConfiguration(configData);
         assert errors != null;
-
+        
         // update errors in UI
-        errorsPanel.setErrors(errors);
+        setErrors(errors);
     }
 
     private void onLoad(){
@@ -149,11 +180,20 @@ public class MainForm extends JFrame {
             fileChooser.setFileHidingEnabled(false);
             File selectedFile = fileChooser.getSelectedFile();
             // TODO: get showVisualisation instead of hard-coding false
-            boolean showVisualisation = submissionPanel.getValue();
+            boolean showVisualisation = submissionPanel.getValue().checkBox();
             List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath(), showVisualisation);
 
             // update errors in UI
-            errorsPanel.setErrors(errors);
+            setErrors(errors);
         }
+    }
+  
+    /**
+     * Adds a row to the metrics history table
+     * @param modelName Name of the model
+     * @param metrics metrics to display
+     */
+    public void addMetricToHistory(String modelName, JunctionMetrics metrics){
+        historyPanel.addRow(modelName, metrics.getAverageDelay(), metrics.getAverageQueue(), metrics.getMaxQueue());
     }
 }

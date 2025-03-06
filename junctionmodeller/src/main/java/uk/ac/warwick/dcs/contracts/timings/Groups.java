@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.contracts.timings;
 
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
+import uk.ac.warwick.dcs.contracts.exceptions.NoValueExistsException;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
 
@@ -30,9 +31,11 @@ public class Groups implements Iterable<Group> {
      */
     public static final int MIN_NUM_GROUPS = 2;
 
-    // time between amber in one group to green in another
-    // TODO: source???
-    private static final double TRANSITION_TIME = 2.5;
+    /**
+     * also called intergreen time. See:
+     * <a href="https://www.sciencedirect.com/science/article/pii/B9780128153024000030">Chow and Ampountolas</a>
+     */
+    private static final double TRANSITION_TIME = 7.5;
 
     // 0 when being optimised
     private int cycleTime;
@@ -62,6 +65,9 @@ public class Groups implements Iterable<Group> {
 
     }
 
+    public int getMaxGroupTiming(){
+        return GroupTiming.MAX_GROUP_TIMING;
+    }
 
     private void setCycleTime(){
         int sumTimings = 0;
@@ -70,8 +76,17 @@ public class Groups implements Iterable<Group> {
             sumTimings += timing.getTiming();
         }
 
-        cycleTime = sumTimings + (int) TRANSITION_TIME * numGroups;
+        cycleTime = (int) (sumTimings + this.cycleLostTime());
     }
+
+    public double getCycleTime(){
+        return cycleTime;
+    }
+
+    public double cycleLostTime(){
+        return TRANSITION_TIME * numGroups;
+    }
+
 
     /**
      * @return The number of traffic light groups in the configuration.
@@ -87,31 +102,52 @@ public class Groups implements Iterable<Group> {
 
     /**
      * @param lane Input lane
-     * @return The timing of a lane, or 0 if no such lane.
+     * @return The timing of a lane.
+     * @throws NoValueExistsException No such timing exists
      */
-    public int getLaneTiming(IncomingLane lane){
+    public int getLaneTiming(IncomingLane lane) throws NoValueExistsException{
         for (Group group : this) {
             if (group.containsLane(lane)) {
                 return getGroupTiming(group.getGroupNum()).getTiming();
             }
         }
 
-        return 0;
+        throw new NoValueExistsException("GroupTimings");
     }
 
     /**
      * @param groupNum Group number
      * @return The GroupTiming object corresponding to the group number.
+     * @throws NoValueExistsException No such timing exists
      */
-    public GroupTiming getGroupTiming(int groupNum){
+    public GroupTiming getGroupTiming(int groupNum) throws NoValueExistsException{
         for(GroupTiming groupTiming : this.timings){
             if (groupTiming.getGroupNum() == groupNum) {
                 return groupTiming;
             }
         }
-
-        return null;
+        throw new NoValueExistsException("GroupTimings");
     }
+
+    /**
+     * @param groupNum Group number
+     * @return The GroupTiming timing value corresponding to the group number.
+     * Or zero if none exists
+     * @throws NoValueExistsException No such timing exists
+     */
+    public int getGroupTimingValue(int groupNum) throws NoValueExistsException, InvalidGroupNumberException {
+        try {
+            for (GroupTiming groupTiming : this.timings) {
+                if (groupTiming.getGroupNum() == groupNum) {
+                    return groupTiming.getTiming();
+                }
+            }
+        } catch(NullPointerException e) {
+            throw new NoValueExistsException("GroupTimings");
+        }
+        throw new InvalidGroupNumberException(groupNum, numGroups);
+    }
+
 
     @Override
     public Iterator<Group> iterator() {

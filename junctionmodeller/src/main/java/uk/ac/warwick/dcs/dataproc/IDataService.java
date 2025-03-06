@@ -28,4 +28,11 @@ public interface IDataService {
      *         which the format of the entered data.
      */
     List<String> submitFileConfiguration(String filePath, boolean showVisualisation);
+
+    /**
+     *
+     * @param configName The name of the junction configuration to delete.
+     * @return True if successfully deleted, false otherwise.
+     */
+    boolean deleteConfiguration(String configName);
 }

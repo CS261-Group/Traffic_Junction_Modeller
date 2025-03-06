@@ -107,4 +107,8 @@ public abstract class LaneMetricCalculator {
         return s * g / c;
     }
 
+    public double capacity(double q, double x){
+        return q / x;
+    }
+
 }

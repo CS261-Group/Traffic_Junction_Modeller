@@ -16,4 +16,6 @@ public interface IDiagnosticFactory {
     String createInvalidNumGroupsMessage(int numGroups);
     String createGroupNumbersNotSeparateMessage(int groupNum);
     String createInvalidLaneAssignmentMessage();
+    String createEmptyConfigNameMessage();
+    String createConfigNameClashMessage(String configName);
 }

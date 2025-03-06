@@ -1,44 +1,173 @@
 package uk.ac.warwick.dcs.visualisation;
 
-/*
- * REMEMBER TO TALK ABOUT THIS IN THE DESIGN DOC:
- * 
- * Decided against FXGL in favour of Swing because FXGL was too powerful.
- * Swing is in-built and actually has all I need 
+import javafx.application.Application;
+import javafx.event.Event;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import uk.ac.warwick.dcs.dataproc.IDataService;
+import uk.ac.warwick.dcs.model.messaging.EvaluationUpdate;
+import uk.ac.warwick.dcs.ui.MainForm;
+import uk.ac.warwick.dcs.visualisation.buttons.ConfigButton;
+import uk.ac.warwick.dcs.visualisation.buttons.DeleteButton;
+import uk.ac.warwick.dcs.visualisation.buttons.InfoButton;
+import uk.ac.warwick.dcs.visualisation.buttons.TabsButton;
+import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationDeletedSubscriber;
+import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationSubscriber;
+import uk.ac.warwick.dcs.visualisation.menus.InfoMenu;
+import uk.ac.warwick.dcs.visualisation.menus.ConfigMenu;
+import uk.ac.warwick.dcs.visualisation.menus.TabsMenu;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Main wrapping window for every
  */
+public class Visualiser extends Application implements IModelVisualisationDeletedSubscriber {
+    /**
+     * Singleton instance to allow <code>VisualisationFactory</code> to access
+     * the single instance.
+     */
+    private static Visualiser instance;
 
-import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
+    /**
+     * Window title.
+     */
+    private static final String WINDOW_TITLE = "Junction Visualiser";
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+    private StackPane root;
+    private VisualisationTogglePane toggleSlot; // Holds the active pane
+    private List<ModelVisualisation> modelVisualisations;
 
-public class Visualiser implements IModelVisualisation {
-    private static final int screenSizeX = 400;
-    private static final int screenSizeY = 400;
+    // popup menus
+    private TabsMenu tabsMenu;
+    private InfoMenu infoMenu;
+    private ConfigMenu configMenu;
 
-    public Visualiser(){
+    // observers of event that new model is added
+    private List<IModelVisualisationSubscriber> addSubscribers;
 
-    }
+    // main form for alerting
+    private static MainForm mainForm;
+    // data service for deleting
+    private static IDataService dataService;
 
-    public void Run(){
-        JFrame scr = new JFrame();
-
-        // configure window
-        scr.setTitle("Hello World");
-        scr.setSize(screenSizeX, screenSizeY);
-        scr.setVisible(true);
-        scr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        drawStatics();
-    }
-
-    private void drawStatics(){
-        JPanel background = new JPanel();
+    public Visualiser() {
+        super();
+        this.modelVisualisations = new ArrayList<>(8);
+        this.addSubscribers = new LinkedList<>();
     }
 
     @Override
-    public void notify(ModelUpdate update) {
-        System.out.println("NOTIFIED");
-        // TODO: implement
+    public void start(Stage stage) {
+        // for singleton, since launch()/start() creates its own
+        // internal instance -- I got this from ChatGPT
+        instance = this;
+
+        // create root pane
+        root = new StackPane();
+
+        // initialise and set up the toggling visualisation pane
+        toggleSlot = new VisualisationTogglePane(Constants.VISUALISER_WIDTH, Constants.VISUALISER_HEIGHT);
+
+        // this button needs to be before the tabs menu to be registered as a subscriber
+        // NOTE: the order here is important because an array is passed by reference
+        // so the update of the tabs menu needs to happen
+        DeleteButton deleteBtn = new DeleteButton(List.of(this, toggleSlot));
+
+        // popups available
+        tabsMenu = new TabsMenu(modelVisualisations, List.of(toggleSlot, deleteBtn));
+        infoMenu = new InfoMenu();
+        configMenu = new ConfigMenu();
+
+        // buttons available
+        ConfigButton configBtn = new ConfigButton(configMenu);
+        TabsButton tabsBtn = new TabsButton(tabsMenu);
+        InfoButton infoBtn = new InfoButton(infoMenu);
+
+        root.getChildren().addAll(toggleSlot, configBtn, infoBtn, tabsBtn, deleteBtn);
+
+        // set alignments of UI buttons
+        StackPane.setAlignment(configBtn, Pos.BOTTOM_RIGHT);
+        StackPane.setAlignment(infoBtn, Pos.TOP_RIGHT);
+        StackPane.setAlignment(tabsBtn, Pos.BOTTOM_LEFT);
+        StackPane.setAlignment(deleteBtn, Pos.TOP_LEFT);
+
+        // add subscribers
+        addSubscribers.add(tabsMenu);
+        addSubscribers.add(toggleSlot);
+
+        // create the root scene and stage sett
+        stage.setTitle(WINDOW_TITLE);
+        stage.setWidth(Constants.VISUALISER_WIDTH);
+        stage.setHeight(Constants.VISUALISER_HEIGHT);
+        stage.setOnCloseRequest(Event::consume); // don't close on close event
+        stage.setResizable(false);
+        stage.initStyle(StageStyle.DECORATED);
+        Scene rootScene = new Scene(root, Constants.VISUALISER_WIDTH, Constants.VISUALISER_HEIGHT);
+
+        stage.setScene(rootScene);
+        stage.show();
+    }
+
+    /**
+     * Launch the 'game', i.e., visualise the app.
+     */
+    public void run(String[] args, MainForm mainForm, IDataService dataService) {
+        Visualiser.mainForm = mainForm;
+        Visualiser.dataService = dataService;
+        Visualiser.launch(args);
+    }
+
+    /**
+     * Package private method for <code>VisualisationFactory</code>.
+     * @param modelVisualisation Model visualisation to add to displayed models.
+     */
+    public void addModelVisualisation(ModelVisualisation modelVisualisation) {
+        modelVisualisations.add(modelVisualisation);
+
+        // update components requiring update
+        for (IModelVisualisationSubscriber subscriber : addSubscribers) {
+            subscriber.notifyAdd(modelVisualisation);
+        }
+    }
+
+    /**
+     * The
+     * @param modelUpdate The update object.
+     */
+    public void notifyUpdate(String configName, EvaluationUpdate modelUpdate) {
+        mainForm.addMetricToHistory(configName, modelUpdate.getMetrics());
+    }
+
+    /**
+     *
+     * @return Singleton instance of <code>Visualiser</code>.
+     */
+    public static Visualiser getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Visualiser must be created before getInstance() called");
+        }
+        return instance;
+    }
+
+    @Override
+    public ModelVisualisation notifyDeleted(ModelVisualisation deletedVisualisation) {
+        modelVisualisations.remove(deletedVisualisation);
+        dataService.deleteConfiguration(deletedVisualisation.getModelName());
+        tabsMenu.updateMenu();
+
+        if (!modelVisualisations.isEmpty()) {
+            // return first existing visualisation (if there are others)
+            return modelVisualisations.get(0);
+        } else {
+            // if no other visualisation exists, return null
+            return null;
+        }
     }
 }

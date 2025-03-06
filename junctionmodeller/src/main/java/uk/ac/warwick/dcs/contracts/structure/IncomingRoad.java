@@ -33,6 +33,10 @@ public class IncomingRoad extends Road<IncomingLane>{
         return lanes.get(laneNum - 1); // -1 corrected for index
     }
 
+    public int getNumOf(IncomingLane lane){
+        return lanes.indexOf(lane);
+    }
+
     /**
      *
      * @return The incoming flow from the incoming road into the junction.
@@ -54,4 +58,16 @@ public class IncomingRoad extends Road<IncomingLane>{
         }
         return outgoingFlows[direction.ordinal()];
     }
+
+    public double getMaxFlowRatio(){
+        int maxOutgoingFlow = 0;
+        for (int i = 0; i < 4; i++){
+            if (outgoingFlows[i] > maxOutgoingFlow) {
+                maxOutgoingFlow = outgoingFlows[i];
+            }
+        }
+
+        return (double) incomingFlow / maxOutgoingFlow;
+    }
+
 }

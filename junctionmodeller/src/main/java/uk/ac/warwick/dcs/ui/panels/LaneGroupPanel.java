@@ -1,16 +1,18 @@
 package uk.ac.warwick.dcs.ui.panels;
 
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.Constants;
 import uk.ac.warwick.dcs.ui.formdata.LaneGroup;
 import uk.ac.warwick.dcs.ui.formdata.LaneGroups;
 import uk.ac.warwick.dcs.ui.interfaces.ILaneChangedSubscriber;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Panel used to store data about which lanes are in which traffic light groups.

@@ -5,6 +5,7 @@ import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.model.IModelContainer;
 import uk.ac.warwick.dcs.model.ModelContainerBuilder;
 import uk.ac.warwick.dcs.ui.MainForm;
+import uk.ac.warwick.dcs.visualisation.Visualiser;
 
 /**
  * Entrypoint for program.
@@ -18,5 +19,10 @@ public class App {
         // making the frame visible
         MainForm form = new MainForm(dataService);
         form.setVisible(true);
+
+        // making the visualiser visible
+        // Run JavaFX code on the correct thread
+        Visualiser visualiser = new Visualiser();
+        visualiser.run(args, form, dataService);
     }
 }

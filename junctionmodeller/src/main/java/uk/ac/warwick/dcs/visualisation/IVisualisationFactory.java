@@ -11,5 +11,5 @@ public interface IVisualisationFactory {
      * @param config The junction configuration to generate.
      * @return A model visualisation that can be notified by the model for updates.
      */
-    IModelVisualisation createVisualisation(String configName, JunctionConfiguration config);
+    ModelVisualisation createVisualisation(String configName, JunctionConfiguration config);
 }

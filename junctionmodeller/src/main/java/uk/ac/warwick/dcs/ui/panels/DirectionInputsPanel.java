@@ -53,14 +53,15 @@ public class DirectionInputsPanel extends CustomPanel implements IReadablePanel<
         add(numOutLanesLbl);
         add(outLanesComboBox);
 
-        pedestrianCrossing = new JCheckBox("Pedestrian crossing");
-        pedestrianCrossing.setFont(labelFont);
-
-        add(pedestrianCrossing);
+        // NOTE: pedestrian crossings are a removed requirement
+//        pedestrianCrossing = new JCheckBox("Pedestrian crossing");
+//        pedestrianCrossing.setFont(labelFont);
+//
+//        add(pedestrianCrossing);
     }
 
     @Override
     public DirectionInputData getValue() {
-        return new DirectionInputData(/*busLane.isSelected(), */pedestrianCrossing.isSelected(), outLanesComboBox.getValue());
+        return new DirectionInputData(/*busLane.isSelected(), pedestrianCrossing.isSelected(), */outLanesComboBox.getValue());
     }
 }

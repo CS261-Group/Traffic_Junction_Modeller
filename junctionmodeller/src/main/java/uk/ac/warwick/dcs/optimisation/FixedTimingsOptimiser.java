@@ -1,35 +1,37 @@
 package uk.ac.warwick.dcs.optimisation;
 
 
-public class FixedTimingsOptimiser implements ITrafficLightTimingsOptimiser {
+import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
+import uk.ac.warwick.dcs.evaluation.Evaluator;
+import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
+import uk.ac.warwick.dcs.optimisation.localsearch.FixedLightsTimingSearchSpace;
+import uk.ac.warwick.dcs.optimisation.localsearch.HillClimb;
+import uk.ac.warwick.dcs.optimisation.noniterative.FixedCycleAndGreenTimeInitialiser;
 
+public class FixedTimingsOptimiser extends Optimiser {
+    HillClimb<FixedLightsTimingSearchSpace> localSearch;
 
-    private static final int[] CAR_FLOW_VPH = {};  // flow in each direction
+    public FixedTimingsOptimiser(JunctionConfiguration junctionConfig, JunctionData junctionData, Evaluator evaluation){
+        super(junctionConfig, junctionData, evaluation);
+
+        // junctions being optimised need initial data
+        new FixedCycleAndGreenTimeInitialiser(junctionData, junctionConfig.getCycleLostTime());
+
+        FixedLightsTimingSearchSpace searchSpace = new FixedLightsTimingSearchSpace(junctionConfig.getNumberOfGroups());
+        localSearch = new HillClimb<>(junctionData, evaluationFunction, searchSpace);
+    }
 
     @Override
-    public int[] getMaxGroupTimings() {
-     
-        float[] initialTimings = {};  // needs initial timing here
-        
-        // Create the gradient function with the known car flow for each direction
-        TrafficLightObjectiveFunction gradientFunction = new TrafficLightObjectiveFunction(CAR_FLOW_VPH);
-        
-        // Use descent to optimise the timings
-        GradientDescent<TrafficLightObjectiveFunction> optimiser = 
-            new GradientDescent<>(initialTimings, gradientFunction);
-        
-        // run the optimisation process
-        optimiser.stepThrough();
-        
-        // Get the optimised timings (in seconds)
-        float[] optimalTimings = optimiser.getStateValues();
-        
-        // convert the timings to integers and return
-        int[] optimalIntTimings = new int[optimalTimings.length];
-        for (int i = 0; i < optimalTimings.length; i++) {
-            optimalIntTimings[i] = Math.round(optimalTimings[i]);
-        }
-        
-        return optimalIntTimings;
+    public void optimiseAll() {
+        this.greenTimings();
     }
+
+    public void greenTimings(){
+        for (int t = 0; t < ITERATIONS; t++) {
+            if (!localSearch.makeStep()) {
+                return;
+            }
+        }
+    }
+
 }

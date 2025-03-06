@@ -37,6 +37,7 @@ public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<Gro
         add(groupTimingsHeading);
 
         optimiseCheckbox = new JCheckBox("Optimise signal timings");
+        optimiseCheckbox.setFont(labelFont);
         optimiseCheckbox.addItemListener(e -> {
             // if we check the checkbox, we don't want to specify signal timings
             if (e.getStateChange() == ItemEvent.SELECTED) {
