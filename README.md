@@ -2,7 +2,7 @@
 
 A project for CS261 - Software Engineering where we model a single traffic junction.
 
-# Prerequisites
+## Prerequisites
 
 This is a list of prerequisite software (that might need to be downloaded) for the project. It is important that everyone uses the same kit to ensure that we don't get errors when we attempt to integrate changes made in different versions of development tools.
 
@@ -28,7 +28,35 @@ mvn dependency:resolve
 
 This will resolve dependencies without compiling.
 
-# Useful Links
+## How to build
+
+*Refer to [Maven in 5 minutes](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html) for more details.*
+
+To compile the project, run:
+```
+mvn package
+```
+
+Note that this will run all stages, including tests. If you want to ignore tests (maybe you know it fails but want to see what happens anyway), then you can instead run:
+
+```
+mvn -DskipTests=true package
+```
+
+## How to run
+
+Building (successfully) will generate jars in `junctionmodeller/target/...`. 
+Your build message will contain the full path of your built jar file. 
+
+To run your jar file, run:
+
+```
+java -cp target/YOUR_JAR_FILE uk.ac.warwick.dcs.junctionmodeller.App
+```
+
+This is because `App.java` is the entrypoint of our program. 
+
+## Useful Links
 
 If a certain link is useful for you, please add it to this list before committing.
 
