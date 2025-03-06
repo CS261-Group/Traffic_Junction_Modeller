@@ -11,6 +11,7 @@ import uk.ac.warwick.dcs.evaluation.lanemetrics.LaneMetrics;
 import uk.ac.warwick.dcs.evaluation.lanemetrics.LaneMetricCalculator;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * JunctionMetrics object is created everytime a junction is evaluated
@@ -26,42 +27,44 @@ public class JunctionMetrics implements IJunctionMetrics {
     private double maxQueue;  // maximum of queue length averages
     private double avgQueue;  // avg of queue length averages
 
-    // must be an instance so the class can be threadable
-    private final LaneMetricCalculator calculator;
-
-    public JunctionMetrics(TrafficLightType type, JunctionData data){
-        // create a calculator
-        if (type == TrafficLightType.ACTUATION) {
-            calculator = new ActuatedLaneMetricCalculator();
-        } else {
-            calculator = new FixedtimeLaneMetricCalculator();
-        }
-
+    // fixed traffic light case
+    public JunctionMetrics(FixedtimeLaneMetricCalculator calculator, JunctionData junctionData){
         //create lane metrics (evaluate each lane)
         ArrayList<LaneMetrics> laneMetricsList = new ArrayList<>();
 
-        if (type == TrafficLightType.ACTUATION) {
-            for (GroupData group : data) {
-                group.setGreenTimeAndDegOfSat(data.getCycleTime());
+        for (Iterator<GroupData> data = junctionData.iteratorF(); data.hasNext(); ) {
+            GroupData group = data.next();
 
-                for (LaneData lane : group) {
-                    laneMetricsList.add(new LaneMetrics(calculator,
-                            lane.getSaturationFlow(),
-                            data.getCycleTime(),
-                            lane.getArrivalFlow(),
-                            group.getGreenTime(),
-                            group.getDegOfSaturation()));
-                }
+            for (LaneData lane : group){
+                laneMetricsList.add(new LaneMetrics(calculator,
+                        lane.getSaturationFlow(),
+                        junctionData.getCycleTime(),
+                        lane.getArrivalFlow(),
+                        group.getGreenTime()));
             }
-        } else {
-            for (GroupData group : data){
-                for (LaneData lane : group){
-                    laneMetricsList.add(new LaneMetrics(calculator,
-                            lane.getSaturationFlow(),
-                            data.getCycleTime(),
-                            lane.getArrivalFlow(),
-                            group.getGreenTime()));
-                }
+        }
+
+        // aggregate metrics
+        updateDelayMetrics(laneMetricsList);
+        updateQueueMetrics(laneMetricsList);
+    }
+
+    // actuated traffic light case
+    public JunctionMetrics(ActuatedLaneMetricCalculator calculator, JunctionData junctionData){
+        //create lane metrics (evaluate each lane)
+        ArrayList<LaneMetrics> laneMetricsList = new ArrayList<>();
+
+        for (Iterator<ActuatedGroupData> data = junctionData.iteratorA(); data.hasNext(); ) {
+            ActuatedGroupData group = data.next();
+            group.setGreenTimeAndDegOfSat(junctionData.getCycleTime());
+
+            for (LaneData lane : group) {
+                laneMetricsList.add(new LaneMetrics(calculator,
+                        lane.getSaturationFlow(),
+                        junctionData.getCycleTime(),
+                        lane.getArrivalFlow(),
+                        group.getGreenTime(),
+                        group.getDegOfSaturation()));
             }
         }
 

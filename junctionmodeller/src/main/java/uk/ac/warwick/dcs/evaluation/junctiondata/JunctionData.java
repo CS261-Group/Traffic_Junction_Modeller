@@ -9,47 +9,65 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class JunctionData<G extends GroupData> implements Iterable<GroupData>{
+public class JunctionData {
     // max cycle time constant (for use in actuated signals)
     double cycleTime;
-    private final ArrayList<G> groupData;
+    private final TrafficLightType type;
+    private ArrayList<GroupData> groupDataF;
+    private ArrayList<ActuatedGroupData> groupDataA;
 
     public JunctionData(JunctionConfiguration junctionConfiguration) {
         cycleTime = junctionConfiguration.getCycleTime(); // should be 0 when optimising
-
-
-        groupData = new ArrayList<G>(junctionConfiguration.getNumberOfGroups());
+        type = junctionConfiguration.getTrafficLightType();
         GroupDataBuilder groupBuilder = new GroupDataBuilder(junctionConfiguration);
 
-        if (junctionConfiguration.getTrafficLightType() == TrafficLightType.FIXEDCYCLE){
+        if (type == TrafficLightType.FIXEDCYCLE){
+            groupDataF = new ArrayList<>(junctionConfiguration.getNumberOfGroups());
             for (Group group : junctionConfiguration.getGroups()) {
                 //create group data
-                groupData.add((G) groupBuilder.buildGroupData(group));
+                groupDataF.add(groupBuilder.buildGroupData(group));
             }
-        } else {
+        }
+        else{
+            groupDataA = new ArrayList<>(junctionConfiguration.getNumberOfGroups());
             for (Group group : junctionConfiguration.getGroups()) {
                 //create group data
-                groupData.add((G) groupBuilder.buildActuatedGroupData(group));
+                groupDataA.add(groupBuilder.buildActuatedGroupData(group));
             }
         }
     }
 
-    @Override
-    public Iterator<G> iterator() {
-        return groupData.iterator();
+    public Iterator<GroupData> iteratorF() {
+        return groupDataF.iterator();
+    }
+
+    public Iterator<ActuatedGroupData> iteratorA() {
+        return groupDataA.iterator();
     }
 
     public int getNumGroups(){
-        return groupData.size();
+        if (type == TrafficLightType.FIXEDCYCLE){
+            return groupDataF.size();
+        } else {
+            return groupDataA.size();
+        }
     }
 
     // index does not have to == group num
     public double getGroupGreenTime(int groupIndex){
-        return groupData.get(groupIndex).getGreenTime();
+        if (type == TrafficLightType.FIXEDCYCLE){
+            return groupDataF.get(groupIndex).getGreenTime();
+        } else {
+            return groupDataA.get(groupIndex).getGreenTime();
+        }
     }
 
     public void modifyGroupTiming(int groupIndex, double changeBy){
-        groupData.get(groupIndex).modifyTiming(changeBy);
+        if (type == TrafficLightType.FIXEDCYCLE){
+            groupDataF.get(groupIndex).modifyTiming(changeBy);
+        } else {
+            groupDataA.get(groupIndex).modifyTiming(changeBy);
+        }
     }
 
     public double getCycleTime(){
@@ -57,12 +75,21 @@ public class JunctionData<G extends GroupData> implements Iterable<GroupData>{
     }
 
     public double[] getMaxFlowRatioForEachGroup(){
-        double[] flowRatios = new double[groupData.size()];
+        if (type == TrafficLightType.FIXEDCYCLE){
+            double[] flowRatios = new double[groupDataF.size()];
 
-        for (int i = 0; i < groupData.size(); i++){
-            flowRatios[i] = groupData.get(i).getMaxFlowRatio();
+            for (int i = 0; i < groupDataF.size(); i++){
+                flowRatios[i] = groupDataF.get(i).getMaxFlowRatio();
+            }
+            return flowRatios;
+        } else {
+            double[] flowRatios = new double[groupDataA.size()];
+
+            for (int i = 0; i < groupDataA.size(); i++){
+                flowRatios[i] = groupDataA.get(i).getMaxFlowRatio();
+            }
+            return flowRatios;
         }
-        return flowRatios;
     }
 
     public void setCycleTime(double cycleTime){
