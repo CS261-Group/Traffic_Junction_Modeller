@@ -27,4 +27,8 @@ public class ActuatedGroupData extends GroupData{
     public double getDegOfSaturation() {
         return targetDegOfSaturation;
     }
+
+    public double getExtensionHeadway() {
+        return extensionHeadway;
+    }
 }

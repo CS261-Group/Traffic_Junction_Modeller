@@ -7,9 +7,9 @@ import java.util.Iterator;
 
 // take junction data (fixed traffic light case)
 // and initilaise cycle and green time values (assume we are optimising)
-public class CycleAndGreenTimeInitialiser {
+public class FixedCycleAndGreenTimeInitialiser extends Initialiser{
 
-    public CycleAndGreenTimeInitialiser(JunctionData junctionData, double cycleLostTime){
+    public FixedCycleAndGreenTimeInitialiser(JunctionData junctionData, double cycleLostTime){
         CycleTimeOptimiser cycleTimeOptimiser = new CycleTimeOptimiser();
         GreenTimeEstimator greenTimeEstimator = new GreenTimeEstimator();
 
@@ -25,17 +25,6 @@ public class CycleAndGreenTimeInitialiser {
             double greenTime = greenTimeEstimator.greenTimeForGroup(optimalCycleTime, cycleLostTime, flowRatio, sumFlowRatios);
             group.setGreenTime(greenTime);
         }
-    }
-
-    /**
-     * y is an array of flow ratios, one for each group
-     */
-    public double getSumFlowRatios(double[] y){
-        double Y = 0;
-        for (int i = 0; i < y.length; i++){
-            Y += y[i];
-        }
-        return Y;
     }
 
 
