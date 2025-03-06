@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 public class JunctionData {
-    // max cycle time constant (for use in actuated signals)
+    public final double MIN_CYCLE_TIME = 30; // in seconds
     double cycleTime;
     private final TrafficLightType type;
     private ArrayList<GroupData> groupDataF;
@@ -90,6 +90,19 @@ public class JunctionData {
             }
             return flowRatios;
         }
+    }
+
+    //only for actuation traffic lights, returns 0 if called on fixed (not good)
+    public double getTotalMaxGreenTimes(){
+        if (type == TrafficLightType.ACTUATION) {
+            double maxGreenTimes = 0;
+            for (int i = 0; i < groupDataA.size(); i++){
+                maxGreenTimes += groupDataA.get(i).getMaxGreenTime();
+            }
+
+            return maxGreenTimes;
+        }
+        return 0;
     }
 
     public void setCycleTime(double cycleTime){

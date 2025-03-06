@@ -155,6 +155,10 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
         return cw.getNumIncomingLanes() + cw.getNumOutgoingLanes();
     }
 
+    public int getMaxGroupTimings(){
+        return groups.getMaxGroupTiming();
+    }
+
     public boolean getOptimising(){
         return groups.getOptimising();
     }
