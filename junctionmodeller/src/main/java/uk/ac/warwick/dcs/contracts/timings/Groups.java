@@ -98,7 +98,7 @@ public class Groups implements Iterable<Group> {
 
     /**
      * @param lane Input lane
-     * @return The timing of a lane, or 0 if no such lane.
+     * @return The timing of a lane.
      */
     public int getLaneTiming(IncomingLane lane){
         for (Group group : this) {

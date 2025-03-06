@@ -3,6 +3,8 @@ package uk.ac.warwick.dcs.evaluation.junctiondata;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidLaneNumberException;
+import uk.ac.warwick.dcs.contracts.exceptions.NoValueExistsException;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.contracts.timings.Group;
@@ -88,11 +90,5 @@ public class LaneDataBuilder {
             throw new RuntimeException(e);
         }
     }
-
-    public static int getLaneGreenTime(IncomingLane lane, Groups groups){
-        return groups.getLaneTiming(lane);
-    }
-
-//    public static double
 
 }
