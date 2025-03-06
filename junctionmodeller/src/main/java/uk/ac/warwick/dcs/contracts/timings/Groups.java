@@ -135,13 +135,17 @@ public class Groups implements Iterable<Group> {
      * Or zero if none exists
      * @throws NoValueExistsException No such timing exists
      */
-    public int getGroupTimingValue(int groupNum) throws NoValueExistsException {
-        for(GroupTiming groupTiming : this.timings){
-            if (groupTiming.getGroupNum() == groupNum) {
-                return groupTiming.getTiming();
+    public int getGroupTimingValue(int groupNum) throws NoValueExistsException, InvalidGroupNumberException {
+        try {
+            for (GroupTiming groupTiming : this.timings) {
+                if (groupTiming.getGroupNum() == groupNum) {
+                    return groupTiming.getTiming();
+                }
             }
+        } catch(NullPointerException e) {
+            throw new NoValueExistsException("GroupTimings");
         }
-        throw new NoValueExistsException("GroupTimings");
+        throw new InvalidGroupNumberException(groupNum, numGroups);
     }
 
 

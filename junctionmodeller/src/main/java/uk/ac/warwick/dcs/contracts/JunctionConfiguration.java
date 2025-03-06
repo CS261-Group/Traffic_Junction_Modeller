@@ -55,8 +55,13 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
     public int getGroupTimingValue(int groupNum) throws NoValueExistsException {
         try {
             return groups.getGroupTimingValue(groupNum);
-        } catch (NoValueExistsException e) {
-            throw new NoValueExistsException(e.getMessage());
+        } catch (Exception e) {
+            if (e instanceof NoValueExistsException){
+                throw new NoValueExistsException(e.getMessage());
+            }
+            else{
+                throw new RuntimeException();
+            }
         }
     }
 
