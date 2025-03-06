@@ -25,7 +25,7 @@ class IncomingLane extends Lane {
     // Arrow file names
     private final static String forwardArrowPath = "/forward-arrow.png";
     private final static String leftForwardArrowPath = "/forward-arrow.png";
-    private final static String leftRightForwardArrowPath = "/forward-arrow.png";
+    private final static String leftRightForwardArrowPath = "/arrows/left-right-forward.png";
     private final static String rightForwardArrowPath = "/forward-arrow.png";
     private final static String rightArrowPath = "/forward-arrow.png";
     private final static String leftArrowPath = "/forward-arrow.png";
