@@ -23,12 +23,12 @@ public class ActuatedTimingsOptimiser extends Optimiser {
     }
 
     @Override
-    public void optimiseAll() {
-        this.cycleTiming();
+    public void optimiseAll(int numIterations) {
+        this.cycleTiming(numIterations);
     }
 
-    public void cycleTiming() {
-        for (int t = 0; t < ITERATIONS; t++) {
+    public void cycleTiming(int numIterations) {
+        for (int t = 0; t < numIterations; t++) {
             if (!localSearch.makeStep()) {
                 return;
             }

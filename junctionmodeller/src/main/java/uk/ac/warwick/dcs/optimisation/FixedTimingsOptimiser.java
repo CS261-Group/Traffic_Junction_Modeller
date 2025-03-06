@@ -22,12 +22,12 @@ public class FixedTimingsOptimiser extends Optimiser {
     }
 
     @Override
-    public void optimiseAll() {
-        this.greenTimings();
+    public void optimiseAll(int numIterations) {
+        this.greenTimings(numIterations);
     }
 
-    public void greenTimings(){
-        for (int t = 0; t < ITERATIONS; t++) {
+    public void greenTimings(int numIterations){
+        for (int t = 0; t < numIterations; t++) {
             if (!localSearch.makeStep()) {
                 return;
             }
