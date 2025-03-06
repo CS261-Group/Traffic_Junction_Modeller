@@ -23,10 +23,10 @@ public class FixedTimingsOptimiser extends Optimiser {
 
     @Override
     public void optimiseAll() {
-        this.cycleTiming();
+        this.greenTimings();
     }
 
-    public void cycleTiming(){
+    public void greenTimings(){
         for (int t = 0; t < ITERATIONS; t++) {
             if (!localSearch.makeStep()) {
                 return;
