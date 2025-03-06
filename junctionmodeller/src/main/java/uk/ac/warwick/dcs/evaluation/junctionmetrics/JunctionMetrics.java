@@ -16,7 +16,6 @@ import java.util.Iterator;
 /**
  * JunctionMetrics object is created everytime a junction is evaluated
  * Its purpose is to aggregate metrics from individual lanes
- *
  */
 public class JunctionMetrics implements IJunctionMetrics {
 
@@ -108,7 +107,7 @@ public class JunctionMetrics implements IJunctionMetrics {
     private void updateQueueMetrics(ArrayList<LaneMetrics> laneMetrics) {
         avgQueue = 0;
 
-        for (int i = 0; i <= laneMetrics.size(); i++){
+        for (int i = 0; i < laneMetrics.size(); i++){
             avgQueue += laneMetrics.get(i).getAverageQueueLength();
 
             if (laneMetrics.get(i).getAverageQueueLength() > maxDelay){
