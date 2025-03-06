@@ -28,12 +28,6 @@ import uk.ac.warwick.dcs.ui.panels.*;
  * Main entrypoint object for program. Contains all the form data.
  */
 
-
-//TODO
-//a) Lane directions wonky UI
-
-
-
 public class MainForm extends JFrame {
     private static final int HEADING_FONT_SIZE = 18;
     private static final int MINIMUM_FONT_SIZE = 14;
@@ -144,7 +138,6 @@ public class MainForm extends JFrame {
 
         SubmissionInputData submissionInputData = submissionPanel.getValue();
         boolean showVisualisation = submissionInputData.checkBox();
-        // TODO: should be part of submissionPanel.getValue()
         String configName = submissionInputData.configName();
 
 
@@ -179,7 +172,6 @@ public class MainForm extends JFrame {
         if(userSelection == JFileChooser.APPROVE_OPTION){
             fileChooser.setFileHidingEnabled(false);
             File selectedFile = fileChooser.getSelectedFile();
-            // TODO: get showVisualisation instead of hard-coding false
             boolean showVisualisation = submissionPanel.getValue().checkBox();
             List<String> errors = dataService.submitFileConfiguration(selectedFile.getAbsolutePath(), showVisualisation);
 

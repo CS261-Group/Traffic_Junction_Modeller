@@ -1,6 +1,5 @@
 package uk.ac.warwick.dcs.contracts.timings;
 
-// TODO: currently only covers the fixed timing case
 /**
  * Object used to logically separate the <code>Group</code> object
  * from the timings since part of the requirements allows for the
