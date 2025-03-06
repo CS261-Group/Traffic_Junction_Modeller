@@ -6,12 +6,16 @@ import uk.ac.warwick.dcs.evaluation.Evaluator;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.optimisation.localsearch.FixedLightsTimingSearchSpace;
 import uk.ac.warwick.dcs.optimisation.localsearch.HillClimb;
+import uk.ac.warwick.dcs.optimisation.noniterative.FixedCycleAndGreenTimeInitialiser;
 
 public class FixedTimingsOptimiser extends Optimiser {
     HillClimb<FixedLightsTimingSearchSpace> localSearch;
 
     public FixedTimingsOptimiser(JunctionConfiguration junctionConfig, JunctionData junctionData, Evaluator evaluation){
         super(junctionConfig, junctionData, evaluation);
+
+        // junctions being optimised need initial data
+        new FixedCycleAndGreenTimeInitialiser(junctionData, junctionConfig.getCycleLostTime());
 
         FixedLightsTimingSearchSpace searchSpace = new FixedLightsTimingSearchSpace(junctionConfig.getNumberOfGroups());
         localSearch = new HillClimb<>(junctionData, evaluationFunction, searchSpace);

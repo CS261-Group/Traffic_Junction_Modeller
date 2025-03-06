@@ -4,7 +4,7 @@ import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.evaluation.Evaluator;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.optimisation.localsearch.EvaluationFunction;
-import uk.ac.warwick.dcs.optimisation.noniterative.CycleAndGreenTimeInitialiser;
+import uk.ac.warwick.dcs.optimisation.noniterative.FixedCycleAndGreenTimeInitialiser;
 
 public abstract class Optimiser {
     protected final int ITERATIONS = 100;
@@ -15,9 +15,6 @@ public abstract class Optimiser {
     public Optimiser(JunctionConfiguration junctionConfig, JunctionData junctionData, Evaluator evaluation) {
         this.junctionConfig = junctionConfig;
         this.junctionData = junctionData;
-
-        // junctions being optimised need initial data
-        new CycleAndGreenTimeInitialiser(junctionData, junctionConfig.getCycleLostTime());
 
         // create evaluation function
         this.evaluationFunction = new EvaluationFunction(evaluation);

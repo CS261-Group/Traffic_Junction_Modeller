@@ -3,11 +3,16 @@ package uk.ac.warwick.dcs.optimisation;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.evaluation.Evaluator;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
+import uk.ac.warwick.dcs.optimisation.noniterative.ActuatedCycleAndGreenTimeInitialiser;
+import uk.ac.warwick.dcs.optimisation.noniterative.FixedCycleAndGreenTimeInitialiser;
 
 public class ActuatedTimingsOptimiser extends Optimiser {
 
     public ActuatedTimingsOptimiser(JunctionConfiguration junctionConfiguration, JunctionData junctionData, Evaluator evaluation){
         super(junctionConfiguration, junctionData, evaluation);
+
+        // junctions being optimised need initial data
+        new ActuatedCycleAndGreenTimeInitialiser(junctionData, junctionConfig.getCycleLostTime());
     }
 
     @Override
