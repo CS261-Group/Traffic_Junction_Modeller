@@ -14,4 +14,12 @@ public class CycleTimeOptimiser {
     public double cycleTime(double L, double Y){
         return (1.5*L + 5) / (1 - Y);
     }
+
+    /**
+     * See TSotA report 2001, equation 9.102
+     * @return an estimate of the cycle time used for actuated signals
+     */
+    public double averageCycleTime(double L, double Y){
+        return (1.5*L) / (1 - Y);
+    }
 }

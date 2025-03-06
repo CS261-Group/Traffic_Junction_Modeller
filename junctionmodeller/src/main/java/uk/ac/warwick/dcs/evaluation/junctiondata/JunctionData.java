@@ -1,6 +1,7 @@
 package uk.ac.warwick.dcs.evaluation.junctiondata;
 
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
+import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.contracts.timings.Group;
 
@@ -8,38 +9,65 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class JunctionData implements Iterable<GroupData>{
-
+public class JunctionData {
+    // max cycle time constant (for use in actuated signals)
     double cycleTime;
-    ArrayList<GroupData> groupData;
+    private final TrafficLightType type;
+    private ArrayList<GroupData> groupDataF;
+    private ArrayList<ActuatedGroupData> groupDataA;
 
     public JunctionData(JunctionConfiguration junctionConfiguration) {
         cycleTime = junctionConfiguration.getCycleTime(); // should be 0 when optimising
+        type = junctionConfiguration.getTrafficLightType();
+        GroupDataBuilder groupBuilder = new GroupDataBuilder(junctionConfiguration);
 
-        groupData = new ArrayList<>(junctionConfiguration.getNumberOfGroups());
-
-        for (Group group : junctionConfiguration.getGroups()) {
-            //create group data
-            groupData.add(GroupDataBuilder.buildGroupData(junctionConfiguration, group));
+        if (type == TrafficLightType.FIXEDCYCLE){
+            groupDataF = new ArrayList<>(junctionConfiguration.getNumberOfGroups());
+            for (Group group : junctionConfiguration.getGroups()) {
+                //create group data
+                groupDataF.add(groupBuilder.buildGroupData(group));
+            }
+        }
+        else{
+            groupDataA = new ArrayList<>(junctionConfiguration.getNumberOfGroups());
+            for (Group group : junctionConfiguration.getGroups()) {
+                //create group data
+                groupDataA.add(groupBuilder.buildActuatedGroupData(group));
+            }
         }
     }
 
-    @Override
-    public Iterator<GroupData> iterator() {
-        return groupData.iterator();
+    public Iterator<GroupData> iteratorF() {
+        return groupDataF.iterator();
+    }
+
+    public Iterator<ActuatedGroupData> iteratorA() {
+        return groupDataA.iterator();
     }
 
     public int getNumGroups(){
-        return groupData.size();
+        if (type == TrafficLightType.FIXEDCYCLE){
+            return groupDataF.size();
+        } else {
+            return groupDataA.size();
+        }
     }
 
     // index does not have to == group num
     public double getGroupGreenTime(int groupIndex){
-        return groupData.get(groupIndex).greenTime;
+        if (type == TrafficLightType.FIXEDCYCLE){
+            return groupDataF.get(groupIndex).getGreenTime();
+        } else {
+            return groupDataA.get(groupIndex).getGreenTime();
+        }
     }
 
     public void modifyGroupTiming(int groupIndex, double changeBy){
-        groupData.get(groupIndex).modifyTiming(changeBy);
+        if (type == TrafficLightType.FIXEDCYCLE){
+            groupDataF.get(groupIndex).modifyTiming(changeBy);
+        } else {
+            groupDataA.get(groupIndex).modifyTiming(changeBy);
+        }
     }
 
     public double getCycleTime(){
@@ -47,12 +75,21 @@ public class JunctionData implements Iterable<GroupData>{
     }
 
     public double[] getMaxFlowRatioForEachGroup(){
-        double[] flowRatios = new double[groupData.size()];
+        if (type == TrafficLightType.FIXEDCYCLE){
+            double[] flowRatios = new double[groupDataF.size()];
 
-        for (int i = 0; i < groupData.size(); i++){
-            flowRatios[i] = groupData.get(i).getMaxFlowRatio();
+            for (int i = 0; i < groupDataF.size(); i++){
+                flowRatios[i] = groupDataF.get(i).getMaxFlowRatio();
+            }
+            return flowRatios;
+        } else {
+            double[] flowRatios = new double[groupDataA.size()];
+
+            for (int i = 0; i < groupDataA.size(); i++){
+                flowRatios[i] = groupDataA.get(i).getMaxFlowRatio();
+            }
+            return flowRatios;
         }
-        return flowRatios;
     }
 
     public void setCycleTime(double cycleTime){

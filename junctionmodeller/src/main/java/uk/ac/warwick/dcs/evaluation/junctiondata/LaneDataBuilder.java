@@ -3,6 +3,7 @@ package uk.ac.warwick.dcs.evaluation.junctiondata;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidLaneNumberException;
 import uk.ac.warwick.dcs.contracts.exceptions.NoValueExistsException;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
@@ -98,7 +99,4 @@ public class LaneDataBuilder {
             return 0;
         }
     }
-
-//    public static double
-
 }

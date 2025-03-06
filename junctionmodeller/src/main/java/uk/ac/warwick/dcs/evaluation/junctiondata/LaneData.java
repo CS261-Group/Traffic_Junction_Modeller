@@ -9,6 +9,7 @@ public class LaneData {
     double saturationFlow;
     double arrivalFlow;
 
+
     public LaneData(Direction dir, int num, double saturation, double arrival){
         this.direction = dir;
         this.laneNum = num;

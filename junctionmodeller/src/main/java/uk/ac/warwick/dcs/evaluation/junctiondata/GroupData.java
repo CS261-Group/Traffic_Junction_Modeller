@@ -6,14 +6,16 @@ import java.util.Iterator;
 import java.util.List;
 
 public class GroupData implements Iterable<LaneData>{
-    public int groupNum;
-    public double greenTime; //gets optimised, same as group timing
-    public List<LaneData> lanes;
+    protected int groupNum;
+    protected double greenTime; //gets optimised, same as group timing
+    protected final List<LaneData> lanes;
+    protected final double maxFlowRatio;
 
     public GroupData(int groupNum, double greenTime, List<LaneData> laneData){
         this.groupNum = groupNum;
         this.greenTime = greenTime;
         this.lanes = laneData;
+        this.maxFlowRatio = maxFlowRatio();
     }
 
     public void modifyTiming(double changeBy){
@@ -25,7 +27,7 @@ public class GroupData implements Iterable<LaneData>{
         return lanes.iterator();
     }
 
-    public double getMaxFlowRatio(){
+    private double maxFlowRatio(){
         double maxFlowRatio = 0;
         for (LaneData lane : lanes){
             if (lane.getFlowRatio() > maxFlowRatio){
@@ -33,6 +35,14 @@ public class GroupData implements Iterable<LaneData>{
             }
         }
         return maxFlowRatio;
+    }
+
+    public double getMaxFlowRatio(){
+        return maxFlowRatio;
+    }
+
+    public double getGreenTime(){
+        return greenTime;
     }
 
     public void setGreenTime(double greenTime){
