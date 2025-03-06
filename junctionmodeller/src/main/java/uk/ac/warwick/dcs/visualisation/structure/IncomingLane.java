@@ -1,6 +1,8 @@
 package uk.ac.warwick.dcs.visualisation.structure;
 
 import javafx.geometry.Pos;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -10,13 +12,23 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.evaluation.junctiondata.LaneDataBuilder;
 import uk.ac.warwick.dcs.visualisation.Constants;
+
+import java.util.Objects;
 
 /**
  * This class is largely ChatGPT'd because I don't know how to use JavaFX.
  */
 class IncomingLane extends Lane {
     private final Pane contentPane;
+    // Arrow file names
+    private final static String forwardArrowPath = "/forward-arrow.png";
+    private final static String leftForwardArrowPath = "/forward-arrow.png";
+    private final static String leftRightForwardArrowPath = "/forward-arrow.png";
+    private final static String rightForwardArrowPath = "/forward-arrow.png";
+    private final static String rightArrowPath = "/forward-arrow.png";
+    private final static String leftArrowPath = "/forward-arrow.png";
 
     protected IncomingLane(Direction direction, int laneNum, boolean[] availableDirections, int groupNum) {
         super(direction, laneNum, true);
@@ -43,12 +55,28 @@ class IncomingLane extends Lane {
                 ((HBox)contentPane).setAlignment(Pos.CENTER_LEFT);
             }
         }
-        // Create an arrow inside an HBox (for horizontal lanes) or VBox (for vertical lanes)
+
+        ImageView imageView = getArrowImage(direction, availableDirections);
+        imageView.setPreserveRatio(true);
+
+        switch (direction) {
+            case NORTH:
+                imageView.setRotate(90);
+                break;
+            case WEST:
+                imageView.setRotate(180);
+                break;
+            case SOUTH:
+                imageView.setRotate(-90);
+                break;
+            default: break;
+        }
+
         Pane arrowContainer;
-        if (direction.isVertical()) {
-            arrowContainer = createVerticalArrow(direction);
+        if (direction == Direction.EAST || direction == Direction.WEST){
+            arrowContainer = createHorizontalArrowContainer(imageView);
         } else {
-            arrowContainer = createHorizontalArrow(direction);
+            arrowContainer = createVerticalArrowContainer(imageView);
         }
 
         // group number
@@ -68,7 +96,42 @@ class IncomingLane extends Lane {
         getChildren().setAll(contentPane);
     }
 
-    private VBox createVerticalArrow(Direction direction) {
+    private HBox createHorizontalArrowContainer(ImageView imageView){
+        HBox arrow = new HBox();
+        arrow.setAlignment(Pos.CENTER);
+        arrow.setMinHeight(Constants.LANE_WIDTH);
+
+        // Ensure it resizes within contentPane
+        arrow.setPrefHeight(Constants.LANE_WIDTH);
+        arrow.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        // Scale the image properly
+        imageView.fitWidthProperty().bind(arrow.widthProperty());
+        imageView.fitHeightProperty().bind(arrow.heightProperty());
+
+        arrow.getChildren().add(imageView);
+        return arrow;
+    }
+
+    private VBox createVerticalArrowContainer(ImageView imageView){
+        VBox arrow = new VBox();
+        arrow.setAlignment(Pos.CENTER);
+        arrow.setMinWidth(Constants.LANE_WIDTH);
+
+        // Ensure it resizes within contentPane
+        arrow.setPrefWidth(Constants.LANE_WIDTH);
+        arrow.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        // Scale the image properly
+        imageView.fitWidthProperty().bind(arrow.widthProperty());
+        imageView.fitHeightProperty().bind(arrow.heightProperty());
+
+        arrow.getChildren().add(imageView);
+        return arrow;
+    }
+
+    @Deprecated
+    private VBox createVerticalArrowOLD(Direction direction) {
         Line shaft = new Line(0, 0, 0, 20);
         shaft.setStroke(Color.WHITE);
         shaft.setStrokeWidth(3);
@@ -99,6 +162,7 @@ class IncomingLane extends Lane {
         return arrow;
     }
 
+    @Deprecated
     private HBox createHorizontalArrow(Direction direction) {
         Line shaft = new Line(0, 0, 20, 0);
         shaft.setStroke(Color.WHITE);
@@ -128,5 +192,48 @@ class IncomingLane extends Lane {
         }
 
         return arrow;
+    }
+
+    private ImageView getArrowImage(Direction direction, boolean[] availableDirections){
+        // lane goes left
+        if (availableDirections[LaneDataBuilder.leftOf(direction).ordinal()]){
+            // lane goes forward
+            if (availableDirections[LaneDataBuilder.aheadOf(direction).ordinal()]){
+                //lane goes right
+                if (availableDirections[LaneDataBuilder.rightOf(direction).ordinal()]){
+                    return createArrowImageView(leftRightForwardArrowPath);
+                }
+                // lane does not go right
+                else {
+                    return createArrowImageView(leftForwardArrowPath);
+                }
+            }
+            // lane does not go forward
+            else {
+                return createArrowImageView(leftArrowPath);
+            }
+        }
+        // lane does not go left
+        else{
+            // lane goes forward
+            if (availableDirections[LaneDataBuilder.aheadOf(direction).ordinal()]){
+                //lane goes right
+                if (availableDirections[LaneDataBuilder.rightOf(direction).ordinal()]){
+                    return createArrowImageView(forwardArrowPath);
+                }
+                // lane does not go right
+                else{
+                    return createArrowImageView(rightForwardArrowPath);
+                }
+            }
+            //lane does not go forward
+            else {
+                return createArrowImageView(rightArrowPath);
+            }
+        }
+    }
+    public ImageView createArrowImageView(String source){
+        Image arrow = new Image(Objects.requireNonNull(getClass().getResourceAsStream(source)));
+        return new ImageView(arrow);
     }
 }
