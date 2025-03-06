@@ -32,13 +32,15 @@ public class JunctionPane extends Pane {
                 getChildren().add(new OutgoingLane(direction, i));
             }
 
+            // iterates forwards in laneNum but backwards in directions and groupNums
+            // so that lanes appear in correct order
             int numIncoming = incomingLaneCounts[direction.ordinal()];
-            for (int i = 0; i < numIncoming; i++) { // iterate backwards
+            for (int i = 0; i < numIncoming ; i++) {
                 getChildren().add(new IncomingLane(
                         direction,
                         i,
-                        incomingDirections[direction.ordinal()][i],
-                        incomingLaneGroupNums[direction.ordinal()][i]
+                        incomingDirections[direction.ordinal()][numIncoming - 1 - i],
+                        incomingLaneGroupNums[direction.ordinal()][numIncoming - 1 - i]
                 ));
             }
         }
