@@ -99,7 +99,7 @@ public class FormJunctionFactory implements IJunctionFactory<ConfigurationData> 
         ICarriagewayBuilder builder = carriagewayBuilders[direction.ordinal()];
 
         // pedestrian crossing
-        builder.setPedestrianCrossing(directionData.pedestrianCrossing());
+        builder.setPedestrianCrossing(false);
 
 //        builder.setBusLane(directionData.busLane());
 //        // if there is a bus lane add an EXTRA

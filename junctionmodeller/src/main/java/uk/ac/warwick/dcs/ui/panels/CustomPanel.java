@@ -1,7 +1,8 @@
 package uk.ac.warwick.dcs.ui.panels;
 
-import javax.swing.JPanel;
 import java.awt.Font;
+
+import javax.swing.JPanel;
 
 /**
  * Abstraction over the <code>JPanel</code> class to require a separate

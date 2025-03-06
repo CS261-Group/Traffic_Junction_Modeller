@@ -11,6 +11,13 @@ public class GroupData implements Iterable<LaneData>{
     protected final List<LaneData> lanes;
     protected final double maxFlowRatio;
 
+    public double extensionHeadway;
+    public double maxGreenTime;
+    public double targetDegOfSaturation; // for use instead of derived degOfSat
+
+    public double maxFlowRatio;
+
+    // fixed case
     public GroupData(int groupNum, double greenTime, List<LaneData> laneData){
         this.groupNum = groupNum;
         this.greenTime = greenTime;
@@ -36,6 +43,7 @@ public class GroupData implements Iterable<LaneData>{
         }
         return maxFlowRatio;
     }
+
 
     public double getMaxFlowRatio(){
         return maxFlowRatio;

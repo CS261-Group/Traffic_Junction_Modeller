@@ -46,7 +46,7 @@ public class LaneDataBuilder {
      * @return The direction of the right turn from the input direction
      */
     public static Direction rightOf(Direction dir){
-        return Direction.values()[(dir.ordinal() - 1) % 4];
+        return Direction.values()[(dir.ordinal() + 3) % 4];
     }
 
     /**

@@ -4,4 +4,5 @@ import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 
 public interface ISaver {
     void save(JunctionConfiguration junctionConfig,String configName);
+    String getSaveErrors();
 }

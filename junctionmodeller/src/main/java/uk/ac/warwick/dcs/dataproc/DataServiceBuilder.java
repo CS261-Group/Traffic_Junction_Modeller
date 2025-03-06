@@ -19,6 +19,7 @@ public class DataServiceBuilder {
      */
     private static ILoaderService<ConfigurationData> formLoaderService = null;
     private static ILoaderService<String> fileLoaderService = null;
+    private static ISaverService fileSaverService = null;
     /**
      *
      * @param modelContainer Model container for service to use.
@@ -26,7 +27,7 @@ public class DataServiceBuilder {
      */
     public static IDataService buildService(IModelContainer modelContainer) {
         return new DataService(ValidatorFactory.getJunctionValidator(),ValidatorFactory.getConfigNameValidator(), modelContainer,
-                getFormLoaderService(), VisualisationFactoryBuilder.getVisualisationFactory());
+                getFormLoaderService(),getFileLoaderService(),getFileSaverService(), VisualisationFactoryBuilder.getVisualisationFactory());
     }
 
     /**
@@ -48,6 +49,13 @@ public class DataServiceBuilder {
             fileLoaderService = new FileLoaderService();
         }
         return fileLoaderService;
+    }
+    
+    static ISaverService getFileSaverService(){
+        if(fileSaverService == null){
+            fileSaverService = new FileSaverService();
+        }
+        return fileSaverService;
     }
 
 }
