@@ -9,8 +9,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import uk.ac.warwick.dcs.model.messaging.EvaluationUpdate;
-import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
-import uk.ac.warwick.dcs.model.messaging.ModelUpdateType;
 import uk.ac.warwick.dcs.ui.MainForm;
 import uk.ac.warwick.dcs.visualisation.buttons.ConfigButton;
 import uk.ac.warwick.dcs.visualisation.buttons.DeleteButton;

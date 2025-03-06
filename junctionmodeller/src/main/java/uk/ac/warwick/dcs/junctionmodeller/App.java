@@ -1,6 +1,5 @@
 package uk.ac.warwick.dcs.junctionmodeller;
 
-import javafx.application.Platform;
 import uk.ac.warwick.dcs.dataproc.DataServiceBuilder;
 import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.model.IModelContainer;
