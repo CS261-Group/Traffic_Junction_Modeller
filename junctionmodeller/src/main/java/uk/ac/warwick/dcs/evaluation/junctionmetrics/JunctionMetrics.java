@@ -80,7 +80,7 @@ public class JunctionMetrics implements IJunctionMetrics {
     private void updateDelayMetrics(ArrayList<LaneMetrics> laneMetrics) {
         avgDelay = 0;
 
-        for (int i = 0; i <= laneMetrics.size(); i++){
+        for (int i = 0; i < laneMetrics.size(); i++){
             avgDelay += laneMetrics.get(i).getAverageDelay();
 
             if (laneMetrics.get(i).getAverageDelay() > maxDelay){
