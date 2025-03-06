@@ -100,26 +100,28 @@ public class Groups implements Iterable<Group> {
      * @param lane Input lane
      * @return The timing of a lane.
      */
-    public int getLaneTiming(IncomingLane lane) throws NoValueExistsException{
+    public int getLaneTiming(IncomingLane lane){
         for (Group group : this) {
             if (group.containsLane(lane)) {
                 return getGroupTiming(group.getGroupNum()).getTiming();
             }
         }
-        throw new NoValueExistsException("GroupTimings");
+
+        return 0;
     }
 
     /**
      * @param groupNum Group number
      * @return The GroupTiming object corresponding to the group number.
      */
-    public GroupTiming getGroupTiming(int groupNum) throws NoValueExistsException{
+    public GroupTiming getGroupTiming(int groupNum){
         for(GroupTiming groupTiming : this.timings){
             if (groupTiming.getGroupNum() == groupNum) {
                 return groupTiming;
             }
         }
-        throw new NoValueExistsException("GroupTimings");
+
+        return null;
     }
 
     /**
