@@ -6,10 +6,9 @@ import org.javatuples.Pair;
 
 import javafx.application.Platform;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
-import uk.ac.warwick.dcs.dataproc.loading.FileLoader;
-import uk.ac.warwick.dcs.dataproc.saving.Saver;
 import uk.ac.warwick.dcs.dataproc.validation.IValidator;
 import uk.ac.warwick.dcs.model.IModelContainer;
+import uk.ac.warwick.dcs.model.exceptions.NoSuchModelException;
 import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
 import uk.ac.warwick.dcs.visualisation.IVisualisationFactory;
 import uk.ac.warwick.dcs.visualisation.ModelVisualisation;
@@ -79,7 +78,7 @@ class DataService implements IDataService {
         } else {
             modelVisualisation = null;
         }
-        boolean success = modelContainer.addModel(junctionConfig, modelVisualisation);
+        boolean success = modelContainer.addModel(configData.configName(), junctionConfig, modelVisualisation);
         if (!success) {
             return List.of("Couldn't run model, maybe reached maximum number of concurrently running models.");
         }
@@ -122,17 +121,26 @@ class DataService implements IDataService {
         // Create a model instance asynchronously
         ModelVisualisation modelVisualisation;
         if (showVisualisation) {
-            // TODO: get config name from saved file
             modelVisualisation = visualisationFactory.createVisualisation(getConfigName(filePath), junctionConfig);
         } else {
             modelVisualisation = null;
         }
-        boolean success = modelContainer.addModel(junctionConfig, modelVisualisation);
+        boolean success = modelContainer.addModel(getConfigName(filePath), junctionConfig, modelVisualisation);
         if (!success) {
             return List.of("Couldn't run model, maybe reached maximum number of concurrently running models.");
         }
 
         // If no errors, return an empty list
         return List.of();
+    }
+
+    @Override
+    public boolean deleteConfiguration(String configName) {
+        try {
+            modelContainer.deleteConfiguration(configName);
+            return true;
+        } catch (NoSuchModelException ex) {
+            return false;
+        }
     }
 }

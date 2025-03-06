@@ -8,14 +8,14 @@ import javafx.scene.layout.StackPane;
 
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.model.messaging.EvaluationUpdate;
-import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
-import uk.ac.warwick.dcs.model.messaging.ModelUpdateType;
 import uk.ac.warwick.dcs.ui.MainForm;
 import uk.ac.warwick.dcs.visualisation.buttons.ConfigButton;
 import uk.ac.warwick.dcs.visualisation.buttons.DeleteButton;
 import uk.ac.warwick.dcs.visualisation.buttons.InfoButton;
 import uk.ac.warwick.dcs.visualisation.buttons.TabsButton;
+import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationDeletedSubscriber;
 import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationSubscriber;
 import uk.ac.warwick.dcs.visualisation.menus.InfoMenu;
 import uk.ac.warwick.dcs.visualisation.menus.ConfigMenu;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Main wrapping window for every
  */
-public class Visualiser extends Application {
+public class Visualiser extends Application implements IModelVisualisationDeletedSubscriber {
     /**
      * Singleton instance to allow <code>VisualisationFactory</code> to access
      * the single instance.
@@ -42,7 +42,7 @@ public class Visualiser extends Application {
 
     private StackPane root;
     private VisualisationTogglePane toggleSlot; // Holds the active pane
-    private final List<ModelVisualisation> modelVisualisations;
+    private List<ModelVisualisation> modelVisualisations;
 
     // popup menus
     private TabsMenu tabsMenu;
@@ -50,15 +50,17 @@ public class Visualiser extends Application {
     private ConfigMenu configMenu;
 
     // observers of event that new model is added
-    private final List<IModelVisualisationSubscriber> addSubscribers;
+    private List<IModelVisualisationSubscriber> addSubscribers;
 
     // main form for alerting
-    private MainForm form;
+    private static MainForm mainForm;
+    // data service for deleting
+    private static IDataService dataService;
 
     public Visualiser() {
         super();
-        modelVisualisations = new ArrayList<>(8);
-        addSubscribers = new LinkedList<>();
+        this.modelVisualisations = new ArrayList<>(8);
+        this.addSubscribers = new LinkedList<>();
     }
 
     @Override
@@ -73,8 +75,13 @@ public class Visualiser extends Application {
         // initialise and set up the toggling visualisation pane
         toggleSlot = new VisualisationTogglePane(Constants.VISUALISER_WIDTH, Constants.VISUALISER_HEIGHT);
 
+        // this button needs to be before the tabs menu to be registered as a subscriber
+        // NOTE: the order here is important because an array is passed by reference
+        // so the update of the tabs menu needs to happen
+        DeleteButton deleteBtn = new DeleteButton(List.of(this, toggleSlot));
+
         // popups available
-        tabsMenu = new TabsMenu(modelVisualisations, List.of(toggleSlot));
+        tabsMenu = new TabsMenu(modelVisualisations, List.of(toggleSlot, deleteBtn));
         infoMenu = new InfoMenu();
         configMenu = new ConfigMenu();
 
@@ -82,7 +89,6 @@ public class Visualiser extends Application {
         ConfigButton configBtn = new ConfigButton(configMenu);
         TabsButton tabsBtn = new TabsButton(tabsMenu);
         InfoButton infoBtn = new InfoButton(infoMenu);
-        DeleteButton deleteBtn = new DeleteButton();
 
         root.getChildren().addAll(toggleSlot, configBtn, infoBtn, tabsBtn, deleteBtn);
 
@@ -112,9 +118,10 @@ public class Visualiser extends Application {
     /**
      * Launch the 'game', i.e., visualise the app.
      */
-    public void run(String[] args, MainForm mainForm) {
-        form = mainForm;
-        launch(args);
+    public void run(String[] args, MainForm mainForm, IDataService dataService) {
+        Visualiser.mainForm = mainForm;
+        Visualiser.dataService = dataService;
+        Visualiser.launch(args);
     }
 
     /**
@@ -135,7 +142,7 @@ public class Visualiser extends Application {
      * @param modelUpdate The update object.
      */
     public void notifyUpdate(String configName, EvaluationUpdate modelUpdate) {
-        form.addMetricToHistory(configName, modelUpdate.getMetrics());
+        mainForm.addMetricToHistory(configName, modelUpdate.getMetrics());
     }
 
     /**
@@ -147,5 +154,20 @@ public class Visualiser extends Application {
             throw new IllegalStateException("Visualiser must be created before getInstance() called");
         }
         return instance;
+    }
+
+    @Override
+    public ModelVisualisation notifyDeleted(ModelVisualisation deletedVisualisation) {
+        modelVisualisations.remove(deletedVisualisation);
+        dataService.deleteConfiguration(deletedVisualisation.getModelName());
+        tabsMenu.updateMenu();
+
+        if (!modelVisualisations.isEmpty()) {
+            // return first existing visualisation (if there are others)
+            return modelVisualisations.get(0);
+        } else {
+            // if no other visualisation exists, return null
+            return null;
+        }
     }
 }

@@ -17,7 +17,7 @@ public interface IModelContainer {
      *         error is that we have reached the maximum number of concurrently running
      *         models.
      */
-    boolean addModel(JunctionConfiguration junctionConfiguration, IModelVisualisation visualisation);
+    boolean addModel(String configName, JunctionConfiguration junctionConfiguration, IModelVisualisation visualisation);
 
     /**
      *
@@ -26,4 +26,11 @@ public interface IModelContainer {
      *         evaluated metrics.
      */
     JunctionMetrics evaluateModel(long modelId) throws NoSuchModelException;
+
+    /**
+     *
+     * @param configName The name of the junction configuration to remove.
+     * @throws NoSuchModelException Thrown if no model exists with the given configuration name.
+     */
+    void deleteConfiguration(String configName) throws NoSuchModelException;
 }

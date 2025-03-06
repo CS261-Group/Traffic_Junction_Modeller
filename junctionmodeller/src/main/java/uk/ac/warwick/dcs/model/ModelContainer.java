@@ -23,18 +23,20 @@ class ModelContainer implements IModelContainer {
      */
     private static final int MAX_CONCURRENT_MODELS = 8;
 
+    private final Map<String, Long> modelNames;
     private final Map<Long, Model> models;
     private final IModelFactory modelFactory;
     private final ExecutorService executorService;
 
     public ModelContainer(IModelFactory modelFactory) {
         this.models = new HashMap<>();
+        this.modelNames = new HashMap<>();
         this.modelFactory = modelFactory;
         this.executorService = Executors.newFixedThreadPool(MAX_CONCURRENT_MODELS);  // Initial thread size, will be updated dynamically
     }
 
     @Override
-    public boolean addModel(JunctionConfiguration junctionConfiguration, IModelVisualisation visualisation) {
+    public boolean addModel(String configName, JunctionConfiguration junctionConfiguration, IModelVisualisation visualisation) {
         assert !executorService.isShutdown();
         assert !executorService.isTerminated();
 
@@ -45,6 +47,7 @@ class ModelContainer implements IModelContainer {
 
         Model model = modelFactory.createModel(junctionConfiguration, visualisation);
         models.put(model.getId(), model);
+        modelNames.put(configName, model.getId());
 
         executorService.submit(model);
 
@@ -58,6 +61,16 @@ class ModelContainer implements IModelContainer {
         }
 
         return model.evaluateModel();
+    }
+
+    @Override
+    public void deleteConfiguration(String configName) throws NoSuchModelException {
+        if (!modelNames.containsKey(configName)) {
+            throw new NoSuchModelException(configName);
+        }
+
+        models.remove(modelNames.get(configName));
+        modelNames.remove(configName);
     }
 
     /**

@@ -1,6 +1,5 @@
 package uk.ac.warwick.dcs.junctionmodeller;
 
-import javafx.application.Platform;
 import uk.ac.warwick.dcs.dataproc.DataServiceBuilder;
 import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.model.IModelContainer;
@@ -24,6 +23,6 @@ public class App {
         // making the visualiser visible
         // Run JavaFX code on the correct thread
         Visualiser visualiser = new Visualiser();
-        visualiser.run(args, form);
+        visualiser.run(args, form, dataService);
     }
 }
