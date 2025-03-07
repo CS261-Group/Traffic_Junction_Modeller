@@ -18,7 +18,7 @@ import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
  * model instance being analysed.
  */
 class Model implements Runnable {
-    private static final int NUM_ITERATIONS = 100;
+    private static final int NUM_ITERATIONS = 10000;
 
     private final long id;
     private final Evaluator evaluation;
@@ -26,8 +26,7 @@ class Model implements Runnable {
     private final IModelVisualisation visualisation;
     private final JunctionData junctionData; // holds optimised values
 
-    // TODO: stop running
-    private boolean running;
+    private volatile boolean running;
 
     public Model(long id, JunctionConfiguration junctionConfig, IModelVisualisation visualisation) {
         this.id = id;
@@ -65,20 +64,20 @@ class Model implements Runnable {
     @Override
     public int hashCode() { return (int)id; }
 
+    public void stop() {
+        running = false;
+    }
+
     @Override
     public void run() {
+        running = true;
         // not optimising => evaluate and return
-        if (optimiser == null) {
-            Platform.runLater(() -> {
-                JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
-                visualisation.notify(new EvaluationUpdate(metrics));
-            });
-        } else {
+        if (optimiser != null) {
             while (running) {
-                Platform.runLater(() -> {
-                    optimiser.optimiseAll(NUM_ITERATIONS);
-                    JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
+                optimiser.optimiseAll(NUM_ITERATIONS);
+                JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
 
+                Platform.runLater(() -> {
                     if (optimiser instanceof FixedTimingsOptimiser) { // optimising fixed timings
                         visualisation.notify(new OptimisationUpdate<>(junctionData.getFixedCycleVisualisationData()));
 
@@ -89,13 +88,14 @@ class Model implements Runnable {
 
                     visualisation.notify(new EvaluationUpdate(metrics));
                 });
-
-                break; // TODO: figure out stopping correctly
             }
+        }
 
-            // final evaluation passed to table
+        Platform.runLater(() -> {
             JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
             visualisation.notify(new EvaluationUpdate(metrics));
-        }
+        });
+
+        running = false;
     }
 }

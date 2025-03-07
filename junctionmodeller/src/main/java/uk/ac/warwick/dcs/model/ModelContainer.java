@@ -69,8 +69,12 @@ class ModelContainer implements IModelContainer {
             throw new NoSuchModelException(configName);
         }
 
-        models.remove(modelNames.get(configName));
+        // extract running model from set of models
+        Model model = models.remove(modelNames.get(configName));
         modelNames.remove(configName);
+
+        // stop the model running
+        model.stop();
     }
 
     /**
