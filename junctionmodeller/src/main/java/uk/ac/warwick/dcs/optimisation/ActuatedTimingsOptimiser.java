@@ -9,7 +9,9 @@ import uk.ac.warwick.dcs.optimisation.localsearch.HillClimb;
 import uk.ac.warwick.dcs.optimisation.noniterative.ActuatedCycleAndGreenTimeInitialiser;
 
 /**
- * Optimises values for actuated junctions
+ * Optimises the extension headway of groups,
+ * and then the cycle time (which determines average green times)
+ * for actuated junctions
  */
 public class ActuatedTimingsOptimiser extends Optimiser {
     double junctionCycleLostTime; // used for re-initialising

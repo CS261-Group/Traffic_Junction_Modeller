@@ -8,6 +8,9 @@ import uk.ac.warwick.dcs.optimisation.localsearch.FixedLightsTimingSearchSpace;
 import uk.ac.warwick.dcs.optimisation.localsearch.HillClimb;
 import uk.ac.warwick.dcs.optimisation.noniterative.FixedCycleAndGreenTimeInitialiser;
 
+/**
+ * Optimises green timings for fixed light junctions
+ */
 public class FixedTimingsOptimiser extends Optimiser {
     HillClimb<FixedLightsTimingSearchSpace> localSearch;
 
@@ -22,7 +25,7 @@ public class FixedTimingsOptimiser extends Optimiser {
     }
 
     /**
-     * optimises green times fors
+     * optimises green times
      * @param numIterations number of steps to make
      */
     @Override

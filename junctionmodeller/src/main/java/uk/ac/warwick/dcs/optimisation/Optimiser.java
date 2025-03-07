@@ -5,6 +5,10 @@ import uk.ac.warwick.dcs.evaluation.Evaluator;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.optimisation.localsearch.EvaluationFunction;
 
+/**
+ * Optimiser holds an instance of a junction
+ * And optimises it to minimise a evaluation function
+ */
 public abstract class Optimiser {
     protected final JunctionConfiguration junctionConfig;
     protected final JunctionData junctionData;
