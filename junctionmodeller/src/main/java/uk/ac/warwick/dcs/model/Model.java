@@ -13,7 +13,6 @@ import uk.ac.warwick.dcs.optimisation.Optimiser;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -80,7 +79,7 @@ class Model implements Runnable {
         // not optimising => evaluate and return
         if (optimiser != null) {
             while (running && !Thread.currentThread().isInterrupted()) {
-                optimiser.optimiseAll(NUM_ITERATIONS);
+                optimiser.optimise(NUM_ITERATIONS);
                 JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
 
                 Platform.runLater(() -> {
