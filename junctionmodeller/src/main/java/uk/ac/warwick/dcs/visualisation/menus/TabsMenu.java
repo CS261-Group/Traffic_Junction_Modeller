@@ -10,7 +10,7 @@ import uk.ac.warwick.dcs.visualisation.ModelVisualisation;
 import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationChangedSubscriber;
 import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationDeletedSubscriber;
 import uk.ac.warwick.dcs.visualisation.interfaces.IModelVisualisationSubscriber;
-
+import uk.ac.warwick.dcs.visualisation.menus.ConfigMenu;
 import java.util.List;
 
 public class TabsMenu extends Popup implements IModelVisualisationSubscriber {
@@ -21,10 +21,12 @@ public class TabsMenu extends Popup implements IModelVisualisationSubscriber {
     private final Button closeBtn;
     private final List<ModelVisualisation> modelVisualisations;
     private final List<IModelVisualisationChangedSubscriber> subscribers;
+    private final ConfigMenu configMenu;
 
-    public TabsMenu(List<ModelVisualisation> visualisations, List<IModelVisualisationChangedSubscriber> changeSubscribers) {
+    public TabsMenu(List<ModelVisualisation> visualisations, List<IModelVisualisationChangedSubscriber> changeSubscribers, ConfigMenu configMenu) {
         modelVisualisations = visualisations;
         subscribers = changeSubscribers;
+        this.configMenu = configMenu;
 
         // affix popup dimensions
         setWidth(Constants.SIDE_POPUP_HEIGHT);
@@ -82,9 +84,12 @@ public class TabsMenu extends Popup implements IModelVisualisationSubscriber {
             //
             menuItem.setOnAction(e -> {
                 for (IModelVisualisationChangedSubscriber subscriber : subscribers) {
-                    subscriber.notifyChanged(modelVisualisation);
+                    subscriber.notifyChanged(modelVisualisation);  // This will notify the visualisation change to configMenu and other subscribers.
                 }
-                hide();
+            
+   
+                configMenu.setCurrentVisualisation(modelVisualisation); 
+                hide();  // Hide the tabs menu after selection
             });
 
             // add new menu item
