@@ -1,4 +1,4 @@
-package uk.ac.warwick.dcs.evaluation;
+package uk.ac.warwick.dcs.contracts;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
+
 import uk.ac.warwick.dcs.contracts.lights.FixedCycleTrafficLight;
 import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
@@ -16,7 +17,7 @@ import uk.ac.warwick.dcs.contracts.structure.IncomingRoad;
 import uk.ac.warwick.dcs.contracts.structure.OutgoingLane;
 import uk.ac.warwick.dcs.contracts.structure.OutgoingRoad;
 
-public class JunctionMetricsTest {
+public class TestAggregatingLanes {
 
     @Test
     public void testAggregateMetricsForIncomingRoad() {
@@ -26,11 +27,9 @@ public class JunctionMetricsTest {
         IncomingLane lane3 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, true, true}, 3);
 
         int incomingFlow = 100;
-        int[] outgoingFlows = {0, 30, 40, 0}; 
+        int[] outgoingFlows = {0, 300, 400, 0};
 
         IncomingRoad incomingRoad = new IncomingRoad(Direction.NORTH, Arrays.asList(lane1, lane2, lane3), incomingFlow, outgoingFlows);
-
-        
 
         assertEquals(3, incomingRoad.numLanes(), "The number of lanes should be 3.");
         assertEquals(incomingFlow, incomingRoad.getIncomingFlow(), "The incoming flow should match the provided value.");

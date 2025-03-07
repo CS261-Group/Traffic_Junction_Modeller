@@ -20,10 +20,8 @@ public class GroupsTest {
         IncomingLane lane2 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, false, false}, 2);
         IncomingLane lane3 = new IncomingLane(Direction.SOUTH, VehicleType.CAR, new boolean[]{false, false, false, false}, 3);
 
-  
         Group group1 = new Group(1, List.of(lane1, lane2, lane3));
 
-       
         assertTrue(group1.containsLane(lane1), "Group should contain lane1.");
         assertTrue(group1.containsLane(lane2), "Group should contain lane2.");
         assertTrue(group1.containsLane(lane3), "Group should contain lane3.");
@@ -60,5 +58,25 @@ public class GroupsTest {
             assertEquals(30, groupsWithMultiple.getLaneTiming(lane1), "Lane 1 timing should match the group 1 timing.");
             assertEquals(30, groupsWithMultiple.getLaneTiming(lane2), "Lane 2 timing should match the group 2 timing.");
         }, "should not throw a no value exception");
+    }
+
+    @Test
+    public void testCycleTimeCalculation(){
+        IncomingLane lane1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, false, false}, 1);
+        IncomingLane lane2 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, false, false}, 2);
+        IncomingLane lane3 = new IncomingLane(Direction.SOUTH, VehicleType.CAR, new boolean[]{false, false, false, false}, 3);
+
+        Group group1 = new Group(1, List.of(lane1, lane2, lane3));
+        GroupTiming group1Timing = new GroupTiming(1, 30);
+
+        Group group2 = new Group(2, List.of(lane1, lane2));
+        GroupTiming group2Timing = new GroupTiming(2, 30);
+
+        Groups groupsWithMultiple = new Groups(List.of(group1, group2), false, List.of(group1Timing, group2Timing));
+
+        //2*7.5
+        assertEquals(15.0, groupsWithMultiple.cycleLostTime(), "Lost time");
+        // 30 + 30 + 15
+        assertEquals(75, groupsWithMultiple.getCycleTime(),"cycle time should be sum of grouptimings + lost cycle time");
     }
 }

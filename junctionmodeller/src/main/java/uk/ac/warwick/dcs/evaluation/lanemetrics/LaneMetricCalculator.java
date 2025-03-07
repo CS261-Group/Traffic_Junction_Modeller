@@ -20,21 +20,15 @@ package uk.ac.warwick.dcs.evaluation.lanemetrics;
 // r = red time
 public abstract class LaneMetricCalculator {
 
-    double T = 1;
+    final double T;
 
-    public LaneMetricCalculator() {
-
-    }
-
-    public double greenTimeToEffectiveGreenTime(double tg){
-        return tg - 1.2;
+    public LaneMetricCalculator(double T) {
+        this.T = T;
     }
 
     /**
-     * Returns the calibration constant kB as specified in Akçelik 2000
-     *
      * @param sg capacity per cycle (saturation in veh/sec * green time in sec) in veh
-     * @return
+     * @return The calibration constant kB as specified in Akçelik 2000
      */
     public abstract double getCalibrationConstant(double sg);
 
@@ -48,12 +42,14 @@ public abstract class LaneMetricCalculator {
     //1.1a in Akcelik 2000
     // x = sat
     // c = cycle time
+    // q = arrivals per hour
     public double averageUniformQueue(double x, double c, double g, double q){
 
         if (x > 1){
             return q * c;
         }else{
-            return q * x * (1 - (g / c)) / (1 - x * (g / c));
+            double u = (g / c);
+            return (q/3600) * c * (1 - u) / (1 - (x * u));
         }
     }
 
