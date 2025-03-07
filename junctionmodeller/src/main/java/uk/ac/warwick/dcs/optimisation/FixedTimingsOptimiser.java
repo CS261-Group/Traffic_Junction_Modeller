@@ -21,17 +21,16 @@ public class FixedTimingsOptimiser extends Optimiser {
         localSearch = new HillClimb<>(junctionData, evaluationFunction, searchSpace);
     }
 
+    /**
+     * optimises green times fors
+     * @param numIterations number of steps to make
+     */
     @Override
     public void optimise(int numIterations) {
-        this.greenTimings(numIterations);
-    }
-
-    public void greenTimings(int numIterations){
         for (int t = 0; t < numIterations; t++) {
             if (!localSearch.makeStep()) {
                 return;
             }
         }
     }
-
 }

@@ -3,6 +3,8 @@ package uk.ac.warwick.dcs.evaluation.junctiondata;
 import java.util.List;
 
 public class ActuatedGroupData extends GroupData{
+    public static final double MAX_EH = 5; //in seconds
+    public static final double MIN_EH = 1;
     public double extensionHeadway;
     public double maxGreenTime;
     public double targetDegOfSaturation; // for use instead of derived degOfSat
@@ -12,7 +14,6 @@ public class ActuatedGroupData extends GroupData{
         this.extensionHeadway = extensionHeadway;
         this.maxGreenTime = maxGreenTime;
     }
-
     // Equation 2 in Akcelik 2000
     // assumes green time has been initiliased previously
     public void setGreenTimeAndDegOfSat(double cycleTime){
@@ -34,5 +35,9 @@ public class ActuatedGroupData extends GroupData{
 
     public double getMaxGreenTime() {
         return maxGreenTime;
+    }
+
+    public void setExtensionHeadway(double extensionHeadway){
+        this.extensionHeadway = extensionHeadway;
     }
 }

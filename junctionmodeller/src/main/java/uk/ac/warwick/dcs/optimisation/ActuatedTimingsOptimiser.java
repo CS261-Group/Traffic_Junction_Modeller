@@ -4,12 +4,17 @@ import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.evaluation.Evaluator;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.optimisation.localsearch.CycleTimeSearchSpace;
+import uk.ac.warwick.dcs.optimisation.localsearch.ExtensionHeadwaySearchSpace;
 import uk.ac.warwick.dcs.optimisation.localsearch.HillClimb;
 import uk.ac.warwick.dcs.optimisation.noniterative.ActuatedCycleAndGreenTimeInitialiser;
 
+/**
+ * Optimises values for actuated junctions
+ */
 public class ActuatedTimingsOptimiser extends Optimiser {
     double junctionCycleLostTime; // used for re-initialising
-    HillClimb<CycleTimeSearchSpace> localSearch;
+    HillClimb<CycleTimeSearchSpace> localSearchCycleTime;
+    HillClimb<ExtensionHeadwaySearchSpace> localSearchExtensionHeadway;
 
     public ActuatedTimingsOptimiser(JunctionConfiguration junctionConfiguration, JunctionData junctionData, Evaluator evaluation){
         super(junctionConfiguration, junctionData, evaluation);
@@ -18,18 +23,26 @@ public class ActuatedTimingsOptimiser extends Optimiser {
         // junctions being optimised need initial data
         new ActuatedCycleAndGreenTimeInitialiser(junctionData, junctionCycleLostTime);
 
-        CycleTimeSearchSpace searchSpace = new CycleTimeSearchSpace(junctionCycleLostTime, junctionData.getTotalMaxGreenTimes());
-        localSearch = new HillClimb<>(junctionData, evaluationFunction, searchSpace);
+        CycleTimeSearchSpace searchSpaceCT = new CycleTimeSearchSpace(junctionCycleLostTime, junctionData.getTotalMaxGreenTimes());
+        localSearchCycleTime = new HillClimb<>(junctionData, evaluationFunction, searchSpaceCT);
+
+        ExtensionHeadwaySearchSpace searchSpaceEH = new ExtensionHeadwaySearchSpace(junctionCycleLostTime, junctionData.getNumGroups());
+        localSearchExtensionHeadway = new HillClimb<>(junctionData, evaluationFunction, searchSpaceEH);
     }
 
+    /**
+     * Optimise both extension headways and cycle time. Currently, never ends early
+     * @param numIterations number of steps to make
+     */
     @Override
     public void optimise(int numIterations) {
-        this.cycleTiming(numIterations);
-    }
-
-    public void cycleTiming(int numIterations) {
-        for (int t = 0; t < numIterations; t++) {
-            if (!localSearch.makeStep()) {
+        for (int i = 0; i < numIterations; i++) {
+            if (!localSearchExtensionHeadway.makeStep()) {
+                return;
+            }
+        }
+        for (int i = 0; i < numIterations; i++) {
+            if (!localSearchCycleTime.makeStep()) {
                 return;
             }
         }

@@ -18,6 +18,10 @@ public abstract class Optimiser {
         this.evaluationFunction = new EvaluationFunction(evaluation);
     }
 
+    /**
+     * Makes numIterations steps of a local search
+     * @param numIterations number of steps to make
+     */
     public abstract void optimise(int numIterations);
 
 }
