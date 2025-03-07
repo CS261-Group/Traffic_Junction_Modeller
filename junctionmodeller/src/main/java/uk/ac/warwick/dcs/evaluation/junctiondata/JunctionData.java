@@ -53,6 +53,15 @@ public class JunctionData {
         }
     }
 
+    public double getGroupExtensionTime(int groupIndex){
+        if (type == TrafficLightType.ACTUATION){
+            return groupDataA.get(groupIndex).getExtensionHeadway();
+        } else {
+            return 0;
+        }
+    }
+
+
     // index does not have to == group num
     public double getGroupGreenTime(int groupIndex){
         if (type == TrafficLightType.FIXEDCYCLE){
@@ -107,5 +116,11 @@ public class JunctionData {
 
     public void setCycleTime(double cycleTime){
         this.cycleTime = cycleTime;
+    }
+
+    public void setExtensionHeadway(int groupIndex, double newExtensionValue) {
+        if (type == TrafficLightType.ACTUATION) {
+            groupDataA.get(groupIndex).setExtensionHeadway(newExtensionValue);
+        }
     }
 }

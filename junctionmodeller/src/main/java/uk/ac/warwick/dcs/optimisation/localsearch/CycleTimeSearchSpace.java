@@ -6,7 +6,6 @@ import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import java.util.Random;
 
 public class CycleTimeSearchSpace implements ISearchSpace{
-    private final int TIME_OUT_CONST = 10;
     private final double INITIAL_STEP_SIZE = 1; // in seconds
     private final double maxCycleTime;
     private double stepSize;
