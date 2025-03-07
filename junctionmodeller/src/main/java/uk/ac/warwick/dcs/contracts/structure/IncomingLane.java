@@ -2,6 +2,9 @@ package uk.ac.warwick.dcs.contracts.structure;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
+//overwrite equals method so it compares data values (every object in java ha)
+//make incoming lane take in a lane number and store it for itself and make a getter for it
+//change the group validator to use the .equals method instead of ==
 
 public class IncomingLane extends Lane {
     private final VehicleType vehicleType;
@@ -37,5 +40,22 @@ public class IncomingLane extends Lane {
      */
     public boolean allowsGoing(Direction direction) {
         return availableDirections[direction.ordinal()];
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(o == null){
+            return false;
+        }
+        if(o == this){
+            return true;
+        }
+        if(!(o instanceof IncomingLane)){
+            return false;
+        }
+        IncomingLane other = (IncomingLane) o;
+        //compare direction, lane number, available lane numbers must match
+        //if(other.getDirection() != this.getDirection() || other.)
+        return true;
     }
 }
