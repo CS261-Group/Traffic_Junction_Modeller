@@ -1,22 +1,24 @@
 package uk.ac.warwick.dcs.contracts.timings;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
-import uk.ac.warwick.dcs.contracts.exceptions.NoValueExistsException;
-import uk.ac.warwick.dcs.contracts.structure.*;
-
-import java.util.List;
+import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 
 public class GroupsTest {
 
     @Test
     public void TestGroupTimings() {
      
-        IncomingLane lane1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, false, false});
-        IncomingLane lane2 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, false, false});
-        IncomingLane lane3 = new IncomingLane(Direction.SOUTH, VehicleType.CAR, new boolean[]{false, false, false, false});
+        IncomingLane lane1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, false, false}, 1);
+        IncomingLane lane2 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, false, false}, 2);
+        IncomingLane lane3 = new IncomingLane(Direction.SOUTH, VehicleType.CAR, new boolean[]{false, false, false, false}, 3);
 
   
         Group group1 = new Group(1, List.of(lane1, lane2, lane3));
