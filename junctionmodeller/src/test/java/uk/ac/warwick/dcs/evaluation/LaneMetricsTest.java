@@ -23,8 +23,14 @@ public class LaneMetricsTest {
     }
 
     @Test
-    public void averageDelay(){
+    public void testAverageDelay(){
         System.out.println(laneMetrics.getAverageDelay());
+        assert(true);
+    }
+
+    @Test
+    public void testAverageQueueLength(){
+        System.out.println(laneMetrics.getAverageQueueLength());
         assert(true);
     }
 }
