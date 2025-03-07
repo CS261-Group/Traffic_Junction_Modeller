@@ -12,6 +12,8 @@ class DiagnosticFactory implements IDiagnosticFactory {
         return field + ": " + error;
     }
 
+    // changed to meet requirement
+    // + added requirement that outgoing flows have to sum to MORE than the incoming flows
     @Override
     public String createInvalidFlowSumMessage(Direction direction, int incomingFlow, int[] outgoingFlows) {
         // sanity checks: although there is nothing stopping this condition, it should never be used in this way
@@ -26,7 +28,7 @@ class DiagnosticFactory implements IDiagnosticFactory {
         StringBuilder builder = new StringBuilder();
         builder.append("Incoming flow [")
                 .append(incomingFlow)
-                .append("] does not equal sum of outgoing flows [");
+                .append("] is greater than the sum of outgoing flows [");
 
         int sum = 0; // I track sum separately since we ignore outgoing flow in incoming direction
         boolean pastFirst = false; //
