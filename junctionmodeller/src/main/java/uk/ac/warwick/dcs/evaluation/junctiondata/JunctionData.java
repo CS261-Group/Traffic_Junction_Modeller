@@ -134,6 +134,7 @@ public class JunctionData {
                 groupDataA.stream().map(x ->
                         new ActuatedTiming((int)Math.round(x.greenTime), (int)Math.round(x.maxGreenTime))).toList()
         );
+    }
 
     public void setExtensionHeadway(int groupIndex, double newExtensionValue) {
         if (type == TrafficLightType.ACTUATION) {
