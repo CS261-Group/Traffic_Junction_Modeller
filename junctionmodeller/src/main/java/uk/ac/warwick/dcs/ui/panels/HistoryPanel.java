@@ -1,7 +1,5 @@
 package uk.ac.warwick.dcs.ui.panels;
 
-import uk.ac.warwick.dcs.ui.util.WrappingLabel;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -63,8 +61,34 @@ public class HistoryPanel extends CustomPanel{
         defaultTableModel.addRow(new Object[]{"Configuration", "Average Wait", "Average Queue", "Maximum Queue"});
     }
 
-    public void addRow(String configName, double averageWaitTime, double averageQueueLength, double maxQueueLength){
-        defaultTableModel.addRow(new Object[]{configName, averageWaitTime, averageQueueLength, maxQueueLength});
+    public void updateRow(String configName, double averageWaitTime, double averageQueueLength, double maxQueueLength){
+        boolean found = false;
+        // we iterate backwards (slight expected optimisation, same worst case)
+        for (int row = defaultTableModel.getRowCount() - 1; row >= 0; row--) {
+            String rowConfigName = (String)defaultTableModel.getValueAt(row, 0);
+
+            // check if this row corresponds to this model
+            // NOTE: in the case that a user deletes a model with a certain
+            // from their file system, and creates a new model with the same
+            // name, that model will be updated as if it were the one which's
+            // file got deleted -- effectively bypassing the uniqueness case
+            // this edge case will be ignored for the purposes of demonstration
+            if (rowConfigName.equals(configName)) {
+                defaultTableModel.setValueAt(averageQueueLength, row, 1);
+                defaultTableModel.setValueAt(averageQueueLength, row, 2);
+                defaultTableModel.setValueAt(maxQueueLength, row, 3);
+
+                // if we have found a match
+                found = true;
+            }
+        }
+
+        // add new row if not previously in table
+        if (!found) {
+            defaultTableModel.addRow(new Object[]{configName, averageWaitTime, averageQueueLength, maxQueueLength});
+        }
+
+        // update UI in any case
         updateUI();
     }
 }

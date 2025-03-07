@@ -68,7 +68,7 @@ public class CarriagewayValidatorTest {
                                 false
                         ),
                         List.of(
-                                "Incoming flow [150] does not equal sum of outgoing flows [E: 20; S: 30; W: 75]=125 in direction: NORTH"
+                                "Incoming flow [150] is greater than the sum of outgoing flows [E: 20; S: 30; W: 75]=125 in direction: NORTH"
                         )
                 ),
                 Arguments.of(
@@ -86,16 +86,15 @@ public class CarriagewayValidatorTest {
                                                 new IncomingLane(
                                                         Direction.EAST,
                                                         VehicleType.CAR,
-                                                        Seeds.allDirectionsE,
-                                                        1
-                                        )),
-                                        150,
+                                                        Seeds.allDirectionsE)
+                                        ),
+                                        160,
                                         new int[] { 50, 0, 30, 75 }
                                 ),
                                 false
                         ),
                         List.of(
-                                "Incoming flow [150] does not equal sum of outgoing flows [N: 50; S: 30; W: 75]=155 in direction: EAST"
+                                "Incoming flow [160] is greater than the sum of outgoing flows [N: 50; S: 30; W: 75]=155 in direction: EAST"
                         )
                 ),
                 Arguments.of(
@@ -117,13 +116,13 @@ public class CarriagewayValidatorTest {
                                                         1
                                                 )
                                         ),
-                                        150,
+                                        600,
                                         new int[] { 150, 150, 0, 150 }
                                 ),
                                 false
                         ),
                         List.of(
-                                "Incoming flow [150] does not equal sum of outgoing flows [N: 150; E: 150; W: 150]=450 in direction: SOUTH"
+                                "Incoming flow [600] is greater than the sum of outgoing flows [N: 150; E: 150; W: 150]=450 in direction: SOUTH"
                         )
                 ),
                 Arguments.of(
@@ -151,7 +150,7 @@ public class CarriagewayValidatorTest {
                                 false
                         ),
                         List.of(
-                                "Incoming flow [90] does not equal sum of outgoing flows [N: 20; E: 30; S: 30]=80 in direction: WEST"
+                                "Incoming flow [90] is greater than the sum of outgoing flows [N: 20; E: 30; S: 30]=80 in direction: WEST"
                         )
                 )
         );
