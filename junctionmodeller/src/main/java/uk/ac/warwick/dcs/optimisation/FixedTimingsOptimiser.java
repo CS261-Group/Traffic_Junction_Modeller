@@ -22,7 +22,7 @@ public class FixedTimingsOptimiser extends Optimiser {
     }
 
     @Override
-    public void optimiseAll(int numIterations) {
+    public void optimise(int numIterations) {
         this.greenTimings(numIterations);
     }
 

@@ -71,7 +71,7 @@ class Model implements Runnable {
      * @return can ignore, returns a reference to internal model data
      */
     public JunctionData optimiseModel() {
-        optimiser.optimiseAll(NUM_ITERATIONS);
+        optimiser.optimise(NUM_ITERATIONS);
         return junctionData;
     }
 
@@ -84,7 +84,7 @@ class Model implements Runnable {
      */
     public void runOnce() {
         if (optimiser != null){
-            optimiser.optimiseAll(NUM_ITERATIONS);
+            optimiser.optimise(NUM_ITERATIONS);
         }
         evaluation.getEvaluation(junctionData);
         // update visualisation with new values
@@ -101,7 +101,7 @@ class Model implements Runnable {
             });
         } else {
             Platform.runLater(() -> {
-                optimiser.optimiseAll(NUM_ITERATIONS);
+                optimiser.optimise(NUM_ITERATIONS);
                 // TODO: visualiser data to avoid race condition
                 JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
                 visualisation.notify(new OptimisationUpdate(junctionData));

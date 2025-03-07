@@ -23,7 +23,7 @@ public class ActuatedTimingsOptimiser extends Optimiser {
     }
 
     @Override
-    public void optimiseAll(int numIterations) {
+    public void optimise(int numIterations) {
         this.cycleTiming(numIterations);
     }
 
