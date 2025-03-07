@@ -4,7 +4,6 @@ package uk.ac.warwick.dcs.evaluation.lanemetrics;
 public class LaneMetrics implements ILaneMetrics {
     private double averageDelay;
     private double avgQueueLength;
-    private double maxQueueLength; // not currently used
 
     // shares this instance with Junction Metrics
     private final LaneMetricCalculator calculator;
@@ -76,8 +75,4 @@ public class LaneMetrics implements ILaneMetrics {
         return avgQueueLength;
     }
 
-    @Override
-    public double getMaxQueueLength(){
-        return maxQueueLength;
-    }
 }
