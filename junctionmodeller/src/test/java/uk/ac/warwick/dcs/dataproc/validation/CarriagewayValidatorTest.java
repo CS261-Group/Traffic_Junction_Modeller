@@ -86,7 +86,8 @@ public class CarriagewayValidatorTest {
                                                 new IncomingLane(
                                                         Direction.EAST,
                                                         VehicleType.CAR,
-                                                        Seeds.allDirectionsE)
+                                                        Seeds.allDirectionsE,
+                                                        1)
                                         ),
                                         160,
                                         new int[] { 50, 0, 30, 75 }
