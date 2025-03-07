@@ -81,9 +81,10 @@ public class Visualiser extends Application implements IModelVisualisationDelete
         DeleteButton deleteBtn = new DeleteButton(List.of(this, toggleSlot));
 
         // popups available
-        tabsMenu = new TabsMenu(modelVisualisations, List.of(toggleSlot, deleteBtn));
+
         infoMenu = new InfoMenu();
-        configMenu = new ConfigMenu();
+        configMenu = new ConfigMenu(modelVisualisations, List.of(toggleSlot, deleteBtn));
+        tabsMenu = new TabsMenu(modelVisualisations, List.of(toggleSlot, deleteBtn), configMenu);
 
         // buttons available
         ConfigButton configBtn = new ConfigButton(configMenu);
@@ -100,6 +101,7 @@ public class Visualiser extends Application implements IModelVisualisationDelete
 
         // add subscribers
         addSubscribers.add(tabsMenu);
+        addSubscribers.add(configMenu);
         addSubscribers.add(toggleSlot);
 
         // create the root scene and stage sett
