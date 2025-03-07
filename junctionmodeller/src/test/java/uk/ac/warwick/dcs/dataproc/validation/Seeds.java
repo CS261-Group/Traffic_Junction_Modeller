@@ -1,19 +1,20 @@
 package uk.ac.warwick.dcs.dataproc.validation;
 
-import org.junit.jupiter.params.provider.Arguments;
+import java.util.List;
+
+import static org.mockito.Mockito.mock;
+
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
 import uk.ac.warwick.dcs.contracts.lights.FixedCycleTrafficLight;
-import uk.ac.warwick.dcs.contracts.structure.*;
+import uk.ac.warwick.dcs.contracts.structure.Carriageway;
+import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
+import uk.ac.warwick.dcs.contracts.structure.IncomingRoad;
+import uk.ac.warwick.dcs.contracts.structure.OutgoingLane;
+import uk.ac.warwick.dcs.contracts.structure.OutgoingRoad;
 import uk.ac.warwick.dcs.contracts.timings.Group;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
-
-import java.util.List;
-import java.util.stream.Stream;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 
 class Seeds {
     private static JunctionConfiguration goodJunctionConfiguration = null;
@@ -67,8 +68,8 @@ class Seeds {
                 specificFlows[direction.ordinal()] = 0;
                 specificDirections[direction.ordinal()] = false;
                 IncomingRoad incomingRoad = new IncomingRoad(direction, List.of(
-                        new IncomingLane(direction, VehicleType.CAR, specificDirections),
-                        new IncomingLane(direction, VehicleType.CAR, specificDirections)
+                        new IncomingLane(direction, VehicleType.CAR, specificDirections, 1),
+                        new IncomingLane(direction, VehicleType.CAR, specificDirections, 2)
                 ), 150, specificFlows);
                 OutgoingRoad outgoingRoad = new OutgoingRoad(direction, List.of(new OutgoingLane(direction)));
                 goodCarriageways[direction.ordinal()] = new Carriageway(direction, outgoingRoad, incomingRoad, false);

@@ -1,15 +1,19 @@
 package uk.ac.warwick.dcs.contracts.builders;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
 import uk.ac.warwick.dcs.contracts.exceptions.IncompleteBuildSettingsException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidFlowValueException;
 import uk.ac.warwick.dcs.contracts.exceptions.InvalidPermittedDirectionsException;
-import uk.ac.warwick.dcs.contracts.structure.*;
-
-import java.util.LinkedList;
-import java.util.List;
+import uk.ac.warwick.dcs.contracts.structure.Carriageway;
+import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
+import uk.ac.warwick.dcs.contracts.structure.IncomingRoad;
+import uk.ac.warwick.dcs.contracts.structure.OutgoingLane;
+import uk.ac.warwick.dcs.contracts.structure.OutgoingRoad;
 
 public class CarriagewayBuilder implements ICarriagewayBuilder {
     /**
@@ -82,7 +86,7 @@ public class CarriagewayBuilder implements ICarriagewayBuilder {
 
     @Override
     public ICarriagewayBuilder addIncomingLane(VehicleType type, boolean[] directions) throws InvalidPermittedDirectionsException {
-        IncomingLane lane = laneFactory.createIncomingLane(type, directions);
+        IncomingLane lane = laneFactory.createIncomingLane(type, directions, incomingLanes.size() + 1);
         incomingLanes.add(lane);
         return this;
     }

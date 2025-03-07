@@ -1,14 +1,19 @@
 package uk.ac.warwick.dcs.ui.panels;
 
-import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
-import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
-import uk.ac.warwick.dcs.ui.util.WrappingLabel;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
+import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
+import uk.ac.warwick.dcs.ui.util.WrappingLabel;
 
 /**
  * Panel used to determine whether we optimise signal timings and
@@ -30,11 +35,13 @@ public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<Gro
 
     @Override
     protected void setUp() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
         JLabel groupTimingsHeading = new JLabel("Group Light Timings");
         groupTimingsHeading.setFont(headingFont);
-        add(groupTimingsHeading);
+        JPanel groupTimingsHeadingContainer = new JPanel(new GridLayout(0, 1));
+        groupTimingsHeadingContainer.add(groupTimingsHeading);
+        add(groupTimingsHeadingContainer);
 
         optimiseCheckbox = new JCheckBox("Optimise signal timings");
         optimiseCheckbox.setFont(labelFont);
@@ -46,15 +53,18 @@ public class GroupTimingsPanel extends CustomPanel implements IReadablePanel<Gro
                 setTimingsVisibility(true);
             }
         });
-        add(optimiseCheckbox);
+
+        JPanel optimiseCheckboxContainer = new JPanel(new GridLayout(0, 1));
+        optimiseCheckboxContainer.add(optimiseCheckbox);
+        add(optimiseCheckboxContainer);
 
 
         WrappingLabel desc = new WrappingLabel("All groups have some (maximum) active time in seconds");
         desc.setFont(labelFont);
         add(desc);
 
-        groupTimingsContainer = new JPanel();
-        groupTimingsContainer.setLayout(new BoxLayout(groupTimingsContainer, BoxLayout.Y_AXIS));
+        groupTimingsContainer = new JPanel(new GridLayout(0,1));
+
         add(groupTimingsContainer);
 
         // initially create correct number of groups

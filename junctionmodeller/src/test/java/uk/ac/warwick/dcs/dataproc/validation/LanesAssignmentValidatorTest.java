@@ -1,17 +1,25 @@
 package uk.ac.warwick.dcs.dataproc.validation;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
+
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
 import uk.ac.warwick.dcs.contracts.lights.FixedCycleTrafficLight;
-import uk.ac.warwick.dcs.contracts.structure.*;
+import uk.ac.warwick.dcs.contracts.structure.Carriageway;
+import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
+import uk.ac.warwick.dcs.contracts.structure.IncomingRoad;
+import uk.ac.warwick.dcs.contracts.structure.OutgoingLane;
+import uk.ac.warwick.dcs.contracts.structure.OutgoingRoad;
 import uk.ac.warwick.dcs.contracts.timings.Group;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class LanesAssignmentValidatorTest {
     private final LaneAssignmentValidator validator;
@@ -43,8 +51,8 @@ public class LanesAssignmentValidatorTest {
             specificFlows[direction.ordinal()] = 0;
             specificDirections[direction.ordinal()] = false;
             IncomingRoad incomingRoad = new IncomingRoad(direction, List.of(
-                    new IncomingLane(direction, VehicleType.CAR, specificDirections),
-                    new IncomingLane(direction, VehicleType.CAR, specificDirections)
+                    new IncomingLane(direction, VehicleType.CAR, specificDirections, 1),
+                    new IncomingLane(direction, VehicleType.CAR, specificDirections, 2)
             ), 150, specificFlows);
             OutgoingRoad outgoingRoad = new OutgoingRoad(direction, List.of(new OutgoingLane(direction)));
             carriageways[direction.ordinal()] = new Carriageway(direction, outgoingRoad, incomingRoad, false);

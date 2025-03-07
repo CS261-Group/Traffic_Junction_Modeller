@@ -1,27 +1,29 @@
 package uk.ac.warwick.dcs.evaluation;
 
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
-import uk.ac.warwick.dcs.contracts.enums.Direction;
-import uk.ac.warwick.dcs.contracts.enums.VehicleType;
-import uk.ac.warwick.dcs.contracts.structure.*;
-import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
-
-
-import uk.ac.warwick.dcs.contracts.lights.FixedCycleTrafficLight; 
-
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
+import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.contracts.enums.VehicleType;
+import uk.ac.warwick.dcs.contracts.lights.FixedCycleTrafficLight;
+import uk.ac.warwick.dcs.contracts.structure.Carriageway;
+import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
+import uk.ac.warwick.dcs.contracts.structure.IncomingRoad;
+import uk.ac.warwick.dcs.contracts.structure.OutgoingLane;
+import uk.ac.warwick.dcs.contracts.structure.OutgoingRoad;
 
 public class JunctionMetricsTest {
 
     @Test
     public void testAggregateMetricsForIncomingRoad() {
 
-        IncomingLane lane1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, false, true, false});
-        IncomingLane lane2 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, false, true, false});
-        IncomingLane lane3 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, true, true});
+        IncomingLane lane1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, false, true, false}, 1);
+        IncomingLane lane2 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, false, true, false}, 2);
+        IncomingLane lane3 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, true, true}, 3);
 
         int incomingFlow = 100;
         int[] outgoingFlows = {0, 30, 40, 0}; 
@@ -50,16 +52,16 @@ public class JunctionMetricsTest {
     @Test
     public void testAggregateMetricsForJunction() {
         // Define the incoming lanes for each direction
-        IncomingLane laneNorth1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, false, true, false});
-        IncomingLane laneNorth2 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, false, true, false});
-        IncomingLane laneNorth3 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, true, true});
+        IncomingLane laneNorth1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, false, true, false}, 1);
+        IncomingLane laneNorth2 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, false, true, false}, 2);
+        IncomingLane laneNorth3 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, true, true}, 3);
         
-        IncomingLane laneEast1 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, true, true});
-        IncomingLane laneEast2 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, true, true});
+        IncomingLane laneEast1 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, true, true}, 1);
+        IncomingLane laneEast2 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, true, true}, 2);
         
-        IncomingLane laneSouth1 = new IncomingLane(Direction.SOUTH, VehicleType.CAR, new boolean[]{false, true, false, false});
+        IncomingLane laneSouth1 = new IncomingLane(Direction.SOUTH, VehicleType.CAR, new boolean[]{false, true, false, false}, 1);
         
-        IncomingLane laneWest1 = new IncomingLane(Direction.WEST, VehicleType.CAR, new boolean[]{true, false, true, false});
+        IncomingLane laneWest1 = new IncomingLane(Direction.WEST, VehicleType.CAR, new boolean[]{true, false, true, false}, 1);
         
   
         OutgoingLane outgoingLaneNorth = new OutgoingLane(Direction.NORTH);
