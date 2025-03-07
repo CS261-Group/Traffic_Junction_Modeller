@@ -6,8 +6,6 @@ import uk.ac.warwick.dcs.contracts.exceptions.InvalidPermittedDirectionsExceptio
 import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 import uk.ac.warwick.dcs.contracts.structure.OutgoingLane;
 
-import java.util.Arrays;
-
 public class LaneFactory {
     private final Direction direction;
 
@@ -19,7 +17,7 @@ public class LaneFactory {
         return new OutgoingLane(direction);
     }
 
-    public IncomingLane createIncomingLane(VehicleType type, boolean[] availableDirections) throws InvalidPermittedDirectionsException {
+    public IncomingLane createIncomingLane(VehicleType type, boolean[] availableDirections, int laneNum) throws InvalidPermittedDirectionsException {
         // the incoming direction must be false
         if (availableDirections[direction.ordinal()]) {
             throw new InvalidPermittedDirectionsException(direction, availableDirections);
@@ -32,6 +30,6 @@ public class LaneFactory {
                 !availableDirections[Direction.WEST.ordinal()]) {
             throw new InvalidPermittedDirectionsException(direction, availableDirections);
         }
-        return new IncomingLane(direction, type, availableDirections);
+        return new IncomingLane(direction, type, availableDirections, laneNum);
     }
 }

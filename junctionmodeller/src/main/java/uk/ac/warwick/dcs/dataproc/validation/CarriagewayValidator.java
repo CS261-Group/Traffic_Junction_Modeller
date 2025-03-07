@@ -62,7 +62,10 @@ public class CarriagewayValidator extends Validator<Carriageway> {
             assert false;
         }
 
-        if (flowSum != incomingFlow) {
+        // the sums should be greater than or equal to the incoming flow
+        // remember that outgoing flows are actually saturation flows
+        // we should expect the sums of flows to be much higher than the incoming flow
+        if (flowSum < incomingFlow) {
             errors.add(diagFactory.createInvalidFlowSumMessage(carriageway.getDirection(), incomingFlow, outgoingFlows));
         }
 

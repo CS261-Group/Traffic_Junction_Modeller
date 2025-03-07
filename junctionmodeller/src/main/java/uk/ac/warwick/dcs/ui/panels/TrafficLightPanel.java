@@ -89,10 +89,16 @@ public class TrafficLightPanel extends CustomPanel implements IReadablePanel<Tra
         comboBoxContainer.add(numGroupsLbl);
         comboBoxContainer.add(groupsCombo);
         add(comboBoxContainer);
+        
+        JPanel laneGroupPanelContainer = new JPanel(new GridLayout(0, 1));
         for (LaneGroupPanel laneGroupPanel : laneGroupsPanels) {
-            add(laneGroupPanel);
+            laneGroupPanelContainer.add(laneGroupPanel);
         }
-        add(groupTimingsPanel);
+        add(laneGroupPanelContainer);
+
+        JPanel groupTimingsPanelContainer = new JPanel(new GridLayout(0,1));
+        groupTimingsPanelContainer.add(groupTimingsPanel);
+        add(groupTimingsPanelContainer);
 
         // this should trigger the change event
         // and also select the default value

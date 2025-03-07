@@ -1,27 +1,26 @@
 package uk.ac.warwick.dcs.contracts.timings;
 
-import org.junit.jupiter.api.BeforeEach;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
-import uk.ac.warwick.dcs.contracts.exceptions.NoValueExistsException;
-import uk.ac.warwick.dcs.contracts.structure.*;
-
-import java.util.List;
+import uk.ac.warwick.dcs.contracts.structure.IncomingLane;
 
 public class GroupsTest {
 
     @Test
     public void TestGroupTimings() {
-
-        IncomingLane lane1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, false, false});
-        IncomingLane lane2 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, false, false});
-        IncomingLane lane3 = new IncomingLane(Direction.SOUTH, VehicleType.CAR, new boolean[]{false, false, false, false});
-
+     
+        IncomingLane lane1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, false, false}, 1);
+        IncomingLane lane2 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, false, false}, 2);
+        IncomingLane lane3 = new IncomingLane(Direction.SOUTH, VehicleType.CAR, new boolean[]{false, false, false, false}, 3);
 
         Group group1 = new Group(1, List.of(lane1, lane2, lane3));
-
 
         assertTrue(group1.containsLane(lane1), "Group should contain lane1.");
         assertTrue(group1.containsLane(lane2), "Group should contain lane2.");
@@ -63,9 +62,9 @@ public class GroupsTest {
 
     @Test
     public void testCycleTimeCalculation(){
-        IncomingLane lane1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, false, false});
-        IncomingLane lane2 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, false, false});
-        IncomingLane lane3 = new IncomingLane(Direction.SOUTH, VehicleType.CAR, new boolean[]{false, false, false, false});
+        IncomingLane lane1 = new IncomingLane(Direction.NORTH, VehicleType.CAR, new boolean[]{false, true, false, false}, 1);
+        IncomingLane lane2 = new IncomingLane(Direction.EAST, VehicleType.CAR, new boolean[]{true, false, false, false}, 2);
+        IncomingLane lane3 = new IncomingLane(Direction.SOUTH, VehicleType.CAR, new boolean[]{false, false, false, false}, 3);
 
         Group group1 = new Group(1, List.of(lane1, lane2, lane3));
         GroupTiming group1Timing = new GroupTiming(1, 30);
@@ -79,7 +78,5 @@ public class GroupsTest {
         assertEquals(15.0, groupsWithMultiple.cycleLostTime(), "Lost time");
         // 30 + 30 + 15
         assertEquals(75, groupsWithMultiple.getCycleTime(),"cycle time should be sum of grouptimings + lost cycle time");
-
     }
-
 }

@@ -4,8 +4,11 @@ import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.evaluation.Evaluator;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.optimisation.localsearch.EvaluationFunction;
-import uk.ac.warwick.dcs.optimisation.noniterative.FixedCycleAndGreenTimeInitialiser;
 
+/**
+ * Optimiser holds an instance of a junction
+ * And optimises it to minimise a evaluation function
+ */
 public abstract class Optimiser {
     protected final JunctionConfiguration junctionConfig;
     protected final JunctionData junctionData;
@@ -19,6 +22,10 @@ public abstract class Optimiser {
         this.evaluationFunction = new EvaluationFunction(evaluation);
     }
 
-    public abstract void optimiseAll(int numIterations);
+    /**
+     * Makes numIterations steps of a local search
+     * @param numIterations number of steps to make
+     */
+    public abstract void optimise(int numIterations);
 
 }
