@@ -186,6 +186,6 @@ public class MainForm extends JFrame {
      * @param metrics metrics to display
      */
     public void addMetricToHistory(String modelName, JunctionMetrics metrics){
-        historyPanel.addRow(modelName, metrics.getAverageDelay(), metrics.getAverageQueue(), metrics.getMaxQueue());
+        historyPanel.updateRow(modelName, metrics.getAverageDelay(), metrics.getAverageQueue(), metrics.getMaxQueue());
     }
 }
