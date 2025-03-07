@@ -25,12 +25,14 @@ class ModelContainer implements IModelContainer {
 
     private final Map<String, Long> modelNames;
     private final Map<Long, Model> models;
+    private final Map<Long, Future<?>> runningModels;
     private final IModelFactory modelFactory;
     private final ExecutorService executorService;
 
     public ModelContainer(IModelFactory modelFactory) {
         this.models = new HashMap<>();
         this.modelNames = new HashMap<>();
+        this.runningModels = new HashMap<>();
         this.modelFactory = modelFactory;
         this.executorService = Executors.newFixedThreadPool(MAX_CONCURRENT_MODELS);  // Initial thread size, will be updated dynamically
     }
@@ -46,10 +48,12 @@ class ModelContainer implements IModelContainer {
         }
 
         Model model = modelFactory.createModel(junctionConfiguration, visualisation);
+        Future<?> modelFuture = executorService.submit(model);
+
         models.put(model.getId(), model);
         modelNames.put(configName, model.getId());
+        runningModels.put(model.getId(), modelFuture);
 
-        executorService.submit(model);
 
         return true; // successfully created
     }
@@ -73,56 +77,14 @@ class ModelContainer implements IModelContainer {
         Model model = models.remove(modelNames.get(configName));
         modelNames.remove(configName);
 
+        // model must exist at this point
+        assert model != null;
+
         // stop the model running
         model.stop();
-    }
 
-    /**
-     * Wait for all models to finish evaluation and return the evaluated models.
-     * 
-     * @param futures Set of Future objects for the models that are being evaluated
-     * @return A set of evaluated models
-     */
-    public Set<Model> getEvaluatedModels(Set<Future<Model>> futures) {
-        Set<Model> evaluatedModels = new HashSet<>();
-        
-        for (Future<Model> future : futures) {
-            try {
-                Model evaluatedModel = future.get();  // This will block until the model is evaluated
-                evaluatedModels.add(evaluatedModel);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
-        
-        return evaluatedModels;
-    }
-
-    /**
-     * Wait for all models to finish optimisation and return the optimised models.
-     * 
-     * @param futures Set of Future objects for the models that are being optimised
-     * @return A set of optimised models
-     */
-    public Set<Model> getOptimisedModels(Set<Future<Model>> futures) {
-        Set<Model> optimisedModels = new HashSet<>();
-        
-        for (Future<Model> future : futures) {
-            try {
-                Model optimisedModel = future.get();  // This will block until the model is optimised
-                optimisedModels.add(optimisedModel);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-        }
-        
-        return optimisedModels;
-    }
-
-    /**
-     * Shut down the executor service after finishing all tasks.
-     */
-    public void shutdown() {
-        executorService.shutdown();
+        // interrupt the running thread
+        Future<?> modelFuture = runningModels.get(model.getId());
+        modelFuture.cancel(true);
     }
 }

@@ -13,6 +13,9 @@ import uk.ac.warwick.dcs.optimisation.Optimiser;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
+
 /**
  * Class used to hold settings and configurations for a running
  * model instance being analysed.
@@ -71,26 +74,40 @@ class Model implements Runnable {
     @Override
     public void run() {
         running = true;
+
+        Semaphore semaphore = new Semaphore(0);
+
         // not optimising => evaluate and return
         if (optimiser != null) {
-            while (running) {
+            while (running && !Thread.currentThread().isInterrupted()) {
                 optimiser.optimiseAll(NUM_ITERATIONS);
                 JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
 
                 Platform.runLater(() -> {
-                    if (optimiser instanceof FixedTimingsOptimiser) { // optimising fixed timings
-                        visualisation.notify(new OptimisationUpdate<>(junctionData.getFixedCycleVisualisationData()));
+                    try {
+                        if (optimiser instanceof FixedTimingsOptimiser) { // optimising fixed timings
+                            visualisation.notify(new OptimisationUpdate<>(junctionData.getFixedCycleVisualisationData()));
 
-                    } else { // optimising actuation
-                        assert optimiser instanceof ActuatedTimingsOptimiser;
-                        visualisation.notify(new OptimisationUpdate<>(junctionData.getActuationVisualisationData()));
+                        } else { // optimising actuation
+                            assert optimiser instanceof ActuatedTimingsOptimiser;
+                            visualisation.notify(new OptimisationUpdate<>(junctionData.getActuationVisualisationData()));
+                        }
+
+                        visualisation.notify(new EvaluationUpdate(metrics));
+                    } finally {
+                        semaphore.release();
                     }
-
-                    visualisation.notify(new EvaluationUpdate(metrics));
                 });
+
+                try {
+                    semaphore.acquire();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }
 
+        // this update doesn't require semaphore trickery
         Platform.runLater(() -> {
             JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
             visualisation.notify(new EvaluationUpdate(metrics));
