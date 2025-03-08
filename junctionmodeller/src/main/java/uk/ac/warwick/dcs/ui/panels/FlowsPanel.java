@@ -34,10 +34,10 @@ public class FlowsPanel extends CustomPanel implements IReadablePanel<FlowData> 
             IntegerTextField flowField;
             if (directionIdx == direction.ordinal()) { // incoming flow
                 flowLbl = new JLabel("Incoming " + Constants.DIRECTIONS[directionIdx]);
-                flowField = new IntegerTextField(Defaults.incomingFlows[directionIdx]);
+                flowField = new IntegerTextField(Defaults.INCOMING_FLOWS[directionIdx]);
             } else { // outgoing flow
                 flowLbl = new JLabel("Outgoing " + Constants.DIRECTIONS[directionIdx]);
-                flowField = new IntegerTextField(Defaults.outgoingFlows[directionIdx]);
+                flowField = new IntegerTextField(Defaults.OUTGOING_FLOWS[directionIdx]);
             }
             flowLbl.setFont(labelFont);
             flowField.setFont(labelFont);
