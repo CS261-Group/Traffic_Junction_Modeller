@@ -1,11 +1,11 @@
 package uk.ac.warwick.dcs.model.messaging;
 
-public class OptimisationUpdate<T> extends ModelUpdate<VisualisationData<T>> {
-    public OptimisationUpdate(VisualisationData<T> metrics) {
+public class OptimisationUpdate extends ModelUpdate<VisualisationData> {
+    public OptimisationUpdate(VisualisationData metrics) {
         super(ModelUpdateType.OPTIMISATION, metrics);
     }
 
-    protected VisualisationData<T> getOptimisation() {
+    public VisualisationData getOptimisation() {
         return getPayload();
     }
 }

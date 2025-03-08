@@ -15,6 +15,6 @@ public class EvaluationFunction {
 
     public double evaluationAt(JunctionData data){
         JunctionMetrics metrics = evaluation.getEvaluation(data);
-        return metrics.getAverageDelay();
+        return metrics.getAverageDelay() + metrics.getAverageQueue();
     }
 }

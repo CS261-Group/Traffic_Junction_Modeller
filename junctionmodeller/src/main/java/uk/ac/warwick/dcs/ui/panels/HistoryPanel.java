@@ -63,6 +63,11 @@ public class HistoryPanel extends CustomPanel{
 
     public void updateRow(String configName, double averageWaitTime, double averageQueueLength, double maxQueueLength){
         boolean found = false;
+        
+        String avgWaitString = String.format("%.2f", averageWaitTime);
+        String avgQueueString = String.format("%.2f", averageQueueLength);
+        String maxQueueString = String.format("%.2f", maxQueueLength);
+
         // we iterate backwards (slight expected optimisation, same worst case)
         for (int row = defaultTableModel.getRowCount() - 1; row >= 0; row--) {
             String rowConfigName = (String)defaultTableModel.getValueAt(row, 0);
@@ -74,9 +79,9 @@ public class HistoryPanel extends CustomPanel{
             // file got deleted -- effectively bypassing the uniqueness case
             // this edge case will be ignored for the purposes of demonstration
             if (rowConfigName.equals(configName)) {
-                defaultTableModel.setValueAt(averageQueueLength, row, 1);
-                defaultTableModel.setValueAt(averageQueueLength, row, 2);
-                defaultTableModel.setValueAt(maxQueueLength, row, 3);
+                defaultTableModel.setValueAt(avgWaitString, row, 1);
+                defaultTableModel.setValueAt(avgQueueString, row, 2);
+                defaultTableModel.setValueAt(maxQueueString, row, 3);
 
                 // if we have found a match
                 found = true;
@@ -85,7 +90,7 @@ public class HistoryPanel extends CustomPanel{
 
         // add new row if not previously in table
         if (!found) {
-            defaultTableModel.addRow(new Object[]{configName, averageWaitTime, averageQueueLength, maxQueueLength});
+            defaultTableModel.addRow(new Object[]{configName, avgWaitString, avgQueueString, maxQueueString});
         }
 
         // update UI in any case

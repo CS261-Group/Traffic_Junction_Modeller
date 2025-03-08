@@ -6,7 +6,6 @@ import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.optimisation.noniterative.ActuatedCycleAndGreenTimeInitialiser;
 
 
-import java.util.Iterator;
 import java.util.Random;
 
 public class ExtensionHeadwaySearchSpace implements ISearchSpace{
