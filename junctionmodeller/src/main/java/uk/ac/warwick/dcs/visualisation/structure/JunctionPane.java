@@ -7,6 +7,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.model.messaging.ModelUpdateType;
 import uk.ac.warwick.dcs.model.messaging.OptimisationUpdate;
 import uk.ac.warwick.dcs.visualisation.Constants;
 
@@ -56,11 +57,18 @@ public class JunctionPane extends Pane {
 
     public void displayGroupTimings(OptimisationUpdate modelUpdate){
         List<String> groupTimings = modelUpdate.getOptimisation().getTimings();
+        ModelUpdateType type = modelUpdate.getType();
+
+        String preprefix = (type == ModelUpdateType.EVALUATION) ? "Average " : "";
 
         StringBuilder builder = new StringBuilder();
 
+        // index might not actually be the same as group num???
+        int groupIndex = 1;
         for (String timing : groupTimings){
-            builder.append(timing).append('\n');
+            String prefix = "Group " + groupIndex + " Timing:";
+            builder.append(preprefix).append(prefix).append(timing).append('\n');
+            groupIndex++;
         }
 
         intersection.getTextField().setText(builder.toString());

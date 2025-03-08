@@ -20,7 +20,7 @@ import java.util.concurrent.Semaphore;
  * model instance being analysed.
  */
 class Model implements Runnable {
-    private static final int NUM_ITERATIONS = 10000;
+    private static final int NUM_ITERATIONS = 50000000; // 50 million
 
     private final long id;
     private final Evaluator evaluation;
