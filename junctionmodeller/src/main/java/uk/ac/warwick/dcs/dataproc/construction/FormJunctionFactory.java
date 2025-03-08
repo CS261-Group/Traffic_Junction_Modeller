@@ -1,17 +1,34 @@
 package uk.ac.warwick.dcs.dataproc.construction;
 
+import java.util.List;
+
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
-import uk.ac.warwick.dcs.contracts.builders.*;
+import uk.ac.warwick.dcs.contracts.builders.CarriagewayBuilder;
+import uk.ac.warwick.dcs.contracts.builders.GroupBuilder;
+import uk.ac.warwick.dcs.contracts.builders.ICarriagewayBuilder;
+import uk.ac.warwick.dcs.contracts.builders.IGroupBuilder;
+import uk.ac.warwick.dcs.contracts.builders.ILightBuilder;
+import uk.ac.warwick.dcs.contracts.builders.LightBuilder;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 import uk.ac.warwick.dcs.contracts.enums.VehicleType;
-import uk.ac.warwick.dcs.contracts.exceptions.*;
+import uk.ac.warwick.dcs.contracts.exceptions.IncompleteBuildSettingsException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidDirectionException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidFlowValueException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupNumberException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidGroupTimingException;
+import uk.ac.warwick.dcs.contracts.exceptions.InvalidPermittedDirectionsException;
 import uk.ac.warwick.dcs.contracts.lights.TrafficLight;
-import uk.ac.warwick.dcs.contracts.structure.*;
+import uk.ac.warwick.dcs.contracts.structure.Carriageway;
 import uk.ac.warwick.dcs.contracts.timings.Groups;
-import uk.ac.warwick.dcs.ui.formdata.*;
-
-import java.util.List;
+import uk.ac.warwick.dcs.ui.formdata.AvailableDirections;
+import uk.ac.warwick.dcs.ui.formdata.ConfigurationData;
+import uk.ac.warwick.dcs.ui.formdata.DirectionData;
+import uk.ac.warwick.dcs.ui.formdata.FlowData;
+import uk.ac.warwick.dcs.ui.formdata.GroupTimings;
+import uk.ac.warwick.dcs.ui.formdata.LaneGroup;
+import uk.ac.warwick.dcs.ui.formdata.LaneGroups;
+import uk.ac.warwick.dcs.ui.formdata.TrafficLightData;
 
 /**
  * Concrete implementation of <code>IJunctionFactory</code> for taking

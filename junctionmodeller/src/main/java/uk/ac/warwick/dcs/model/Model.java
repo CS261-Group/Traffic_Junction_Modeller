@@ -1,35 +1,37 @@
 package uk.ac.warwick.dcs.model;
 
+import javafx.application.Platform;
 import uk.ac.warwick.dcs.contracts.enums.TrafficLightType;
 import uk.ac.warwick.dcs.evaluation.Evaluator;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 import uk.ac.warwick.dcs.evaluation.junctionmetrics.JunctionMetrics;
+import uk.ac.warwick.dcs.model.messaging.EvaluationUpdate;
+import uk.ac.warwick.dcs.model.messaging.OptimisationUpdate;
 import uk.ac.warwick.dcs.optimisation.ActuatedTimingsOptimiser;
 import uk.ac.warwick.dcs.optimisation.FixedTimingsOptimiser;
 import uk.ac.warwick.dcs.optimisation.Optimiser;
 import uk.ac.warwick.dcs.contracts.JunctionConfiguration;
 import uk.ac.warwick.dcs.visualisation.IModelVisualisation;
 
-//NOTE: no longer runnable
+import java.util.concurrent.Semaphore;
+
 /**
  * Class used to hold settings and configurations for a running
  * model instance being analysed.
  */
 class Model implements Runnable {
+    private static final int NUM_ITERATIONS = 10000;
+
     private final long id;
     private final Evaluator evaluation;
     private final Optimiser optimiser;
     private final IModelVisualisation visualisation;
-    // Note: fields inside junction config are never updated,
-    // optimised junction values are held in junction data.
-    // TODO: if we want to be able to save optimised junction we
-    //  need a class to update junctionConfig with junctionData values
-    private final JunctionConfiguration junctionConfig;
     private final JunctionData junctionData; // holds optimised values
+
+    private volatile boolean running;
 
     public Model(long id, JunctionConfiguration junctionConfig, IModelVisualisation visualisation) {
         this.id = id;
-        this.junctionConfig = junctionConfig;
         this.junctionData = new JunctionData(junctionConfig);
         this.evaluation = new Evaluator(junctionConfig); // does not evaluate yet, just creates class
 
@@ -61,33 +63,56 @@ class Model implements Runnable {
         return evaluation.getEvaluation(junctionData);
     }
 
-    /**
-     * Optimise the model, finding the best values that minimise the evaluation function.
-     * @return can ignore, returns a reference to internal model data
-     */
-    public JunctionData optimiseModel() {
-        optimiser.optimiseAll();
-        return junctionData;
-    }
-
     @Override
     public int hashCode() { return (int)id; }
 
-    /**
-     * Goes through several iterations of optimisation if applicable
-     * then updates its evaluation
-     */
-    public void runOnce(){
-        if (optimiser != null){
-            optimiser.optimiseAll();
-        }
-        evaluation.getEvaluation(junctionData);
-        // update visualisation with new values
+    public void stop() {
+        running = false;
     }
 
-    // should do something more useful
     @Override
     public void run() {
-        runOnce();
+        running = true;
+
+        Semaphore semaphore = new Semaphore(0);
+
+        // if optimising
+        if (optimiser != null) {
+            while (running && !Thread.currentThread().isInterrupted()) {
+                optimiser.optimise(NUM_ITERATIONS);
+                JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
+
+                Platform.runLater(() -> {
+                    try {
+                        if (optimiser instanceof FixedTimingsOptimiser) { // optimising fixed timings
+                            visualisation.notify(new OptimisationUpdate<>(junctionData.getFixedCycleVisualisationData()));
+
+                        } else { // optimising actuation
+                            assert optimiser instanceof ActuatedTimingsOptimiser;
+                            visualisation.notify(new OptimisationUpdate<>(junctionData.getActuationVisualisationData()));
+                        }
+
+                        visualisation.notify(new EvaluationUpdate(metrics));
+                    } finally {
+                        semaphore.release();
+                    }
+                });
+
+                try {
+                    semaphore.acquire();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+
+        // not optimising => evaluate and return
+        // this update doesn't require semaphore trickery
+        Platform.runLater(() -> {
+            JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
+            visualisation.notify(new EvaluationUpdate(metrics));
+        });
+
+        running = false;
     }
 }

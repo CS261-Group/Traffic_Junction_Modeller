@@ -51,25 +51,25 @@ public class DiagnosticFactoryTest {
                         Direction.NORTH,
                         150,
                         new int[]{0, 50, 50, 45},
-                        "Incoming flow [150] does not equal sum of outgoing flows [E: 50; S: 50; W: 45]=145 in direction: NORTH"
+                        "Incoming flow [150] is greater than the sum of outgoing flows [E: 50; S: 50; W: 45]=145 in direction: NORTH"
                 ),
                 Arguments.of(
                         Direction.EAST,
-                        20,
-                        new int[]{0, 0, 10, 9},
-                        "Incoming flow [20] does not equal sum of outgoing flows [N: 0; S: 10; W: 9]=19 in direction: EAST"
+                        101,
+                        new int[]{0, 0, 10, 90},
+                        "Incoming flow [101] is greater than the sum of outgoing flows [N: 0; S: 10; W: 90]=100 in direction: EAST"
                 ),
                 Arguments.of(
                         Direction.SOUTH,
-                        350,
+                        390,
                         new int[]{100, 20, 0, 250},
-                        "Incoming flow [350] does not equal sum of outgoing flows [N: 100; E: 20; W: 250]=370 in direction: SOUTH"
+                        "Incoming flow [390] is greater than the sum of outgoing flows [N: 100; E: 20; W: 250]=370 in direction: SOUTH"
                 ),
                 Arguments.of(
                         Direction.WEST,
                         195,
                         new int[]{10, 10, 10, 0},
-                        "Incoming flow [195] does not equal sum of outgoing flows [N: 10; E: 10; S: 10]=30 in direction: WEST"
+                        "Incoming flow [195] is greater than the sum of outgoing flows [N: 10; E: 10; S: 10]=30 in direction: WEST"
                 )
         );
     }

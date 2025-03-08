@@ -7,31 +7,32 @@ import uk.ac.warwick.dcs.model.messaging.ModelUpdate;
 import uk.ac.warwick.dcs.model.messaging.ModelUpdateType;
 import uk.ac.warwick.dcs.visualisation.structure.JunctionPane;
 
-import java.util.Random;
 
 public class ModelVisualisation extends Pane implements IModelVisualisation {
     private final String modelName;
-
-    public ModelVisualisation(String modelName, JunctionPane junctionPane) {
+    private final JunctionConfiguration junctionConfig; // Store the JunctionConfiguration
+    
+    // Constructor now accepts JunctionConfiguration
+    public ModelVisualisation(String modelName, JunctionPane junctionPane, JunctionConfiguration junctionConfig) {
         super();
         this.modelName = modelName;
+        this.junctionConfig = junctionConfig; // Store the JunctionConfiguration
         setWidth(Constants.VISUALISER_WIDTH);
         setHeight(Constants.VISUALISER_HEIGHT);
-
         getChildren().setAll(junctionPane);
     }
 
     @Override
-    public String getModelName() { return modelName; }
+    public String getModelName() {
+        return modelName;
+    }
+
+    public JunctionConfiguration getJunctionConfiguration() {
+        return junctionConfig; // Return the stored JunctionConfiguration
+    }
 
     @Override
     public void notify(ModelUpdate update) {
-        // evaluation updates get updated in the main form, so
-        // they are passed through the Visualiser
-        if (update.getType() == ModelUpdateType.EVALUATION) {
-            Visualiser.getInstance().notifyUpdate(modelName, (EvaluationUpdate)update);
-        }
-
-        // TODO: update junction panel
+        // Handle notifications
     }
 }

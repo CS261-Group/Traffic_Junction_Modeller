@@ -33,8 +33,13 @@ public class IncomingRoad extends Road<IncomingLane>{
         return lanes.get(laneNum - 1); // -1 corrected for index
     }
 
+    /**
+     * Gets the lane number (from 1 to numLanes)
+     * @param lane Incoming lane to get the number of
+     * @return the laneNumber, which is the index + 1
+     */
     public int getNumOf(IncomingLane lane){
-        return lanes.indexOf(lane);
+        return lanes.indexOf(lane) + 1;
     }
 
     /**

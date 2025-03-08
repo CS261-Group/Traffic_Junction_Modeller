@@ -47,8 +47,8 @@ class VisualisationFactory implements IVisualisationFactory {
         return new JunctionPane(outgoingLaneCounts, incomingLaneCounts, incomingLaneDirections, incomingLaneGroupNums);
     }
 
-    @Override
     public ModelVisualisation createVisualisation(String configName, JunctionConfiguration config) {
-        return new ModelVisualisation(configName, createPaneFromConfig(config));
+        // Pass JunctionConfiguration to the ModelVisualisation constructor
+        return new ModelVisualisation(configName, createPaneFromConfig(config), config);
     }
 }

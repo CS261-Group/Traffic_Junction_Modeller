@@ -148,7 +148,13 @@ public class JunctionConfiguration implements Iterable<Carriageway> {
         Carriageway cw = getCarriageway(direction);
         return cw.getOutgoingFlow(direction);
     }
-
+    public int getOutgoingFlowFromTo(Direction fromDirection, Direction toDirection) throws InvalidDirectionException {
+        // Get the carriageway for the 'from' direction
+        Carriageway fromCarriageway = getCarriageway(fromDirection);
+    
+        // Get the outgoing flow from the 'from' direction to the 'to' direction
+        return fromCarriageway.getOutgoingFlow(toDirection);
+    }
     /**
      * Getter for the total number of lanes (incoming + outgoing) for a specific direction.
      * 
