@@ -120,7 +120,11 @@ public class JunctionData {
     }
 
     public void setCycleTime(double cycleTime){
-        this.cycleTime = cycleTime;
+        if (cycleTime < MIN_CYCLE_TIME){
+            this.cycleTime = MIN_CYCLE_TIME;
+        } else{
+            this.cycleTime = cycleTime;
+        }
     }
 
     public FixedCycleVisualisationData getFixedCycleVisualisationData() {
