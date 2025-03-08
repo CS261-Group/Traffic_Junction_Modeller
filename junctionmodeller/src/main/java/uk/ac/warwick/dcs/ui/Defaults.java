@@ -7,14 +7,14 @@ public abstract class Defaults {
     /**
      * For each of the directions, N, E, S, W
      */
-    public static final int[] incomingFlows = {550, 650, 450, 500};
+    public static final int[] INCOMING_FLOWS = {550, 650, 450, 500};
 
     /**
      * Outgoing flows for each direction in (left, through and right) will be the same
      */
-    public static final int[] outgoingFlows= {1500, 1500, 1500, 1500};
+    public static final int[] OUTGOING_FLOWS = {1500, 1500, 1500, 1500};
 
 
-    public static final int[] greenTimes = {30, 30};
+    public static final int GREEN_TIME = 30;
 
 }

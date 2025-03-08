@@ -33,7 +33,7 @@ public class GroupTimingSettingPanel extends CustomPanel implements IReadablePan
         timingLblContainer.add(timingLbl);
         add(timingLblContainer);
 
-        timingField = new IntegerTextField(Defaults.greenTimes[groupNum -1]);
+        timingField = new IntegerTextField(Defaults.GREEN_TIME);
         timingField.setFont(labelFont);
         add(timingField);
     }
