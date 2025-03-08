@@ -20,7 +20,7 @@ import java.util.concurrent.Semaphore;
  * model instance being analysed.
  */
 class Model implements Runnable {
-    private static final int NUM_ITERATIONS = 50000000; // 50 million
+    private static final int NUM_ITERATIONS = 10000;
 
     private final long id;
     private final Evaluator evaluation;
@@ -85,11 +85,11 @@ class Model implements Runnable {
                 Platform.runLater(() -> {
                     try {
                         if (optimiser instanceof FixedTimingsOptimiser) { // optimising fixed timings
-                            visualisation.notify(new OptimisationUpdate(junctionData.getFixedCycleVisualisationData()));
+                            visualisation.notify(new OptimisationUpdate<>(junctionData.getFixedCycleVisualisationData()));
 
                         } else { // optimising actuation
                             assert optimiser instanceof ActuatedTimingsOptimiser;
-                            visualisation.notify(new OptimisationUpdate(junctionData.getActuationVisualisationData()));
+                            visualisation.notify(new OptimisationUpdate<>(junctionData.getActuationVisualisationData()));
                         }
 
                         visualisation.notify(new EvaluationUpdate(metrics));

@@ -1,41 +1,19 @@
 package uk.ac.warwick.dcs.visualisation.structure;
 
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import uk.ac.warwick.dcs.visualisation.Constants;
-
-import java.util.List;
 
 /**
  * Central part of junction.
  */
-class Intersection extends StackPane {
-    private final Rectangle rectangle;
-    private final Text text;
-
+class Intersection extends Rectangle {
     public Intersection() {
-        setMinWidth(Constants.INTERSECTION_SIDE_LENGTH);
-        setMaxWidth(Constants.INTERSECTION_SIDE_LENGTH);
-        setMinHeight(Constants.INTERSECTION_SIDE_LENGTH);
-        setMaxHeight(Constants.INTERSECTION_SIDE_LENGTH);
+        setWidth(Constants.INTERSECTION_SIDE_LENGTH);
+        setHeight(Constants.INTERSECTION_SIDE_LENGTH);
+        setFill(Color.GREY);
 
-        rectangle = new Rectangle();
-        rectangle.setWidth(Constants.INTERSECTION_SIDE_LENGTH);
-        rectangle.setHeight(Constants.INTERSECTION_SIDE_LENGTH);
-        rectangle.setFill(Color.GREY);
-
-        setLayoutX((double)(Constants.VISUALISER_WIDTH - Constants.INTERSECTION_SIDE_LENGTH) / 2D);
-        setLayoutY((double)(Constants.VISUALISER_WIDTH - Constants.INTERSECTION_SIDE_LENGTH) / 2D);
-
-        text = new Text();
-        text.setFill(Color.WHITE);
-
-        getChildren().setAll(rectangle,text);
-    }
-
-    public Text getTextField(){
-        return text;
+        setX((double)(Constants.VISUALISER_WIDTH - Constants.INTERSECTION_SIDE_LENGTH) / 2D);
+        setY((double)(Constants.VISUALISER_WIDTH - Constants.INTERSECTION_SIDE_LENGTH) / 2D);
     }
 }

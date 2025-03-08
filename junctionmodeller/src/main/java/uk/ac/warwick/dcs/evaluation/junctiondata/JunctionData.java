@@ -9,7 +9,6 @@ import uk.ac.warwick.dcs.model.messaging.ActuationVisualisationData;
 import uk.ac.warwick.dcs.model.messaging.FixedCycleVisualisationData;
 import uk.ac.warwick.dcs.model.messaging.FixedTiming;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -109,8 +108,6 @@ public class JunctionData {
 
     //only for actuation traffic lights, returns 0 if called on fixed (not good)
     public double getTotalMaxGreenTimes(){
-        assert groupDataF == null;
-
         if (type == TrafficLightType.ACTUATION) {
             double maxGreenTimes = 0;
             for (int i = 0; i < groupDataA.size(); i++){
@@ -130,24 +127,16 @@ public class JunctionData {
         }
     }
 
-    /**
-     * @param timing to format into string
-     * @return String timing rounded to 3 decimal places
-     */
-    private String formatTimingsForOutput(double timing){
-        DecimalFormat threeDecimalPlaces = new DecimalFormat("#.000");
-        return threeDecimalPlaces.format(timing);
-    }
-
     public FixedCycleVisualisationData getFixedCycleVisualisationData() {
         return new FixedCycleVisualisationData(
-                groupDataF.stream().map(x -> formatTimingsForOutput(x.greenTime)).toList()
+                groupDataF.stream().map(x -> new FixedTiming((int)Math.round(x.greenTime))).toList()
         );
     }
 
     public ActuationVisualisationData getActuationVisualisationData() {
         return new ActuationVisualisationData(
-                groupDataA.stream().map(x -> formatTimingsForOutput(x.greenTime)).toList()
+                groupDataA.stream().map(x ->
+                        new ActuatedTiming((int)Math.round(x.greenTime), (int)Math.round(x.maxGreenTime))).toList()
         );
     }
 

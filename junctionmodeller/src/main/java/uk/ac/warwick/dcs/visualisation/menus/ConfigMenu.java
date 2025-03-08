@@ -45,6 +45,7 @@ public class ConfigMenu extends Popup implements IModelVisualisationSubscriber {
         contentPane.setMaxHeight(Constants.CENTRE_POPUP_HEIGHT);
         contentPane.setMinHeight(Constants.CENTRE_POPUP_HEIGHT);
         contentPane.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+
  
         getContent().setAll(contentPane);
     }
@@ -107,13 +108,17 @@ public class ConfigMenu extends Popup implements IModelVisualisationSubscriber {
         }
     }
 
+
     private void addFlowEntry(String description, Color color) {
-        HBox entry = new HBox(10);
-        entry.setAlignment(Pos.CENTER_LEFT);
-        entry.getChildren().add(new Text(description));
-        Rectangle rect = new Rectangle(50, 20, color);
-        entry.getChildren().add(rect);
-        contentPane.getChildren().add(entry);
+        HBox flowEntry = new HBox(10);
+        flowEntry.setAlignment(Pos.CENTER_LEFT);
+
+        Text flowText = new Text(description); 
+        flowEntry.getChildren().add(flowText);
+
+   
+
+        contentPane.getChildren().add(flowEntry); 
     }
 
     // Method to get the outgoing flow between two directions

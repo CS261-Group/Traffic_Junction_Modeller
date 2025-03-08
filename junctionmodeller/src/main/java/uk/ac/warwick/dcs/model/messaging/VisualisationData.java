@@ -2,16 +2,16 @@ package uk.ac.warwick.dcs.model.messaging;
 
 import java.util.List;
 
-public abstract class VisualisationData {
+public abstract class VisualisationData<T> {
     private final EvaluationType type;
-    private final List<String> timings;
+    private final List<T> timings;
 
-    protected VisualisationData(EvaluationType evaluationType, List<String> signalTimings) {
+    protected VisualisationData(EvaluationType evaluationType, List<T> signalTimings) {
         type = evaluationType;
         timings = signalTimings;
     }
 
     protected EvaluationType getType() { return type; }
 
-    public List<String> getTimings() { return timings; }
+    protected List<T> getTimings() { return timings; }
 }

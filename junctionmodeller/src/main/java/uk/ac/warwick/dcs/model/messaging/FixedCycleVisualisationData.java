@@ -2,8 +2,12 @@ package uk.ac.warwick.dcs.model.messaging;
 
 import java.util.List;
 
-public class FixedCycleVisualisationData extends VisualisationData {
-    public FixedCycleVisualisationData(List<String> signalTimings) {
+public class FixedCycleVisualisationData extends VisualisationData<FixedTiming> {
+    public FixedCycleVisualisationData(List<FixedTiming> signalTimings) {
         super(EvaluationType.FIXEDCYCLE, signalTimings);
+    }
+
+    public List<FixedTiming> getFixedCycleTimings() {
+        return getTimings();
     }
 }
