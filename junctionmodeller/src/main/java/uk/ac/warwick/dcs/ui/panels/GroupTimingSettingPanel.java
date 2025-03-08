@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import uk.ac.warwick.dcs.ui.Defaults;
 import uk.ac.warwick.dcs.ui.formdata.GroupTiming;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 import uk.ac.warwick.dcs.ui.util.IntegerTextField;
@@ -14,7 +15,6 @@ import uk.ac.warwick.dcs.ui.util.IntegerTextField;
  * Panel used to enter a single group timing configuration.
  */
 public class GroupTimingSettingPanel extends CustomPanel implements IReadablePanel<GroupTiming> {
-    private static final int DEFAULT_TIMING = 30;
     private final int groupNum;
     private IntegerTextField timingField;
 
@@ -33,7 +33,7 @@ public class GroupTimingSettingPanel extends CustomPanel implements IReadablePan
         timingLblContainer.add(timingLbl);
         add(timingLblContainer);
 
-        timingField = new IntegerTextField(DEFAULT_TIMING);
+        timingField = new IntegerTextField(Defaults.greenTimes[groupNum -1]);
         timingField.setFont(labelFont);
         add(timingField);
     }

@@ -2,6 +2,7 @@ package uk.ac.warwick.dcs.ui.panels;
 
 import uk.ac.warwick.dcs.contracts.enums.Direction;
 import uk.ac.warwick.dcs.ui.Constants;
+import uk.ac.warwick.dcs.ui.Defaults;
 import uk.ac.warwick.dcs.ui.formdata.FlowData;
 import uk.ac.warwick.dcs.ui.interfaces.IReadablePanel;
 import uk.ac.warwick.dcs.ui.util.IntegerTextField;
@@ -33,10 +34,10 @@ public class FlowsPanel extends CustomPanel implements IReadablePanel<FlowData> 
             IntegerTextField flowField;
             if (directionIdx == direction.ordinal()) { // incoming flow
                 flowLbl = new JLabel("Incoming " + Constants.DIRECTIONS[directionIdx]);
-                flowField = new IntegerTextField(150);
+                flowField = new IntegerTextField(Defaults.incomingFlows[directionIdx]);
             } else { // outgoing flow
                 flowLbl = new JLabel("Outgoing " + Constants.DIRECTIONS[directionIdx]);
-                flowField = new IntegerTextField(50);
+                flowField = new IntegerTextField(Defaults.outgoingFlows[directionIdx]);
             }
             flowLbl.setFont(labelFont);
             flowField.setFont(labelFont);
