@@ -76,7 +76,7 @@ class Model implements Runnable {
 
         Semaphore semaphore = new Semaphore(0);
 
-        // not optimising => evaluate and return
+        // if optimising
         if (optimiser != null) {
             while (running && !Thread.currentThread().isInterrupted()) {
                 optimiser.optimise(NUM_ITERATIONS);
@@ -106,6 +106,7 @@ class Model implements Runnable {
             }
         }
 
+        // not optimising => evaluate and return
         // this update doesn't require semaphore trickery
         Platform.runLater(() -> {
             JunctionMetrics metrics = evaluation.getEvaluation(junctionData);

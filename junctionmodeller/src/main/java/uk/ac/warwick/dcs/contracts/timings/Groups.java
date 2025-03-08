@@ -32,10 +32,10 @@ public class Groups implements Iterable<Group> {
     public static final int MIN_NUM_GROUPS = 2;
 
     /**
-     * also called intergreen time. See:
-     * <a href="https://www.sciencedirect.com/science/article/pii/B9780128153024000030">Chow and Ampountolas</a>
+     * The delay between green in one group to green in another, assumed to be the same for all junctions.
+     * See:<a href="https://www.sciencedirect.com/science/article/pii/B9780128153024000030">Chow and Ampountolas</a>
      */
-    private static final double TRANSITION_TIME = 7.5;
+    private static final double TRANSITION_TIME = 4;
 
     // 0 when being optimised
     private int cycleTime;
