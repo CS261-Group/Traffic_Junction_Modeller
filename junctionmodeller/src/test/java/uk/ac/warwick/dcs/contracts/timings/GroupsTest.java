@@ -74,9 +74,9 @@ public class GroupsTest {
 
         Groups groupsWithMultiple = new Groups(List.of(group1, group2), false, List.of(group1Timing, group2Timing));
 
-        //2*7.5
-        assertEquals(15.0, groupsWithMultiple.cycleLostTime(), "Lost time");
-        // 30 + 30 + 15
-        assertEquals(75, groupsWithMultiple.getCycleTime(),"cycle time should be sum of grouptimings + lost cycle time");
+        //2*4
+        assertEquals(8, groupsWithMultiple.cycleLostTime(), "Lost time");
+        // 30 + 30 + 8
+        assertEquals(68, groupsWithMultiple.getCycleTime(),"cycle time should be sum of grouptimings + lost cycle time");
     }
 }
