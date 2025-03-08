@@ -7,9 +7,15 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import uk.ac.warwick.dcs.contracts.enums.Direction;
+import uk.ac.warwick.dcs.model.messaging.ModelUpdateType;
+import uk.ac.warwick.dcs.model.messaging.OptimisationUpdate;
 import uk.ac.warwick.dcs.visualisation.Constants;
 
+import java.util.List;
+
 public class JunctionPane extends Pane {
+    Intersection intersection;
+
     public JunctionPane(int[] outgoingLaneCounts, int[] incomingLaneCounts, boolean[][][] incomingDirections, int[][] incomingLaneGroupNums) {
         assert outgoingLaneCounts.length == 4;
         assert incomingLaneCounts.length == 4;
@@ -23,7 +29,7 @@ public class JunctionPane extends Pane {
         setMaxHeight(Constants.VISUALISER_HEIGHT);
 
         // draw static junction components
-        Intersection intersection = new Intersection();
+        intersection = new Intersection();
 
         // draw for each direction: outgoing lanes, incoming lanes
         for (Direction direction : Direction.values()) {
@@ -46,5 +52,25 @@ public class JunctionPane extends Pane {
         }
 
         getChildren().add(intersection);
+    }
+
+
+    public void displayGroupTimings(OptimisationUpdate modelUpdate){
+        List<String> groupTimings = modelUpdate.getOptimisation().getTimings();
+        ModelUpdateType type = modelUpdate.getType();
+
+        String preprefix = (type == ModelUpdateType.EVALUATION) ? "Average " : "";
+
+        StringBuilder builder = new StringBuilder();
+
+        // index might not actually be the same as group num???
+        int groupIndex = 1;
+        for (String timing : groupTimings){
+            String prefix = "Group " + groupIndex + " Timing:";
+            builder.append(preprefix).append(prefix).append(timing).append('\n');
+            groupIndex++;
+        }
+
+        intersection.getTextField().setText(builder.toString());
     }
 }

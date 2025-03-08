@@ -9,7 +9,7 @@ import java.util.Random;
 // Used to get neighbours to visit next
 public class FixedLightsTimingSearchSpace implements ISearchSpace {
     private final int TIME_OUT_CONST = 10;
-    private final double INITIAL_STEP_SIZE = 0.2; // in seconds
+    private final double INITIAL_STEP_SIZE = 0.01; // in seconds
     private double[] stepSize; // vector allows for momentum (not used rn)
     private int[] lastChanged;
     private Random randomNumGen;
