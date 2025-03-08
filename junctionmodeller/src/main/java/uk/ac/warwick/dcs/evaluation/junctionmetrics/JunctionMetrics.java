@@ -36,9 +36,9 @@ public class JunctionMetrics implements IJunctionMetrics {
 
             for (LaneData lane : group){
                 laneMetricsList.add(new LaneMetrics(calculator,
-                        lane.getSaturationFlow(),
-                        junctionData.getCycleTime(),
                         lane.getArrivalFlow(),
+                        junctionData.getCycleTime(),
+                        lane.getSaturationFlow(),
                         group.getGreenTime()));
             }
         }
@@ -59,9 +59,9 @@ public class JunctionMetrics implements IJunctionMetrics {
 
             for (LaneData lane : group) {
                 laneMetricsList.add(new LaneMetrics(calculator,
-                        lane.getSaturationFlow(),
-                        junctionData.getCycleTime(),
                         lane.getArrivalFlow(),
+                        junctionData.getCycleTime(),
+                        lane.getSaturationFlow(),
                         group.getGreenTime(),
                         group.getDegOfSaturation()));
             }

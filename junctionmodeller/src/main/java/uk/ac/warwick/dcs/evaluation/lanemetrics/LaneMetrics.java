@@ -8,6 +8,7 @@ public class LaneMetrics implements ILaneMetrics {
     // shares this instance with Junction Metrics
     private final LaneMetricCalculator calculator;
 
+    // for fixed lights
     public LaneMetrics(LaneMetricCalculator calc,
                        double laneArrivalRate,
                        double junctionCycleTime,
