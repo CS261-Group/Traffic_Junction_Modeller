@@ -26,10 +26,11 @@ class Intersection extends StackPane {
         rectangle.setHeight(Constants.INTERSECTION_SIDE_LENGTH);
         rectangle.setFill(Color.GREY);
 
-        rectangle.setX((double)(Constants.VISUALISER_WIDTH - Constants.INTERSECTION_SIDE_LENGTH) / 2D);
-        rectangle.setY((double)(Constants.VISUALISER_WIDTH - Constants.INTERSECTION_SIDE_LENGTH) / 2D);
+        setLayoutX((double)(Constants.VISUALISER_WIDTH - Constants.INTERSECTION_SIDE_LENGTH) / 2D);
+        setLayoutY((double)(Constants.VISUALISER_WIDTH - Constants.INTERSECTION_SIDE_LENGTH) / 2D);
 
         text = new Text();
+        text.setFill(Color.WHITE);
 
         getChildren().setAll(rectangle,text);
     }
