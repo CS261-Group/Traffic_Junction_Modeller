@@ -85,11 +85,11 @@ class Model implements Runnable {
                 Platform.runLater(() -> {
                     try {
                         if (optimiser instanceof FixedTimingsOptimiser) { // optimising fixed timings
-                            visualisation.notify(new OptimisationUpdate<>(junctionData.getFixedCycleVisualisationData()));
+                            visualisation.notify(new OptimisationUpdate(junctionData.getFixedCycleVisualisationData()));
 
                         } else { // optimising actuation
                             assert optimiser instanceof ActuatedTimingsOptimiser;
-                            visualisation.notify(new OptimisationUpdate<>(junctionData.getActuationVisualisationData()));
+                            visualisation.notify(new OptimisationUpdate(junctionData.getActuationVisualisationData()));
                         }
 
                         visualisation.notify(new EvaluationUpdate(metrics));

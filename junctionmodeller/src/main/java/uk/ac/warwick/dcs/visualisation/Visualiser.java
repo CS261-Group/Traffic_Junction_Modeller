@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import uk.ac.warwick.dcs.dataproc.IDataService;
 import uk.ac.warwick.dcs.model.messaging.EvaluationUpdate;
+import uk.ac.warwick.dcs.model.messaging.OptimisationUpdate;
 import uk.ac.warwick.dcs.ui.MainForm;
 import uk.ac.warwick.dcs.visualisation.buttons.ConfigButton;
 import uk.ac.warwick.dcs.visualisation.buttons.DeleteButton;
