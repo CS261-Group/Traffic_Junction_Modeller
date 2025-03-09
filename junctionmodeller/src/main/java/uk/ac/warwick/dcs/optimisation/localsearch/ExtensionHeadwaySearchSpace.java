@@ -9,7 +9,7 @@ import uk.ac.warwick.dcs.optimisation.noniterative.ActuatedCycleAndGreenTimeInit
 import java.util.Random;
 
 public class ExtensionHeadwaySearchSpace implements ISearchSpace{
-    private final double INITIAL_STEP_SIZE = 0.1; // in seconds
+    private final double INITIAL_STEP_SIZE = 0.015625; // in seconds
     private double[] stepSize;
     private Pair<Integer, Double> lastExtensionTime; //group num, followed by value
     private final Random randomNumGen;

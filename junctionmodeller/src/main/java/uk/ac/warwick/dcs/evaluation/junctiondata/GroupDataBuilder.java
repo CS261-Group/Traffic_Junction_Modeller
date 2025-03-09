@@ -9,7 +9,7 @@ import uk.ac.warwick.dcs.contracts.timings.Group;
 import java.util.ArrayList;
 
 public class GroupDataBuilder {
-    public static final double EXTENSION_HEADWAY_DEFAULT = 2.5;
+    public static final double EXTENSION_HEADWAY_DEFAULT = 3;
     public static double maxGreenTimeDefault;
     public JunctionConfiguration junctionConfiguration;
 

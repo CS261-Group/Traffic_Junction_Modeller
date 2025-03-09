@@ -78,6 +78,7 @@ public class JunctionMetrics implements IJunctionMetrics {
      */
     private void updateDelayMetrics(ArrayList<LaneMetrics> laneMetrics) {
         avgDelay = 0;
+        maxDelay = 0;
 
         for (int i = 0; i < laneMetrics.size(); i++){
             avgDelay += laneMetrics.get(i).getAverageDelay();
@@ -106,11 +107,12 @@ public class JunctionMetrics implements IJunctionMetrics {
      */
     private void updateQueueMetrics(ArrayList<LaneMetrics> laneMetrics) {
         avgQueue = 0;
+        maxQueue = 0;
 
         for (int i = 0; i < laneMetrics.size(); i++){
             avgQueue += laneMetrics.get(i).getAverageQueueLength();
 
-            if (laneMetrics.get(i).getAverageQueueLength() > maxDelay){
+            if (laneMetrics.get(i).getAverageQueueLength() > maxQueue){
                 maxQueue = laneMetrics.get(i).getAverageQueueLength();
             }
         }

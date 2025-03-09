@@ -20,7 +20,7 @@ import java.util.concurrent.Semaphore;
  * model instance being analysed.
  */
 class Model implements Runnable {
-    private static final int NUM_ITERATIONS = 50000000; // 50 million
+    private static final int NUM_ITERATIONS = 10;
 
     private final long id;
     private final Evaluator evaluation;
@@ -28,6 +28,7 @@ class Model implements Runnable {
     private final IModelVisualisation visualisation;
     private final JunctionData junctionData; // holds optimised values
 
+    private boolean stillOptimising;
     private volatile boolean running;
 
     public Model(long id, JunctionConfiguration junctionConfig, IModelVisualisation visualisation) {
@@ -37,6 +38,7 @@ class Model implements Runnable {
 
         // optimiser initialises values
         if (junctionConfig.getOptimising()) {
+            stillOptimising = true;
             if (junctionConfig.getTrafficLightType() == TrafficLightType.FIXEDCYCLE) {
                 this.optimiser = new FixedTimingsOptimiser(junctionConfig, junctionData, evaluation);
             }
@@ -77,9 +79,10 @@ class Model implements Runnable {
         Semaphore semaphore = new Semaphore(0);
 
         // if optimising
-        if (optimiser != null) {
+        if (optimiser != null && stillOptimising) {
             while (running && !Thread.currentThread().isInterrupted()) {
-                optimiser.optimise(NUM_ITERATIONS);
+                stillOptimising = optimiser.optimise(NUM_ITERATIONS);
+                running = stillOptimising;
                 JunctionMetrics metrics = evaluation.getEvaluation(junctionData);
 
                 Platform.runLater(() -> {

@@ -61,6 +61,9 @@ public class LaneDataBuilder {
     /**
      * Determines the saturation flow for a lane.
      * Note: Assumes the user inputs the outgoing flow for JUST ONE LANE in each direction
+     * Any lane that turns right is given the right direction saturation flow
+     * Then Any lane that turns left is given the left direction saturation flow
+     * Then Any lane that goes through is given the through direction saturation flow
      *
      * @param carriageway A carriageway
      * @param lane A lane belonging to the carriageway

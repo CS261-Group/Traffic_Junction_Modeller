@@ -29,11 +29,12 @@ public class FixedTimingsOptimiser extends Optimiser {
      * @param numIterations number of steps to make
      */
     @Override
-    public void optimise(int numIterations) {
+    public boolean optimise(int numIterations) {
         for (int t = 0; t < numIterations; t++) {
             if (!localSearch.makeStep()) {
-                return;
+                return false;
             }
         }
+        return true;
     }
 }
