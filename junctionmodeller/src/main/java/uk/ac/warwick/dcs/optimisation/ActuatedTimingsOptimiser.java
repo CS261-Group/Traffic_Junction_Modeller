@@ -35,18 +35,15 @@ public class ActuatedTimingsOptimiser extends Optimiser {
     /**
      * Optimise both extension headways and cycle time. Currently, never ends early
      * @param numIterations number of steps to make
+     * @return true if all iterations are completed, false otherwise
      */
     @Override
-    public void optimise(int numIterations) {
+    public boolean optimise(int numIterations) {
         for (int i = 0; i < numIterations; i++) {
-            if (!localSearchExtensionHeadway.makeStep()) {
-                return;
+            if (!localSearchExtensionHeadway.makeStep() & !localSearchCycleTime.makeStep()) {
+                return false;
             }
         }
-        for (int i = 0; i < numIterations; i++) {
-            if (!localSearchCycleTime.makeStep()) {
-                return;
-            }
-        }
+        return true;
     }
 }

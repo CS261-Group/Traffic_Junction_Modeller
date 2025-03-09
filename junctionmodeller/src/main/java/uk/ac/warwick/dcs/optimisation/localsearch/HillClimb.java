@@ -3,8 +3,8 @@ package uk.ac.warwick.dcs.optimisation.localsearch;
 import uk.ac.warwick.dcs.evaluation.junctiondata.JunctionData;
 
 public class HillClimb<S extends ISearchSpace> {
-    final double STEP_SIZE = 1;
     final int EXAMINE_NEIGHBOURS_LIMIT = 50;
+    final double EPSILON = 0.000001; // a very small change
     // final double MOMENTUM = 1.2;
 
     JunctionData currentNode;
@@ -32,10 +32,16 @@ public class HillClimb<S extends ISearchSpace> {
                 return false;
             }
             // current nodes position has been updated to the neighbours
+            double newEval = function.evaluationAt(currentNode);
 
-            if (function.evaluationAt(currentNode) < bestEval) {
-                currentEval = function.evaluationAt(currentNode);
-                return true;
+
+            if (newEval < bestEval) {
+                currentEval = newEval; // update evaulation for our current position
+
+                // if the change is too small to be significant, don't return true
+                if (bestEval - newEval > EPSILON) {
+                    return true;
+                }
             } else {
                 searchSpace.goBackToPreviousPosition(currentNode);
             }
