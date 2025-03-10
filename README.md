@@ -43,6 +43,11 @@ Note that this will run all stages, including tests. If you want to ignore tests
 mvn -DskipTests=true package
 ```
 
+For compiling with all dependencies included:
+```
+mvn clean compile assembly:single
+```
+
 ## How to run
 
 Building (successfully) will generate jars in `junctionmodeller/target/...`. 
